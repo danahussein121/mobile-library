@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
 import { db } from "@/lib/db";
 
-const allowedKeys = ["about", "donate", "contact", "programs", "projects", "events"] as const;
+const allowedKeys = ["about", "donate", "contact", "services", "programs", "projects", "events"] as const;
 
 export default async function StaticPageAdminPage({
   params,
@@ -20,12 +20,18 @@ export default async function StaticPageAdminPage({
     notFound();
   }
 
-  const page = await db.pageContent.findUnique({
-    where: { key },
-  });
+  const page =
+    (key === "services"
+      ? await db.pageContent.findFirst({
+          where: { key: { in: ["services", "programs"] } },
+        })
+      : await db.pageContent.findUnique({
+          where: { key },
+        }));
 
-  const fallbackEn = siteContent.en.pages[key as keyof typeof siteContent.en.pages];
-  const fallbackAr = siteContent.ar.pages[key as keyof typeof siteContent.ar.pages];
+  const fallbackKey = key === "services" ? "programs" : key;
+  const fallbackEn = siteContent.en.pages[fallbackKey as keyof typeof siteContent.en.pages];
+  const fallbackAr = siteContent.ar.pages[fallbackKey as keyof typeof siteContent.ar.pages];
 
   return (
     <div className="space-y-6 py-2">

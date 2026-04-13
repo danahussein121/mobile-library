@@ -1,14 +1,15 @@
+import { Globe, Mail, MapPin, MessageCircle } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { ContactForm } from "@/components/site/contact-form";
 import { Container } from "@/components/site/container";
 import { FadeIn } from "@/components/site/fade-in";
-import { PageHero } from "@/components/site/page-hero";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
+import { getPublicSiteSettings } from "@/lib/queries/settings";
+
+const cardIcons = [Mail, MessageCircle, Globe, MapPin];
 
 type ContactPageProps = {
   params: Promise<{ locale: string }>;
@@ -21,72 +22,94 @@ export default async function ContactPage({ params }: ContactPageProps) {
     notFound();
   }
 
-  const content = await getManagedSiteContent(locale);
+  const isArabic = locale === "ar";
+  const [publicSettings, managedContent] = await Promise.all([
+    getPublicSiteSettings(locale),
+    getManagedSiteContent(locale),
+  ]);
+  const contactItems = publicSettings.contactItems;
+  const formContent = managedContent.contact.form;
 
   return (
     <>
-      <PageHero
-        eyebrow={content.siteName}
-        title={content.pages.contact.title}
-        description={content.pages.contact.description}
-      />
-
-      <section className="pb-20 sm:pb-28">
-        <Container className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <section className="bg-primary py-20 text-white">
+        <Container>
           <FadeIn>
-            <Card className="relative h-full overflow-hidden rounded-[2.2rem] border-white/10 bg-slate-950 text-white shadow-[0_35px_90px_-55px_rgba(15,23,42,0.6)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.2),transparent_46%)]" />
-              <CardContent className="p-8 sm:p-10">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-teal-200/80 sm:text-sm">
-                  {locale === "ar" ? "بيانات التواصل" : "Contact details"}
-                </p>
-                <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em] sm:text-[2.15rem]">
-                  {content.contact.title}
-                </h2>
-                <p className="mt-4 text-base leading-8 text-slate-300">
-                  {content.contact.description}
-                </p>
-
-                <div className="mt-8 space-y-4">
-                  {content.contact.details.map((detail) => (
-                    <div key={detail.label} className="rounded-[1.5rem] bg-white/5 px-5 py-4 backdrop-blur">
-                      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-white/50">
-                        {detail.label}
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-white">{detail.value}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/80">
+              {isArabic ? "تواصل" : "Contact"}
+            </p>
+            <h1 className="mt-4 text-[42px] font-bold leading-[1.08] text-white sm:text-[48px]">
+              {managedContent.contact.title}
+            </h1>
           </FadeIn>
+        </Container>
+      </section>
 
-          <FadeIn delay={0.08}>
-            <Card className="rounded-[2.15rem] border-white/85 bg-white shadow-[0_30px_80px_-55px_rgba(15,23,42,0.38)]">
-              <CardContent className="p-8 sm:p-10">
-                <h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-[2.15rem]">
-                  {locale === "ar" ? "أرسل رسالة" : "Send a message"}
-                </h2>
-                <p className="mt-4 text-base leading-8 text-slate-600">
-                  {locale === "ar"
-                    ? "للتواصل السريع استخدم البريد الإلكتروني أو الهاتف أعلاه. ويمكن ربط هذا النموذج لاحقًا باستقبال الرسائل مباشرة."
-                    : "For immediate coordination, use the email or phone above. This form can be connected to a direct submission workflow later."}
-                </p>
+      <section className="py-20">
+        <Container className="space-y-12">
+          <div>
+            <FadeIn>
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                {isArabic ? "بيانات التواصل" : "Contact Info"}
+              </p>
+            </FadeIn>
+            <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+              {contactItems.map((item, index) => {
+                const Icon = cardIcons[index];
 
-                <form className="mt-8 space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Input placeholder={content.contact.form.name} className="h-12 rounded-2xl" />
-                    <Input placeholder={content.contact.form.email} className="h-12 rounded-2xl" />
-                  </div>
-                  <Input placeholder={content.contact.form.subject} className="h-12 rounded-2xl" />
-                  <Textarea
-                    placeholder={content.contact.form.message}
-                    className="min-h-40 rounded-2xl"
-                  />
-                  <Button type="button" className="h-12 rounded-full px-6">
-                    {content.contact.form.submit}
-                  </Button>
-                </form>
+                return (
+                  <FadeIn key={item.label} delay={index * 0.08}>
+                    <Card className="h-full">
+                      <CardContent>
+                        <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                          <Icon className="size-5" />
+                        </div>
+                        <p className="mt-5 text-sm font-semibold text-[#666666]">{item.label}</p>
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-3 block text-base font-semibold text-[#1A1A2E] transition-colors hover:text-primary"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="mt-3 text-base font-semibold text-[#1A1A2E]">{item.value}</p>
+                        )}
+                        {index === 1 ? (
+                          <a
+                            href="https://wa.me/970597010189"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-3 inline-flex text-sm font-semibold text-primary transition-colors hover:text-[#0097A7]"
+                          >
+                            WhatsApp
+                          </a>
+                        ) : null}
+                      </CardContent>
+                    </Card>
+                  </FadeIn>
+                );
+              })}
+            </div>
+          </div>
+
+          <FadeIn>
+            <Card>
+              <CardContent>
+                <ContactForm
+                  locale={locale}
+                  labels={{
+                    title: isArabic ? "أرسل رسالة" : "Send a Message",
+                    description: managedContent.contact.description,
+                    name: formContent.name,
+                    email: formContent.email,
+                    subject: formContent.subject,
+                    message: formContent.message,
+                    submit: formContent.submit,
+                  }}
+                />
               </CardContent>
             </Card>
           </FadeIn>

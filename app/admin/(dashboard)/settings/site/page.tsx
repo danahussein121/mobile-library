@@ -63,14 +63,10 @@ export default async function SiteSettingsAdminPage() {
                 ["navAboutAr", "Nav: About (AR)", settings?.navAboutAr ?? fallbackAr.nav[1].label],
                 ["navProgramsEn", "Nav: Programs (EN)", settings?.navProgramsEn ?? fallbackEn.nav[2].label],
                 ["navProgramsAr", "Nav: Programs (AR)", settings?.navProgramsAr ?? fallbackAr.nav[2].label],
-                ["navProjectsEn", "Nav: Projects (EN)", settings?.navProjectsEn ?? fallbackEn.nav[3].label],
-                ["navProjectsAr", "Nav: Projects (AR)", settings?.navProjectsAr ?? fallbackAr.nav[3].label],
-                ["navEventsEn", "Nav: Events (EN)", settings?.navEventsEn ?? fallbackEn.nav[4].label],
-                ["navEventsAr", "Nav: Events (AR)", settings?.navEventsAr ?? fallbackAr.nav[4].label],
-                ["navDonateEn", "Nav: Donate (EN)", settings?.navDonateEn ?? fallbackEn.nav[5].label],
-                ["navDonateAr", "Nav: Donate (AR)", settings?.navDonateAr ?? fallbackAr.nav[5].label],
-                ["navContactEn", "Nav: Contact (EN)", settings?.navContactEn ?? fallbackEn.nav[6].label],
-                ["navContactAr", "Nav: Contact (AR)", settings?.navContactAr ?? fallbackAr.nav[6].label],
+                ["navDonateEn", "Nav: Donate (EN)", settings?.navDonateEn ?? fallbackEn.nav[3].label],
+                ["navDonateAr", "Nav: Donate (AR)", settings?.navDonateAr ?? fallbackAr.nav[3].label],
+                ["navContactEn", "Nav: Contact (EN)", settings?.navContactEn ?? fallbackEn.nav[4].label],
+                ["navContactAr", "Nav: Contact (AR)", settings?.navContactAr ?? fallbackAr.nav[4].label],
               ].map(([name, label, value]) => (
                 <div key={name}>
                   <label className="mb-2 block text-sm font-medium text-slate-700">{label}</label>

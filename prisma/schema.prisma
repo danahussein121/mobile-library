@@ -245,6 +245,10 @@ model Event {
   slug          String   @unique
   order         Int      @default(0)
   eventDate     DateTime
+  location      String?
+  locationAr    String?
+  type          String?
+  isTentative   Boolean  @default(false)
   titleEn       String
   titleAr       String
   descriptionEn String

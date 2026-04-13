@@ -6,7 +6,6 @@ const navSections = [
     items: [
       { href: "/admin", label: "Overview" },
       { href: "/admin/programs", label: "Programs" },
-      { href: "/admin/projects", label: "Projects" },
       { href: "/admin/events", label: "Events" },
     ],
   },
@@ -16,6 +15,7 @@ const navSections = [
       { href: "/admin/settings/site", label: "Site Settings" },
       { href: "/admin/settings/home", label: "Homepage" },
       { href: "/admin/settings/pages/about", label: "About Page Intro" },
+      { href: "/admin/settings/pages/services", label: "Services Page Intro" },
       { href: "/admin/settings/pages/donate", label: "Donate Page Intro" },
       { href: "/admin/settings/pages/contact", label: "Contact Page Intro" },
       { href: "/admin/settings/donation", label: "Donation Settings" },
@@ -65,6 +65,11 @@ export function AdminShell({
                     </Link>
                   ))}
                 </div>
+                {section.title === "Content" ? (
+                  <p className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-xs leading-6 text-slate-500">
+                    Projects remain editable in the database, but they are currently hidden from the public site.
+                  </p>
+                ) : null}
               </div>
             ))}
           </div>

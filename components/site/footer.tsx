@@ -1,100 +1,69 @@
 import Link from "next/link";
+import { Globe, Mail, MapPin, Phone } from "lucide-react";
 
 import { Container } from "@/components/site/container";
-import { buttonVariants } from "@/components/ui/button";
-import type { ContactDetails, FooterContent, NavItem } from "@/data/site-content";
+import { SiteLogo } from "@/components/site/site-logo";
+import type { ContactItem, PublicSiteCopy, PublicNavItem } from "@/data/public-site";
 import type { Locale } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
+import { isExternalHref } from "@/lib/contact-links";
 
-type FooterProps = {
+const socialBadges = ["IG", "FB", "X", "IN"];
+const contactIcons = [Mail, Phone, Globe, MapPin];
+
+export function Footer({
+  locale,
+  logoUrl,
+  navItems,
+  donateLabel,
+  footerCopy,
+  contactItems,
+}: {
   locale: Locale;
-  siteName: string;
-  navItems: NavItem[];
-  footer: FooterContent;
-  contact: ContactDetails;
-};
+  logoUrl?: string;
+  navItems: PublicNavItem[];
+  donateLabel: string;
+  footerCopy: PublicSiteCopy["footer"];
+  contactItems: ContactItem[];
+}) {
+  const quickLinks = [...navItems, { label: donateLabel, href: `/${locale}/donate` }];
 
-export function Footer({ locale, siteName, navItems, footer, contact }: FooterProps) {
   return (
-    <footer className="relative overflow-hidden border-t border-slate-200 bg-slate-950 text-slate-200">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.14),transparent_32%)]" />
-      <Container className="relative py-14 sm:py-18">
-        <div className="mb-10 grid gap-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-[0_24px_80px_-56px_rgba(0,0,0,0.85)] backdrop-blur sm:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-          <div className="space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-teal-200/75">
-              {locale === "ar" ? "رسالة مستمرة" : "An ongoing mission"}
-            </p>
-            <h2 className="max-w-2xl text-3xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">
-              {locale === "ar"
-                ? "نقرب الكتاب من الطفل، ونقرب الطفل من فرصته في التعلم"
-                : "We bring books closer to children, and children closer to a future shaped by learning"}
-            </h2>
-            <p className="max-w-2xl text-base leading-8 text-slate-300">
-              {locale === "ar"
-                ? "كل زيارة تصنع مساحة آمنة للخيال والفضول والانتماء. بدعمكم نستطيع الوصول إلى مدارس وأحياء أكثر."
-                : "Each visit creates a safe place for curiosity, imagination, and belonging. With donor support, we can reach more schools and neighborhoods."}
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-            <Link
-              href={navItems.find((item) => item.href.endsWith("/donate"))?.href ?? "#"}
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "rounded-full px-6 shadow-lg shadow-primary/25",
-              )}
-            >
-              {footer.donateLabel}
-            </Link>
-            <Link
-              href={navItems.find((item) => item.href.endsWith("/contact"))?.href ?? "#"}
-              className={cn(
-                buttonVariants({ size: "lg", variant: "outline" }),
-                "rounded-full border-white/15 bg-white/10 px-6 text-white hover:bg-white/15 hover:text-white",
-              )}
-            >
-              {footer.contactLabel}
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer className="bg-primary text-white">
+      <Container className="py-16">
+        <div className="grid gap-10 md:grid-cols-[1.35fr_1fr_1fr_1fr]">
           <div className="space-y-5">
-            <div className="flex items-center gap-3">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-lg shadow-primary/20">
-              ML
-            </div>
-            <p className="text-lg font-semibold text-white">{siteName}</p>
-          </div>
-            <p className="max-w-md text-sm leading-7 text-slate-400">
-              {footer.description}
+            <SiteLogo locale={locale} logoSrc={logoUrl} />
+            <p className="max-w-md text-sm leading-7 text-white/92">
+              {footerCopy.tagline}
             </p>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {[
-                locale === "ar" ? "زيارات مدرسية" : "School visits",
-                locale === "ar" ? "جلسات قراءة" : "Reading circles",
-                locale === "ar" ? "ورش تعليمية" : "Creative workshops",
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-medium text-slate-300"
-                >
-                  {item}
-                </span>
-              ))}
+            <div className="flex flex-wrap gap-3">
+              {footerCopy.socialLinks.map((item, index) => {
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    className="inline-flex size-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
+                  >
+                    <span className="text-xs font-bold tracking-[0.12em]">{socialBadges[index]}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
-              {locale === "ar" ? "القائمة" : "Menu"}
+            <h3 className="text-base font-semibold text-white">
+              {footerCopy.quickLinksLabel}
             </h3>
             <div className="space-y-3">
-              {navItems.map((item) => (
+              {quickLinks.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block text-sm text-slate-300 transition-colors hover:text-white"
+                  className="block text-sm text-white/88 transition-colors hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -103,43 +72,66 @@ export function Footer({ locale, siteName, navItems, footer, contact }: FooterPr
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
-              {footer.contactLabel}
-            </h3>
-            <div className="space-y-3 text-sm leading-7 text-slate-300">
-              {contact.details.map((detail) => (
-                <p key={detail.label}>{detail.value}</p>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">
-              {footer.socialLabel}
+            <h3 className="text-base font-semibold text-white">
+              {footerCopy.communityLabel}
             </h3>
             <div className="space-y-3">
-              {footer.socialLinks.map((item) => (
+              {footerCopy.communityLinks.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="block text-sm text-slate-300 transition-colors hover:text-white"
+                  className="block text-sm text-white/88 transition-colors hover:text-white"
                 >
                   {item.label}
                 </Link>
               ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-base font-semibold text-white">
+              {footerCopy.contactLabel}
+            </h3>
+            <div className="space-y-3 text-sm text-white/88">
+              {contactItems.map((item, index) => {
+                const Icon = contactIcons[index] ?? MapPin;
+
+                if (item.href && isExternalHref(item.href)) {
+                  return (
+                    <a
+                      key={`${item.label}-${item.value}`}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-3 transition-colors hover:text-white"
+                    >
+                      <Icon className="mt-0.5 size-4 shrink-0" />
+                      <span>{item.value}</span>
+                    </a>
+                  );
+                }
+
+                return (
+                  <div key={`${item.label}-${item.value}`} className="flex items-start gap-3">
+                    <Icon className="mt-0.5 size-4 shrink-0" />
+                    <span>{item.value}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-slate-800 pt-5 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            {siteName} © 2026. {footer.rights}
-          </p>
-          <p>
-            {locale === "ar"
-              ? "صمم ليكون جاهزًا للنشر والتوسع مستقبلًا"
-              : "Designed to be deployment-ready and future CMS-friendly"}
-          </p>
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/20 pt-5 text-sm text-white/88 sm:flex-row sm:items-center sm:justify-between">
+          <p>{footerCopy.bottomText}</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href={`/${locale}/privacy-policy`} className="transition-colors hover:text-white">
+              {footerCopy.privacyLabel}
+            </Link>
+            <Link href={`/${locale}/terms-of-service`} className="transition-colors hover:text-white">
+              {footerCopy.termsLabel}
+            </Link>
+          </div>
         </div>
       </Container>
     </footer>

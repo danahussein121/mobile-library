@@ -8,23 +8,22 @@ import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 
 import { LanguageSwitcher } from "@/components/site/language-switcher";
+import { SiteLogo } from "@/components/site/site-logo";
 import { buttonVariants } from "@/components/ui/button";
-import type { NavItem } from "@/data/site-content";
+import type { PublicNavItem } from "@/data/public-site";
 import type { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type MobileNavDrawerProps = {
   locale: Locale;
-  navItems: NavItem[];
+  navItems: PublicNavItem[];
   donateLabel: string;
-  siteName: string;
 };
 
 export function MobileNavDrawer({
   locale,
   navItems,
   donateLabel,
-  siteName,
 }: MobileNavDrawerProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -44,7 +43,7 @@ export function MobileNavDrawer({
           <motion.button
             type="button"
             aria-label="Close menu overlay"
-            className="fixed inset-0 z-[90] bg-slate-950/42 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[90] bg-[#1A1A2E]/28 backdrop-blur-sm lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -56,40 +55,20 @@ export function MobileNavDrawer({
             exit={{ x: isRtl ? "-100%" : "100%" }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "fixed inset-y-0 z-[100] flex h-dvh w-[82vw] max-w-sm flex-col overflow-hidden border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.985),rgba(241,249,248,0.985))] shadow-[0_40px_120px_-42px_rgba(15,23,42,0.55)] lg:hidden",
+              "fixed inset-y-0 z-[100] flex h-dvh w-[82vw] max-w-sm flex-col overflow-hidden bg-white shadow-[0_16px_40px_rgba(0,0,0,0.14)] lg:hidden",
               isRtl
-                ? "left-0 rounded-r-[2rem] border-r"
-                : "right-0 rounded-l-[2rem] border-l",
+                ? "left-0 rounded-r-[20px] border-r border-black/5"
+                : "right-0 rounded-l-[20px] border-l border-black/5",
             )}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.22),transparent_38%)]" />
             <div className="relative flex h-full min-h-0 flex-col p-5 pt-[max(1.25rem,env(safe-area-inset-top))] sm:p-6 sm:pt-[max(1.5rem,env(safe-area-inset-top))]">
-              <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-11 items-center justify-center rounded-2xl bg-primary text-base font-bold text-primary-foreground shadow-lg shadow-primary/20">
-                      ML
-                    </div>
-                    <div>
-                      <p className="text-base font-semibold text-slate-950">{siteName}</p>
-                      <p className="text-sm text-slate-500">
-                        {locale === "ar"
-                          ? "كتب وقصص تصل إلى الأطفال"
-                          : "Books and stories reaching children"}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="max-w-xs text-sm leading-7 text-slate-600">
-                    {locale === "ar"
-                      ? "صممنا هذه الواجهة لتشعر بالدفء والوضوح، تمامًا مثل التجربة التي نريد أن يعيشها كل طفل مع الكتاب."
-                      : "Designed to feel warm, clear, and welcoming, just like the reading experiences we bring into communities."}
-                  </p>
-                </div>
+              <div className="flex items-center justify-between gap-4">
+                <SiteLogo locale={locale} />
                 <button
                   type="button"
                   aria-label="Close menu"
                   onClick={() => setOpen(false)}
-                  className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:text-slate-950"
+                  className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-[#1A1A2E] transition-colors hover:bg-secondary"
                 >
                   <X className="size-4" />
                 </button>
@@ -99,9 +78,11 @@ export function MobileNavDrawer({
                 <LanguageSwitcher locale={locale} />
               </div>
 
-              <nav className="mt-6 min-h-0 flex-1 space-y-2 overflow-y-auto pb-4">
+              <nav className="mt-8 min-h-0 flex-1 space-y-2 overflow-y-auto pb-4">
                 {navItems.map((item, index) => {
-                  const active = pathname === item.href;
+                  const active =
+                    pathname === item.href ||
+                    (item.href !== `/${locale}` && pathname?.startsWith(`${item.href}/`));
 
                   return (
                     <motion.div
@@ -114,17 +95,17 @@ export function MobileNavDrawer({
                         href={item.href}
                         onClick={() => setOpen(false)}
                         className={cn(
-                          "flex items-center justify-between rounded-[1.4rem] px-4 py-4 text-base font-medium transition-all",
+                          "flex items-center justify-between rounded-xl px-4 py-4 text-base font-medium transition-all",
                           active
-                            ? "bg-slate-950 text-white shadow-[0_20px_45px_-28px_rgba(15,23,42,0.55)]"
-                            : "bg-white/80 text-slate-700 hover:-translate-y-0.5 hover:bg-white hover:text-slate-950",
+                            ? "bg-secondary text-primary"
+                            : "text-[#1A1A2E] hover:bg-secondary",
                         )}
                       >
                         <span>{item.label}</span>
                         <span
                           className={cn(
                             "text-xs uppercase tracking-[0.24em]",
-                            active ? "text-white/55" : "text-slate-400",
+                            active ? "text-primary/60" : "text-[#666666]",
                           )}
                         >
                           0{index + 1}
@@ -135,21 +116,21 @@ export function MobileNavDrawer({
                 })}
               </nav>
 
-              <div className="mt-4 rounded-[1.6rem] bg-slate-950 p-4 text-white shadow-[0_22px_48px_-28px_rgba(15,23,42,0.6)]">
-                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-white/55">
-                  {locale === "ar" ? "ادعم المهمة" : "Support the mission"}
+              <div className="mt-4 rounded-[20px] bg-primary p-5 text-white">
+                <p className="text-sm font-semibold">
+                  {locale === "ar" ? "ادعم مهمتنا" : "Support our mission"}
                 </p>
-                <p className="mt-2 text-sm leading-7 text-slate-300">
+                <p className="mt-2 text-sm leading-7 text-white/90">
                   {locale === "ar"
-                    ? "كل مساهمة تساعدنا على تمويل زيارات جديدة وكتب أكثر ولحظات تعلم أدفأ."
-                    : "Every gift helps fund more visits, more books, and more moments of belonging around reading."}
+                    ? "كل مساهمة تساعدنا على الاستمرار في الوصول إلى الأطفال والقرى والمجتمعات."
+                    : "Every donation helps us keep the bus moving toward more children and communities."}
                 </p>
                 <Link
                   href={`/${locale}/donate`}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    buttonVariants(),
-                    "mt-4 inline-flex rounded-full px-5 shadow-lg shadow-primary/25",
+                    buttonVariants({ variant: "outline" }),
+                    "mt-4 inline-flex border-white bg-white text-primary hover:bg-[#f4fdfe]",
                   )}
                 >
                   {donateLabel}
@@ -168,7 +149,7 @@ export function MobileNavDrawer({
         type="button"
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex size-12 items-center justify-center rounded-full border border-white/70 bg-white/90 text-slate-700 shadow-[0_18px_40px_-24px_rgba(15,23,42,0.45)] backdrop-blur transition-all hover:-translate-y-0.5 hover:text-slate-950 lg:hidden"
+        className="inline-flex size-11 items-center justify-center rounded-full border border-black/10 bg-white text-[#1A1A2E] shadow-[0_2px_12px_rgba(0,0,0,0.07)] transition-colors hover:bg-secondary lg:hidden"
       >
         {open ? <X className="size-5" /> : <Menu className="size-5" />}
       </button>

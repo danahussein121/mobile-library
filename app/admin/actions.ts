@@ -17,6 +17,11 @@ function getValue(formData: FormData, key: string) {
   return String(formData.get(key) || "").trim();
 }
 
+function getValueOrDefault(formData: FormData, key: string, fallback: string) {
+  const value = formData.get(key);
+  return value === null ? fallback : String(value).trim();
+}
+
 function getNumber(formData: FormData, key: string, fallback = 0) {
   const value = Number(getValue(formData, key));
   return Number.isFinite(value) ? value : fallback;
@@ -36,6 +41,8 @@ function revalidatePublicSite() {
     "/ar",
     "/en/about",
     "/ar/about",
+    "/en/services",
+    "/ar/services",
     "/en/programs",
     "/ar/programs",
     "/en/projects",
@@ -217,10 +224,10 @@ export async function saveSiteSettings(formData: FormData) {
       navAboutAr: getValue(formData, "navAboutAr"),
       navProgramsEn: getValue(formData, "navProgramsEn"),
       navProgramsAr: getValue(formData, "navProgramsAr"),
-      navProjectsEn: getValue(formData, "navProjectsEn"),
-      navProjectsAr: getValue(formData, "navProjectsAr"),
-      navEventsEn: getValue(formData, "navEventsEn"),
-      navEventsAr: getValue(formData, "navEventsAr"),
+      navProjectsEn: getValueOrDefault(formData, "navProjectsEn", "Projects"),
+      navProjectsAr: getValueOrDefault(formData, "navProjectsAr", "المشاريع"),
+      navEventsEn: getValueOrDefault(formData, "navEventsEn", "Events"),
+      navEventsAr: getValueOrDefault(formData, "navEventsAr", "الفعاليات"),
       navDonateEn: getValue(formData, "navDonateEn"),
       navDonateAr: getValue(formData, "navDonateAr"),
       navContactEn: getValue(formData, "navContactEn"),
@@ -255,10 +262,10 @@ export async function saveSiteSettings(formData: FormData) {
       navAboutAr: getValue(formData, "navAboutAr"),
       navProgramsEn: getValue(formData, "navProgramsEn"),
       navProgramsAr: getValue(formData, "navProgramsAr"),
-      navProjectsEn: getValue(formData, "navProjectsEn"),
-      navProjectsAr: getValue(formData, "navProjectsAr"),
-      navEventsEn: getValue(formData, "navEventsEn"),
-      navEventsAr: getValue(formData, "navEventsAr"),
+      navProjectsEn: getValueOrDefault(formData, "navProjectsEn", "Projects"),
+      navProjectsAr: getValueOrDefault(formData, "navProjectsAr", "المشاريع"),
+      navEventsEn: getValueOrDefault(formData, "navEventsEn", "Events"),
+      navEventsAr: getValueOrDefault(formData, "navEventsAr", "الفعاليات"),
       navDonateEn: getValue(formData, "navDonateEn"),
       navDonateAr: getValue(formData, "navDonateAr"),
       navContactEn: getValue(formData, "navContactEn"),

@@ -24,7 +24,7 @@ export function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
   };
 
   return (
-    <div className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 p-1 shadow-sm">
+    <div className="inline-flex items-center rounded-full border border-black/10 bg-white p-1 shadow-[0_2px_12px_rgba(0,0,0,0.07)]">
       {(["en", "ar"] as const).map((value) => (
         <Link
           key={value}
@@ -32,8 +32,8 @@ export function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
           className={cn(
             "rounded-full px-3 py-1.5 text-sm font-semibold transition-colors",
             locale === value
-              ? "bg-primary text-primary-foreground"
-              : "text-slate-600 hover:text-slate-950",
+              ? "bg-primary text-white"
+              : "text-[#666666] hover:text-[#1A1A2E]",
           )}
         >
           {value.toUpperCase()}

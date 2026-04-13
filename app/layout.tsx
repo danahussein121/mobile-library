@@ -1,22 +1,25 @@
 import type { Metadata } from "next";
-import { Manrope, Noto_Sans_Arabic } from "next/font/google";
+import { Inter, Tajawal } from "next/font/google";
 
 import "./globals.css";
 
-const manrope = Manrope({
+const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const notoSansArabic = Noto_Sans_Arabic({
+const tajawal = Tajawal({
   variable: "--font-arabic",
   subsets: ["arabic"],
+  weight: ["400", "500", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Mobile Library",
+  title: "Mobile Library for Culture and Arts",
   description:
-    "A premium bilingual nonprofit website for the Mobile Library social impact initiative.",
+    "A multilingual cultural initiative bringing books, education, and community events to children across Palestine.",
 };
 
 export default function RootLayout({
@@ -25,8 +28,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${notoSansArabic.variable} h-full`}>
-      <body className="min-h-full bg-background font-sans text-foreground antialiased">
+    <html
+      lang="en"
+      dir="ltr"
+      suppressHydrationWarning
+      className={`${inter.variable} ${tajawal.variable} h-full`}
+    >
+      <body className="min-h-full bg-background text-foreground antialiased">
         {children}
       </body>
     </html>

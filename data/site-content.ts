@@ -1,3 +1,4 @@
+import { getImpactMetricValues } from "@/data/impact-metrics";
 import type { Locale } from "@/lib/i18n";
 
 export type NavItem = {
@@ -190,29 +191,21 @@ export type SiteContent = {
 };
 
 const sharedImages = {
-  hero:
-    "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1400&q=80",
-  reading:
-    "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1000&q=80",
-  storytelling:
-    "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1000&q=80",
-  workshops:
-    "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1000&q=80",
-  schoolVisits:
-    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=80",
-  projectOne:
-    "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80",
-  projectTwo:
-    "https://images.unsplash.com/photo-1489710437720-ebb67ec84dd2?auto=format&fit=crop&w=1200&q=80",
-  projectThree:
-    "https://images.unsplash.com/photo-1517164850305-99a3e65bb47e?auto=format&fit=crop&w=1200&q=80",
-  eventOne:
-    "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1200&q=80",
-  eventTwo:
-    "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1200&q=80",
-  eventThree:
-    "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80",
+  hero: "/images/bus-exterior-branded.jpg",
+  reading: "/images/bus-interior-shelves.jpg",
+  storytelling: "/images/bus-exterior-open.png",
+  workshops: "/images/bus-interior-art-digital.png",
+  schoolVisits: "/images/bus-exterior-open.png",
+  projectOne: "/images/bus-exterior-branded.jpg",
+  projectTwo: "/images/bus-interior-art-digital.png",
+  projectThree: "/images/bus-interior-shelves.jpg",
+  eventOne: "/images/bus-exterior-branded.jpg",
+  eventTwo: "/images/bus-exterior-open.png",
+  eventThree: "/images/bus-interior-art-digital.png",
 };
+
+const englishImpactValues = getImpactMetricValues("en");
+const arabicImpactValues = getImpactMetricValues("ar");
 
 export const siteContent: Record<Locale, SiteContent> = {
   en: {
@@ -222,8 +215,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       { label: "Home", href: "/en" },
       { label: "About", href: "/en/about" },
       { label: "Programs", href: "/en/programs" },
-      { label: "Projects", href: "/en/projects" },
-      { label: "Events", href: "/en/events" },
       { label: "Donate", href: "/en/donate" },
       { label: "Contact", href: "/en/contact" },
     ],
@@ -308,7 +299,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "Mobile Cinema",
             description:
-              "Educational and documentary screenings that make learning more engaging and accessible in community settings.",
+              "Showing educational and documentary films on external screens to make learning more engaging and accessible in community settings.",
             image: sharedImages.storytelling,
             alt: "Educational mobile cinema screening",
           },
@@ -336,7 +327,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "Reading Access Journeys",
             description:
-              "Regular mobile visits that turn reading into an enjoyable daily practice through direct access to books and cultural content.",
+              "A recurring outreach track that brings curated books, reading circles, and guided borrowing directly into neighborhoods where access to libraries is limited. Each stop is designed to make reading visible, social, and easy to return to.",
             image: sharedImages.projectOne,
             alt: "Children discovering books in a mobile cultural stop",
             cta: "Learn More",
@@ -344,7 +335,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "Talent Discovery Labs",
             description:
-              "Creative tracks that help identify and develop artistic and craft skills among children and youth.",
+              "Hands-on workshops that help children and youth explore drawing, calligraphy, crafts, and creative expression with support from facilitators. The program creates an early pathway for confidence, experimentation, and skill development.",
             image: sharedImages.projectTwo,
             alt: "Young participants in an arts development activity",
             cta: "Learn More",
@@ -352,7 +343,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "Community Awareness Programs",
             description:
-              "Cultural programs that raise awareness around community issues and local heritage through interactive learning.",
+              "Mobile learning sessions that connect cultural participation with topics such as local heritage, public belonging, and community wellbeing. Activities are designed to be practical, discussion-based, and welcoming to families.",
             image: sharedImages.projectThree,
             alt: "Community learning and cultural awareness activity",
             cta: "Learn More",
@@ -372,17 +363,17 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "Support artistic talent",
             description:
-              "Providing a platform to discover and develop technical and manual skills among youth.",
+              "Create opportunities to discover and develop artistic, technical, and manual skills among children and youth.",
           },
           {
-            title: "Promoting community awareness",
+            title: "Promote community awareness",
             description:
-              "Providing awareness and educational programs about community issues and local heritage.",
+              "Deliver awareness and educational programs that connect communities with local issues, civic participation, and cultural heritage.",
           },
           {
             title: "Reduce the knowledge gap",
             description:
-              "Ensuring access to cultural services in areas lacking public libraries and art centers.",
+              "Extend cultural services to areas that lack public libraries, arts spaces, and regular access to learning opportunities.",
           },
         ],
       },
@@ -402,11 +393,11 @@ export const siteContent: Record<Locale, SiteContent> = {
         description:
           "The bus is designed as a practical, comfortable, and inclusive mobile cultural environment.",
         items: [
-          "Smart design with optimal use of space",
-          "Foldable shelves and comfortable seating",
-          "Advanced technology including Wi-Fi, LED lighting, and air conditioning",
-          "Solar energy system",
-          "Accessibility for people with disabilities",
+          "Solar panel energy system",
+          "Hydraulic platforms for disability access",
+          "Central air conditioning with smart LED lighting",
+          "High-speed wireless internet",
+          "Foldable shelves and flexible art platforms",
         ],
       },
       targetAudience: {
@@ -447,10 +438,10 @@ export const siteContent: Record<Locale, SiteContent> = {
         description:
           "The project tracks reach and effect through practical indicators that reflect cultural access and social value.",
         stats: [
-          { label: "Beneficiaries reached", value: "Growing" },
-          { label: "Number of events and activities", value: "Ongoing" },
-          { label: "Lending statistics", value: "Tracked" },
-          { label: "Social impact on the community", value: "Visible" },
+          { label: "Beneficiaries reached", value: englishImpactValues[0] },
+          { label: "Activities delivered", value: englishImpactValues[1] },
+          { label: "Locations reached", value: englishImpactValues[2] },
+          { label: "Young talents engaged", value: englishImpactValues[3] },
         ],
       },
       events: {
@@ -611,8 +602,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       { label: "الرئيسية", href: "/ar" },
       { label: "من نحن", href: "/ar/about" },
       { label: "البرامج", href: "/ar/programs" },
-      { label: "المشاريع", href: "/ar/projects" },
-      { label: "الفعاليات", href: "/ar/events" },
       { label: "تبرع", href: "/ar/donate" },
       { label: "تواصل معنا", href: "/ar/contact" },
     ],
@@ -621,7 +610,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         eyebrow: "مبادرة ثقافية متنقلة",
         title: "نافذة المعرفة والإبداع التي تصل إليك أينما كنت",
         description:
-          "المكتبة المتنقلة للثقافة والفنون تقدم تجربة ثقافية وفنية متكاملة تتجاوز حدود الجدران، وتصل إلى التجمعات السكنية بالكتب والأنشطة الإبداعية ومصادر المعرفة.",
+          "المكتبة المتنقلة للثقافة والفنون مساحة ثقافية متنقلة تنقل الكتب والأنشطة الإبداعية ومصادر المعرفة مباشرة إلى الأحياء والتجمعات السكنية.",
         primaryAction: "استكشف البرامج",
         secondaryAction: "ادعم المشروع",
         image: sharedImages.hero,
@@ -635,7 +624,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       about: {
         title: "عن المشروع",
         description:
-          "المكتبة المتنقلة للثقافة والفنون مركز ثقافي متنقل يهدف إلى إثراء حياة الأفراد وتعزيز الهوية الثقافية، عبر إيصال المعرفة والإبداع إلى المناطق التي تفتقر إلى المكتبات والمراكز الفنية.",
+          "انطلق المشروع ليقرب الثقافة من الناس في الأماكن التي تفتقر إلى المكتبات والمراكز الفنية، ويحوّل الوصول إلى القراءة والفنون إلى تجربة قريبة ومنتظمة ومفتوحة للجميع.",
       },
       missionCards: [
         {
@@ -663,7 +652,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       howItWorks: {
         title: "التشغيل والتغطية",
         description:
-          "يعتمد المشروع على نموذج ميداني يركز على الوصول والاستمرارية وقياس الأثر.",
+          "نعمل وفق خطة ميدانية واضحة تبدأ بتحديد الاحتياج، ثم تنظيم الزيارات، ثم متابعة أثر الخدمة وتحسينها باستمرار.",
         steps: [
           {
             title: "تحديد المناطق الأكثر احتياجاً",
@@ -685,7 +674,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       programs: {
         title: "البرامج والأنشطة",
         description:
-          "يجمع المشروع بين القراءة والفنون والعروض التفاعلية والتجربة العملية في مساحة ثقافية متنقلة واحدة.",
+          "نقدم باقة من الأنشطة القرائية والفنية والتفاعلية التي تجعل الزيارة الثقافية تجربة حية ومناسبة لفئات عمرية متنوعة.",
         items: [
           {
             title: "ورش العمل الفنية",
@@ -697,7 +686,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "السينما المتنقلة",
             description:
-              "عروض تعليمية ووثائقية تجعل التعلم أكثر جاذبية وتصل بالمحتوى المعرفي إلى المجتمع مباشرة.",
+              "عرض أفلام تعليمية ووثائقية على شاشات خارجية تجعل التعلم أكثر جاذبية وتصل بالمحتوى المعرفي إلى المجتمع مباشرة.",
             image: sharedImages.storytelling,
             alt: "عرض سينما متنقلة تعليمية",
           },
@@ -720,7 +709,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       libraryServices: {
         title: "خدمات المكتبة",
         description:
-          "تجمع الوحدة المتنقلة بين الوصول إلى المكتبة الورقية والرقمية مع أدوات ذكية تسهل الاكتشاف والاستعارة.",
+          "توفر الوحدة المتنقلة خدمات مكتبية عملية تجمع بين القراءة الورقية والرقمية وتسهّل الاستعارة والوصول إلى المعرفة.",
         items: [
           "مكتبة ورقية تضم كتبًا في الأدب والعلوم ومحتوى الأطفال",
           "مكتبة رقمية عبر أجهزة لوحية تحتوي على كتب إلكترونية ومجلات",
@@ -736,7 +725,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "محطات الوصول الثقافي",
             description:
-              "زيارات متنقلة منتظمة تحول القراءة والثقافة إلى ممارسة قريبة وممتعة من خلال الوصول المباشر للمجتمع.",
+              "مسار ميداني منتظم يوصل الكتب وجلسات القراءة والإعارة الموجهة مباشرة إلى الأحياء التي تقل فيها فرص الوصول إلى المكتبات. كل محطة مصممة لتجعل القراءة أقرب للحياة اليومية وأكثر حضورًا داخل المجتمع.",
             image: sharedImages.projectOne,
             alt: "أطفال يكتشفون الكتب في محطة ثقافية متنقلة",
             cta: "اعرف المزيد",
@@ -744,7 +733,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "مسارات اكتشاف المواهب",
             description:
-              "أنشطة ومسارات إبداعية تساعد على اكتشاف وتنمية المهارات الفنية واليدوية لدى الناشئة والشباب.",
+              "ورش عملية تساعد الأطفال واليافعين على استكشاف الرسم والخط والأشغال اليدوية والتعبير الإبداعي بإشراف تربوي وفني. يركز هذا المسار على بناء الثقة وفتح مساحات مبكرة لاكتشاف الموهبة.",
             image: sharedImages.projectTwo,
             alt: "مشاركون في نشاط لتطوير المواهب الفنية",
             cta: "اعرف المزيد",
@@ -752,7 +741,7 @@ export const siteContent: Record<Locale, SiteContent> = {
           {
             title: "برامج الوعي المجتمعي",
             description:
-              "برامج تثقيفية وتوعوية تسلط الضوء على قضايا المجتمع والتراث المحلي عبر التعلم التفاعلي.",
+              "جلسات ثقافية متنقلة تربط المشاركة المجتمعية بموضوعات التراث المحلي والانتماء والوعي بالقضايا العامة. تقدم الأنشطة بصيغة تفاعلية تجعل التعلم قريبًا من العائلات والمشاركين.",
             image: sharedImages.projectThree,
             alt: "نشاط للتوعية المجتمعية والثقافية",
             cta: "اعرف المزيد",
@@ -791,16 +780,17 @@ export const siteContent: Record<Locale, SiteContent> = {
         description:
           "صممت الحافلة لتكون بيئة ثقافية عملية ومريحة وشاملة وسهلة الوصول.",
         items: [
-          "تصميم ذكي واستغلال أمثل للمساحة",
-          "أرفف قابلة للطي ومقاعد مريحة",
-          "تكنولوجيا حديثة تشمل الإنترنت وإضاءة LED والتكييف",
-          "نظام طاقة شمسية وسهولة وصول لذوي الإعاقة",
+          "نظام طاقة يعمل بالألواح الشمسية",
+          "منصات هيدروليكية لسهولة وصول ذوي الإعاقة",
+          "تكييف مركزي مع إضاءة LED ذكية",
+          "إنترنت لاسلكي عالي السرعة",
+          "أرفف قابلة للطي ومنصات فنية مرنة",
         ],
       },
       targetAudience: {
         title: "الفئات المستهدفة",
         description:
-          "تخدم المبادرة شرائح متنوعة مع تركيز خاص على المناطق والمجتمعات الأقل وصولاً للخدمات الثقافية.",
+          "نركز على الفئات التي تحتاج إلى وصول أسهل للمعرفة والأنشطة الثقافية، مع مراعاة تنوع الأعمار والاحتياجات.",
         items: [
           "الأطفال والناشئة",
           "الطلاب والباحثون",
@@ -811,7 +801,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       operations: {
         title: "آلية التشغيل والتغطية",
         description:
-          "يجمع المشروع بين الزيارات الميدانية والمشاركة المجتمعية والمتابعة الرقمية لضمان فعالية الخدمة.",
+          "تعتمد الخدمة على جداول ميدانية منتظمة وتنسيق مجتمعي ومتابعة رقمية تضمن استمرارية الوصول وتحسين التجربة.",
         items: [
           "تحديد المناطق الأكثر احتياجاً",
           "زيارات دورية أسبوعية أو شهرية",
@@ -822,7 +812,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       partnerships: {
         title: "الشراكات",
         description:
-          "يعتمد توسيع الأثر واستدامة الخدمة على التعاون مع جهات ومساهمين من قطاعات متعددة.",
+          "يساعد التعاون مع الشركاء والداعمين والمتطوعين على توسيع التغطية وضمان استدامة الخدمة في مناطق أكثر.",
         items: [
           "القطاع الحكومي",
           "القطاع الخاص",
@@ -833,12 +823,12 @@ export const siteContent: Record<Locale, SiteContent> = {
       impact: {
         title: "مؤشرات الأثر",
         description:
-          "يُقاس أثر المشروع من خلال مؤشرات عملية تعكس الوصول الثقافي والقيمة الاجتماعية المتحققة.",
+          "نقيس الأثر عبر مؤشرات تتابع حجم الوصول ونوعية المشاركة والقيمة الاجتماعية التي تحققها الزيارات الثقافية.",
         stats: [
-          { label: "عدد المستفيدين", value: "متزايد" },
-          { label: "عدد الفعاليات", value: "مستمر" },
-          { label: "إحصائيات الإعارة", value: "متابعة" },
-          { label: "الأثر الاجتماعي", value: "ملموس" },
+          { label: "عدد المستفيدين", value: arabicImpactValues[0] },
+          { label: "عدد الأنشطة", value: arabicImpactValues[1] },
+          { label: "عدد المواقع", value: arabicImpactValues[2] },
+          { label: "عدد المواهب المشاركة", value: arabicImpactValues[3] },
         ],
       },
       events: {
@@ -875,7 +865,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       donateCta: {
         title: "ساعد هذه النافذة الثقافية على الوصول إلى مجتمعات أكثر",
         description:
-          "دعمك يساعد المشروع على توسيع خدماته المتنقلة وإثراء موارده واستدامة وصول الثقافة إلى المناطق الأقل خدمة.",
+          "بدعمك نستطيع زيادة الزيارات وتوسيع المحتوى الثقافي والوصول إلى مجتمعات جديدة تحتاج إلى هذه الفرصة.",
         button: "ادعم المشروع",
       },
       finalMessage: {

@@ -1,6 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { cache } from "react";
 
+import { getImpactMetricValues } from "@/data/impact-metrics";
 import { siteContent, type SiteContent } from "@/data/site-content";
 import { db } from "@/lib/db";
 import type { Locale } from "@/lib/i18n";
@@ -117,6 +118,7 @@ async function loadDatabaseContent(locale: Locale) {
     ]);
 
     const base = structuredClone(siteContent[locale]);
+    const impactValues = getImpactMetricValues(locale);
 
     if (siteSettings) {
       base.siteName = localize(
@@ -130,10 +132,8 @@ async function loadDatabaseContent(locale: Locale) {
         { ...base.nav[0], label: localize(locale, siteSettings.navHomeEn, siteSettings.navHomeAr, base.nav[0].label) },
         { ...base.nav[1], label: localize(locale, siteSettings.navAboutEn, siteSettings.navAboutAr, base.nav[1].label) },
         { ...base.nav[2], label: localize(locale, siteSettings.navProgramsEn, siteSettings.navProgramsAr, base.nav[2].label) },
-        { ...base.nav[3], label: localize(locale, siteSettings.navProjectsEn, siteSettings.navProjectsAr, base.nav[3].label) },
-        { ...base.nav[4], label: localize(locale, siteSettings.navEventsEn, siteSettings.navEventsAr, base.nav[4].label) },
-        { ...base.nav[5], label: localize(locale, siteSettings.navDonateEn, siteSettings.navDonateAr, base.nav[5].label) },
-        { ...base.nav[6], label: localize(locale, siteSettings.navContactEn, siteSettings.navContactAr, base.nav[6].label) },
+        { ...base.nav[3], label: localize(locale, siteSettings.navDonateEn, siteSettings.navDonateAr, base.nav[3].label) },
+        { ...base.nav[4], label: localize(locale, siteSettings.navContactEn, siteSettings.navContactAr, base.nav[4].label) },
       ];
 
       base.footer.description = localize(locale, siteSettings.footerDescriptionEn, siteSettings.footerDescriptionAr, base.footer.description);
@@ -252,10 +252,10 @@ async function loadDatabaseContent(locale: Locale) {
       base.home.impact.title = localize(locale, homePage.impactTitleEn, homePage.impactTitleAr, base.home.impact.title);
       base.home.impact.description = localize(locale, homePage.impactDescriptionEn, homePage.impactDescriptionAr, base.home.impact.description);
       base.home.impact.stats = [
-        { label: localize(locale, homePage.statOneLabelEn, homePage.statOneLabelAr, base.home.impact.stats[0].label), value: homePage.statOneValue || base.home.impact.stats[0].value },
-        { label: localize(locale, homePage.statTwoLabelEn, homePage.statTwoLabelAr, base.home.impact.stats[1].label), value: homePage.statTwoValue || base.home.impact.stats[1].value },
-        { label: localize(locale, homePage.statThreeLabelEn, homePage.statThreeLabelAr, base.home.impact.stats[2].label), value: homePage.statThreeValue || base.home.impact.stats[2].value },
-        { label: localize(locale, homePage.statFourLabelEn, homePage.statFourLabelAr, base.home.impact.stats[3].label), value: homePage.statFourValue || base.home.impact.stats[3].value },
+        { label: localize(locale, homePage.statOneLabelEn, homePage.statOneLabelAr, base.home.impact.stats[0].label), value: impactValues[0] },
+        { label: localize(locale, homePage.statTwoLabelEn, homePage.statTwoLabelAr, base.home.impact.stats[1].label), value: impactValues[1] },
+        { label: localize(locale, homePage.statThreeLabelEn, homePage.statThreeLabelAr, base.home.impact.stats[2].label), value: impactValues[2] },
+        { label: localize(locale, homePage.statFourLabelEn, homePage.statFourLabelAr, base.home.impact.stats[3].label), value: impactValues[3] },
       ];
       base.home.donateCta.title = localize(locale, homePage.donationCtaTitleEn, homePage.donationCtaTitleAr, base.home.donateCta.title);
       base.home.donateCta.description = localize(locale, homePage.donationCtaDescriptionEn, homePage.donationCtaDescriptionAr, base.home.donateCta.description);

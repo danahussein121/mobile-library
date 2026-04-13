@@ -1,9 +1,26 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { cache } from "react";
+import { Prisma } from "@prisma/client";
 
 import { getEvents, type PublicEvent } from "@/data/events";
 import { db } from "@/lib/db";
 import type { Locale } from "@/lib/i18n";
+
+type PublicEventRow = {
+  slug: string;
+  eventDate: Date;
+  titleEn: string;
+  titleAr: string;
+  descriptionEn: string;
+  descriptionAr: string;
+  imageUrl: string | null;
+  imageAltEn: string;
+  imageAltAr: string;
+  location: string | null;
+  locationAr: string | null;
+  type: string | null;
+  isTentative: boolean;
+};
 
 function localize(
   locale: Locale,
@@ -38,14 +55,26 @@ async function loadPublicEvents(locale: Locale): Promise<PublicEvent[]> {
   }
 
   try {
-    const events = await db.event.findMany({
-      where: {
-        eventDate: {
-          gte: new Date(new Date().setHours(0, 0, 0, 0)),
-        },
-      },
-      orderBy: [{ eventDate: "asc" }, { order: "asc" }],
-    });
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
+    const events = await db.$queryRaw<PublicEventRow[]>(Prisma.sql`
+      SELECT
+        "slug",
+        "eventDate",
+        "titleEn",
+        "titleAr",
+        "descriptionEn",
+        "descriptionAr",
+        "imageUrl",
+        "imageAltEn",
+        "imageAltAr",
+        "location",
+        "locationAr",
+        "type",
+        "isTentative"
+      FROM "public"."Event"
+      WHERE "eventDate" >= ${today}
+      ORDER BY "eventDate" ASC, "order" ASC
+    `);
 
     if (events.length === 0) {
       return fallbackEvents;

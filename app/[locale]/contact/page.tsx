@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 
 type ContactPageProps = {
@@ -21,7 +21,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
 
   return (
     <>
@@ -69,8 +69,8 @@ export default async function ContactPage({ params }: ContactPageProps) {
                 </h2>
                 <p className="mt-4 text-base leading-8 text-slate-600">
                   {locale === "ar"
-                    ? "هذا النموذج واجهة جاهزة ويمكن ربطه لاحقًا بخدمة بريد أو نظام إدارة محتوى."
-                    : "This interface is ready to connect later to a mailing workflow, form handler, or CMS."}
+                    ? "للتواصل السريع استخدم البريد الإلكتروني أو الهاتف أعلاه. ويمكن ربط هذا النموذج لاحقًا باستقبال الرسائل مباشرة."
+                    : "For immediate coordination, use the email or phone above. This form can be connected to a direct submission workflow later."}
                 </p>
 
                 <form className="mt-8 space-y-4">
@@ -83,7 +83,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
                     placeholder={content.contact.form.message}
                     className="min-h-40 rounded-2xl"
                   />
-                  <Button className="h-12 rounded-full px-6">
+                  <Button type="button" className="h-12 rounded-full px-6">
                     {content.contact.form.submit}
                   </Button>
                 </form>

@@ -4,10 +4,13 @@ import {
   ArrowRight,
   BookHeart,
   BookOpen,
+  Bus,
   CalendarDays,
   HeartHandshake,
+  Handshake,
   MapPinned,
   Sparkles,
+  Users,
 } from "lucide-react";
 
 import { Container } from "@/components/site/container";
@@ -16,21 +19,20 @@ import { ParallaxImage } from "@/components/site/parallax-image";
 import { SectionHeading } from "@/components/site/section-heading";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { getSiteContent } from "@/data/site-content";
+import type { SiteContent } from "@/data/site-content";
 import type { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const missionIcons = [HeartHandshake, Sparkles, BookOpen];
 const stepIcons = [Sparkles, BookOpen, CalendarDays];
+const supportIcons = [Bus, Users, Handshake];
 
 type HomePageProps = {
   locale: Locale;
+  content: SiteContent;
 };
 
-export function HomePage({ locale }: HomePageProps) {
-  const content = getSiteContent(locale);
-  const heroStats = content.home.impact.stats.slice(0, 3);
-
+export function HomePage({ locale, content }: HomePageProps) {
   return (
     <div className="overflow-hidden pb-20 sm:pb-28">
       <section className="relative overflow-hidden pt-8 sm:pt-12 lg:pt-16">
@@ -83,31 +85,13 @@ export function HomePage({ locale }: HomePageProps) {
                     </p>
                     <p className="mt-2 max-w-xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
                       {locale === "ar"
-                        ? "كل مساهمة تمول كتبًا جديدة، وموادًا تعليمية، وزيارات تصل إلى أطفال قد لا تتوفر لهم مكتبات قريبة."
-                        : "Every contribution helps fund new books, educational materials, and neighborhood visits for children who may not have easy access to libraries."}
+                        ? "كل مساهمة تدعم استمرار الحافلة الثقافية وتوسيع الوصول إلى المعرفة والفنون في المناطق الأقل خدمة."
+                        : "Every contribution helps sustain the mobile cultural bus and expand access to knowledge and arts in underserved communities."}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3">
-                {heroStats.map((stat, index) => (
-                  <div
-                    key={stat.label}
-                    className={cn(
-                      "rounded-[1.6rem] border border-white/85 bg-white/80 p-4 shadow-[0_18px_55px_-40px_rgba(15,23,42,0.35)] backdrop-blur",
-                      index === 1 && "sm:-translate-y-2",
-                    )}
-                  >
-                    <p className="text-2xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-3xl">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 sm:text-[0.8rem]">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </FadeIn>
 
             <FadeIn delay={0.08}>
@@ -144,10 +128,10 @@ export function HomePage({ locale }: HomePageProps) {
                       <MapPinned className="size-4 sm:size-5" />
                     </div>
                     <p className="mt-4 text-2xl font-semibold tracking-[-0.04em] sm:text-3xl">
-                      38
+                      {String(content.home.targetAudience.items.length).padStart(2, "0")}
                     </p>
                     <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/60 sm:text-sm">
-                      {locale === "ar" ? "مجتمع تمت زيارته" : "Communities visited"}
+                      {locale === "ar" ? "فئات مستهدفة" : "Target groups"}
                     </p>
                   </CardContent>
                 </Card>
@@ -209,6 +193,25 @@ export function HomePage({ locale }: HomePageProps) {
                 </FadeIn>
               );
             })}
+          </div>
+
+          <div className="mt-8 rounded-[2rem] border border-white/80 bg-white/88 p-6 shadow-[0_25px_70px_-52px_rgba(15,23,42,0.28)] sm:p-8">
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/75">
+                {content.home.coreValues.title}
+              </p>
+              {content.home.coreValues.items.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-primary/15 bg-primary/5 px-4 py-2 text-sm font-medium text-slate-700"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+            <p className="mt-4 text-base leading-8 text-slate-600">
+              {content.home.coreValues.description}
+            </p>
           </div>
         </Container>
       </section>
@@ -284,14 +287,91 @@ export function HomePage({ locale }: HomePageProps) {
                     <p className="mt-3 text-base leading-8 text-slate-600">
                       {program.description}
                     </p>
-                    <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                    <Link
+                      href={`/${locale}/programs`}
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary"
+                    >
                       {locale === "ar" ? "اكتشف البرنامج" : "Discover the program"}
                       <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </div>
+                    </Link>
                   </CardContent>
                 </Card>
               </FadeIn>
             ))}
+          </div>
+
+          <FadeIn delay={0.08}>
+            <Card className="mt-8 rounded-[2.15rem] border-white/85 bg-white/92 shadow-[0_28px_75px_-52px_rgba(15,23,42,0.34)]">
+              <CardContent className="p-7 sm:p-8">
+                <SectionHeading
+                  eyebrow={locale === "ar" ? "خدمات المكتبة" : "Library services"}
+                  title={content.home.libraryServices.title}
+                  description={content.home.libraryServices.description}
+                  className="max-w-none text-start"
+                />
+                <div className="mt-8 grid gap-3 md:grid-cols-2">
+                  {content.home.libraryServices.items.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-700"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </FadeIn>
+        </Container>
+      </section>
+
+      <section className="pt-28 sm:pt-36">
+        <Container>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {[
+              {
+                title: content.home.busFeatures.title,
+                description: content.home.busFeatures.description,
+                items: content.home.busFeatures.items,
+                icon: supportIcons[0],
+              },
+              {
+                title: content.home.targetAudience.title,
+                description: content.home.targetAudience.description,
+                items: content.home.targetAudience.items,
+                icon: supportIcons[1],
+              },
+            ].map((section, index) => {
+              const Icon = section.icon;
+
+              return (
+                <FadeIn key={section.title} delay={index * 0.08}>
+                  <Card className="h-full rounded-[2.2rem] border-white/85 bg-white/92 shadow-[0_28px_75px_-52px_rgba(15,23,42,0.34)]">
+                    <CardContent className="p-7 sm:p-8">
+                      <div className="flex size-12 items-center justify-center rounded-[1.35rem] bg-primary/10 text-primary">
+                        <Icon className="size-5" />
+                      </div>
+                      <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                        {section.title}
+                      </h3>
+                      <p className="mt-3 text-base leading-8 text-slate-600">
+                        {section.description}
+                      </p>
+                      <div className="mt-6 grid gap-3">
+                        {section.items.map((item) => (
+                          <div
+                            key={item}
+                            className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              );
+            })}
           </div>
         </Container>
       </section>
@@ -347,6 +427,37 @@ export function HomePage({ locale }: HomePageProps) {
                       {project.cta}
                       <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </Link>
+                  </CardContent>
+                </Card>
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="pt-28 sm:pt-36">
+        <Container>
+          <FadeIn>
+            <SectionHeading
+              eyebrow={locale === "ar" ? "الأولويات" : "Strategic direction"}
+              title={content.home.strategicGoals.title}
+              description={content.home.strategicGoals.description}
+            />
+          </FadeIn>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {content.home.strategicGoals.items.map((goal, index) => (
+              <FadeIn key={goal.title} delay={index * 0.06}>
+                <Card className="h-full rounded-[2rem] border-white/85 bg-white/95 shadow-[0_26px_70px_-52px_rgba(15,23,42,0.34)]">
+                  <CardContent className="p-6 sm:p-7">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/75">
+                      0{index + 1}
+                    </p>
+                    <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                      {goal.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-8 text-slate-600">
+                      {goal.description}
+                    </p>
                   </CardContent>
                 </Card>
               </FadeIn>
@@ -430,6 +541,70 @@ export function HomePage({ locale }: HomePageProps) {
               </FadeIn>
             ))}
           </div>
+        </Container>
+      </section>
+
+      <section className="pt-28 sm:pt-36">
+        <Container>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {[
+              {
+                title: content.home.operations.title,
+                description: content.home.operations.description,
+                items: content.home.operations.items,
+                icon: supportIcons[0],
+              },
+              {
+                title: content.home.partnerships.title,
+                description: content.home.partnerships.description,
+                items: content.home.partnerships.items,
+                icon: supportIcons[2],
+              },
+            ].map((section, index) => {
+              const Icon = section.icon;
+
+              return (
+                <FadeIn key={section.title} delay={index * 0.08}>
+                  <Card className="h-full rounded-[2.15rem] border-white/85 bg-white/92 shadow-[0_28px_75px_-52px_rgba(15,23,42,0.34)]">
+                    <CardContent className="p-7 sm:p-8">
+                      <div className="flex size-12 items-center justify-center rounded-[1.35rem] bg-primary/10 text-primary">
+                        <Icon className="size-5" />
+                      </div>
+                      <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                        {section.title}
+                      </h3>
+                      <p className="mt-3 text-base leading-8 text-slate-600">
+                        {section.description}
+                      </p>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        {section.items.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              );
+            })}
+          </div>
+
+          <FadeIn delay={0.08}>
+            <Card className="mt-6 rounded-[2.3rem] border-slate-200/70 bg-slate-950 text-white shadow-[0_34px_90px_-56px_rgba(15,23,42,0.7)]">
+              <CardContent className="p-8 sm:p-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/55">
+                  {content.home.finalMessage.title}
+                </p>
+                <p className="mt-4 max-w-4xl text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
+                  {content.home.finalMessage.description}
+                </p>
+              </CardContent>
+            </Card>
+          </FadeIn>
         </Container>
       </section>
 

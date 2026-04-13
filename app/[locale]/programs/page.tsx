@@ -6,7 +6,7 @@ import { FadeIn } from "@/components/site/fade-in";
 import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 
 type ProgramsPageProps = {
@@ -20,7 +20,7 @@ export default async function ProgramsPage({ params }: ProgramsPageProps) {
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
 
   return (
     <>
@@ -75,19 +75,67 @@ export default async function ProgramsPage({ params }: ProgramsPageProps) {
           </div>
 
           <FadeIn>
-            <Card className="rounded-[2.25rem] border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(240,249,248,0.95))] shadow-[0_32px_90px_-55px_rgba(15,23,42,0.35)]">
-              <CardContent className="grid gap-6 p-8 sm:p-9 lg:grid-cols-3">
-                {content.home.howItWorks.steps.map((step, index) => (
-                  <div key={step.title}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/75 sm:text-sm">
-                      0{index + 1}
-                    </p>
-                    <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 text-base leading-8 text-slate-600">{step.description}</p>
+            <div className="grid gap-6 lg:grid-cols-2">
+              <Card className="rounded-[2.25rem] border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(240,249,248,0.95))] shadow-[0_32px_90px_-55px_rgba(15,23,42,0.35)]">
+                <CardContent className="p-8 sm:p-9">
+                  <SectionHeading
+                    eyebrow={locale === "ar" ? "لمن نقدم البرامج" : "Who these programs serve"}
+                    title={content.home.targetAudience.title}
+                    description={content.home.targetAudience.description}
+                  />
+                  <div className="mt-8 grid gap-3">
+                    {content.home.targetAudience.items.map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-[1.35rem] border border-slate-200 bg-white px-4 py-4 text-sm font-medium text-slate-700"
+                      >
+                        {item}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-[2.25rem] border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(240,249,248,0.95))] shadow-[0_32px_90px_-55px_rgba(15,23,42,0.35)]">
+                <CardContent className="p-8 sm:p-9">
+                  <SectionHeading
+                    eyebrow={locale === "ar" ? "آلية التنفيذ" : "How delivery is organized"}
+                    title={content.home.operations.title}
+                    description={content.home.operations.description}
+                  />
+                  <div className="mt-8 grid gap-3">
+                    {content.home.operations.items.map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-[1.35rem] border border-slate-200 bg-white px-4 py-4 text-sm font-medium text-slate-700"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </FadeIn>
+
+          <FadeIn>
+            <Card className="rounded-[2.25rem] border-white/80 bg-white/92 shadow-[0_32px_90px_-55px_rgba(15,23,42,0.35)]">
+              <CardContent className="p-8 sm:p-9">
+                <SectionHeading
+                  eyebrow={locale === "ar" ? "خدمات داعمة" : "Supporting services"}
+                  title={content.home.libraryServices.title}
+                  description={content.home.libraryServices.description}
+                />
+                <div className="mt-8 grid gap-3 md:grid-cols-2">
+                  {content.home.libraryServices.items.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-[1.35rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-700"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </FadeIn>

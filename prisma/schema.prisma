@@ -1,0 +1,343 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                String   @id @default("site-settings")
+  projectNameEn     String
+  projectNameAr     String
+  logoUrl           String?
+  navHomeEn         String
+  navHomeAr         String
+  navAboutEn        String
+  navAboutAr        String
+  navProgramsEn     String
+  navProgramsAr     String
+  navProjectsEn     String
+  navProjectsAr     String
+  navEventsEn       String
+  navEventsAr       String
+  navDonateEn       String
+  navDonateAr       String
+  navContactEn      String
+  navContactAr      String
+  footerDescriptionEn String
+  footerDescriptionAr String
+  footerContactLabelEn String
+  footerContactLabelAr String
+  footerSocialLabelEn String
+  footerSocialLabelAr String
+  footerDonateLabelEn String
+  footerDonateLabelAr String
+  footerRightsEn    String
+  footerRightsAr    String
+  socialOneLabelEn  String
+  socialOneLabelAr  String
+  socialOneUrl      String
+  socialTwoLabelEn  String
+  socialTwoLabelAr  String
+  socialTwoUrl      String
+  socialThreeLabelEn String
+  socialThreeLabelAr String
+  socialThreeUrl    String
+  seoTitleEn        String?
+  seoTitleAr        String?
+  seoDescriptionEn  String?
+  seoDescriptionAr  String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model HomePage {
+  id                          String   @id @default("home-page")
+  heroEyebrowEn               String
+  heroEyebrowAr               String
+  heroTitleEn                 String
+  heroTitleAr                 String
+  heroDescriptionEn           String
+  heroDescriptionAr           String
+  heroPrimaryActionEn         String
+  heroPrimaryActionAr         String
+  heroSecondaryActionEn       String
+  heroSecondaryActionAr       String
+  heroImageUrl                String?
+  heroImageAltEn              String
+  heroImageAltAr              String
+  floatingCardTitleEn         String
+  floatingCardTitleAr         String
+  floatingCardDescriptionEn   String
+  floatingCardDescriptionAr   String
+  aboutTitleEn                String
+  aboutTitleAr                String
+  aboutDescriptionEn          String
+  aboutDescriptionAr          String
+  missionTitleEn              String
+  missionTitleAr              String
+  missionDescriptionEn        String
+  missionDescriptionAr        String
+  visionTitleEn               String
+  visionTitleAr               String
+  visionDescriptionEn         String
+  visionDescriptionAr         String
+  valuesTitleEn               String
+  valuesTitleAr               String
+  valuesDescriptionEn         String
+  valuesDescriptionAr         String
+  coreValuesTitleEn           String
+  coreValuesTitleAr           String
+  coreValuesDescriptionEn     String
+  coreValuesDescriptionAr     String
+  coreValuesItemsEn           String
+  coreValuesItemsAr           String
+  howItWorksTitleEn           String
+  howItWorksTitleAr           String
+  howItWorksDescriptionEn     String
+  howItWorksDescriptionAr     String
+  stepOneTitleEn              String
+  stepOneTitleAr              String
+  stepOneDescriptionEn        String
+  stepOneDescriptionAr        String
+  stepTwoTitleEn              String
+  stepTwoTitleAr              String
+  stepTwoDescriptionEn        String
+  stepTwoDescriptionAr        String
+  stepThreeTitleEn            String
+  stepThreeTitleAr            String
+  stepThreeDescriptionEn      String
+  stepThreeDescriptionAr      String
+  programsTitleEn             String
+  programsTitleAr             String
+  programsDescriptionEn       String
+  programsDescriptionAr       String
+  libraryServicesTitleEn      String
+  libraryServicesTitleAr      String
+  libraryServicesDescriptionEn String
+  libraryServicesDescriptionAr String
+  libraryServicesItemsEn      String
+  libraryServicesItemsAr      String
+  projectsTitleEn             String
+  projectsTitleAr             String
+  projectsDescriptionEn       String
+  projectsDescriptionAr       String
+  eventsTitleEn               String
+  eventsTitleAr               String
+  eventsDescriptionEn         String
+  eventsDescriptionAr         String
+  strategicGoalsTitleEn       String
+  strategicGoalsTitleAr       String
+  strategicGoalsDescriptionEn String
+  strategicGoalsDescriptionAr String
+  strategicGoalsItemsEn       String
+  strategicGoalsItemsAr       String
+  busFeaturesTitleEn          String
+  busFeaturesTitleAr          String
+  busFeaturesDescriptionEn    String
+  busFeaturesDescriptionAr    String
+  busFeaturesItemsEn          String
+  busFeaturesItemsAr          String
+  targetAudienceTitleEn       String
+  targetAudienceTitleAr       String
+  targetAudienceDescriptionEn String
+  targetAudienceDescriptionAr String
+  targetAudienceItemsEn       String
+  targetAudienceItemsAr       String
+  operationsTitleEn           String
+  operationsTitleAr           String
+  operationsDescriptionEn     String
+  operationsDescriptionAr     String
+  operationsItemsEn           String
+  operationsItemsAr           String
+  partnershipsTitleEn         String
+  partnershipsTitleAr         String
+  partnershipsDescriptionEn   String
+  partnershipsDescriptionAr   String
+  partnershipsItemsEn         String
+  partnershipsItemsAr         String
+  finalMessageTitleEn         String
+  finalMessageTitleAr         String
+  finalMessageDescriptionEn   String
+  finalMessageDescriptionAr   String
+  impactTitleEn               String
+  impactTitleAr               String
+  impactDescriptionEn         String
+  impactDescriptionAr         String
+  statOneLabelEn              String
+  statOneLabelAr              String
+  statOneValue                String
+  statTwoLabelEn              String
+  statTwoLabelAr              String
+  statTwoValue                String
+  statThreeLabelEn            String
+  statThreeLabelAr            String
+  statThreeValue              String
+  statFourLabelEn             String
+  statFourLabelAr             String
+  statFourValue               String
+  donationCtaTitleEn          String
+  donationCtaTitleAr          String
+  donationCtaDescriptionEn    String
+  donationCtaDescriptionAr    String
+  donationCtaButtonLabelEn    String
+  donationCtaButtonLabelAr    String
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+}
+
+model PageContent {
+  id            String   @id @default(cuid())
+  key           String   @unique
+  titleEn       String
+  titleAr       String
+  descriptionEn String
+  descriptionAr String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Program {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  order         Int      @default(0)
+  titleEn       String
+  titleAr       String
+  descriptionEn String
+  descriptionAr String
+  imageUrl      String?
+  imageAltEn    String
+  imageAltAr    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  order         Int      @default(0)
+  titleEn       String
+  titleAr       String
+  descriptionEn String
+  descriptionAr String
+  ctaLabelEn    String
+  ctaLabelAr    String
+  imageUrl      String?
+  imageAltEn    String
+  imageAltAr    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Event {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  order         Int      @default(0)
+  eventDate     DateTime
+  titleEn       String
+  titleAr       String
+  descriptionEn String
+  descriptionAr String
+  imageUrl      String?
+  imageAltEn    String
+  imageAltAr    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model DonationSettings {
+  id                         String   @id @default("donation-settings")
+  headingEn                  String
+  headingAr                  String
+  descriptionEn              String
+  descriptionAr              String
+  bankTransferTabEn          String
+  bankTransferTabAr          String
+  onlineSoonTabEn            String
+  onlineSoonTabAr            String
+  bankTransferTitleEn        String
+  bankTransferTitleAr        String
+  bankTransferHelperEn       String
+  bankTransferHelperAr       String
+  bankNameLabelEn            String
+  bankNameLabelAr            String
+  bankNameValue              String
+  accountNameLabelEn         String
+  accountNameLabelAr         String
+  accountNameValue           String
+  accountNumberLabelEn       String
+  accountNumberLabelAr       String
+  accountNumberValue         String
+  ibanLabelEn                String
+  ibanLabelAr                String
+  ibanValue                  String
+  referenceNoteEn            String
+  referenceNoteAr            String
+  formTitleEn                String
+  formTitleAr                String
+  formDescriptionEn          String
+  formDescriptionAr          String
+  formNameLabelEn            String
+  formNameLabelAr            String
+  formEmailLabelEn           String
+  formEmailLabelAr           String
+  formAmountLabelEn          String
+  formAmountLabelAr          String
+  formNoteLabelEn            String
+  formNoteLabelAr            String
+  formTransferDateLabelEn    String
+  formTransferDateLabelAr    String
+  formSubmitLabelEn          String
+  formSubmitLabelAr          String
+  placeholderTitleEn         String
+  placeholderTitleAr         String
+  placeholderDescriptionEn   String
+  placeholderDescriptionAr   String
+  ctaTitleEn                 String
+  ctaTitleAr                 String
+  ctaButtonLabelEn           String
+  ctaButtonLabelAr           String
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+model ContactSettings {
+  id                 String   @id @default("contact-settings")
+  titleEn            String
+  titleAr            String
+  descriptionEn      String
+  descriptionAr      String
+  emailLabelEn       String
+  emailLabelAr       String
+  emailValue         String
+  phoneLabelEn       String
+  phoneLabelAr       String
+  phoneValue         String
+  addressLabelEn     String
+  addressLabelAr     String
+  addressValueEn     String
+  addressValueAr     String
+  formNameLabelEn    String
+  formNameLabelAr    String
+  formEmailLabelEn   String
+  formEmailLabelAr   String
+  formSubjectLabelEn String
+  formSubjectLabelAr String
+  formMessageLabelEn String
+  formMessageLabelAr String
+  formSubmitLabelEn  String
+  formSubmitLabelAr  String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}

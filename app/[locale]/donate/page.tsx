@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +25,7 @@ export default async function DonatePage({ params }: DonatePageProps) {
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
 
   return (
     <>
@@ -127,7 +127,7 @@ export default async function DonatePage({ params }: DonatePageProps) {
                           placeholder={content.donation.form.note}
                           className="min-h-36 rounded-2xl"
                         />
-                        <Button className="h-12 rounded-full px-6">
+                        <Button type="button" className="h-12 rounded-full px-6">
                           {content.donation.form.submit}
                         </Button>
                       </form>
@@ -149,6 +149,35 @@ export default async function DonatePage({ params }: DonatePageProps) {
                 </Card>
               </TabsContent>
             </Tabs>
+          </FadeIn>
+
+          <FadeIn>
+            <Card className="rounded-[2.15rem] border-white/85 bg-white shadow-[0_30px_80px_-55px_rgba(15,23,42,0.3)]">
+              <CardContent className="p-8 sm:p-10">
+                <SectionHeading
+                  eyebrow={locale === "ar" ? "بيانات للتنسيق" : "Support contact"}
+                  title={locale === "ar" ? "للمساعدة في تأكيد التحويل" : "If you need help confirming a transfer"}
+                  description={
+                    locale === "ar"
+                      ? "يمكنك استخدام بيانات التواصل التالية إذا احتجت إلى متابعة عملية التبرع أو مشاركة إشعار التحويل."
+                      : "Use the details below if you need help following up on a donation or sharing your transfer confirmation."
+                  }
+                />
+                <div className="mt-8 grid gap-4 md:grid-cols-3">
+                  {content.contact.details.map((detail) => (
+                    <div
+                      key={detail.label}
+                      className="rounded-[1.5rem] border border-slate-200 bg-slate-50 px-5 py-4 shadow-[0_12px_30px_-28px_rgba(15,23,42,0.18)]"
+                    >
+                      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
+                        {detail.label}
+                      </p>
+                      <p className="mt-2 text-base font-semibold text-slate-950">{detail.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </FadeIn>
 
           <FadeIn>

@@ -41,7 +41,7 @@ export function Navbar({
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-slate-200/80 bg-slate-50/90 p-1.5 xl:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-slate-200/80 bg-slate-50/90 p-1.5 lg:flex">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
 

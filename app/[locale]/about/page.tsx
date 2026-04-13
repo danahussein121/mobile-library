@@ -6,7 +6,7 @@ import { FadeIn } from "@/components/site/fade-in";
 import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 
 const icons = [HeartHandshake, Lightbulb, Rocket];
@@ -22,7 +22,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
 
   return (
     <>
@@ -108,6 +108,97 @@ export default async function AboutPage({ params }: AboutPageProps) {
               </FadeIn>
             ))}
           </div>
+
+          <FadeIn>
+            <SectionHeading
+              eyebrow={locale === "ar" ? "قيم المشروع" : "Project values"}
+              title={content.home.coreValues.title}
+              description={content.home.coreValues.description}
+            />
+          </FadeIn>
+          <div className="flex flex-wrap gap-3">
+            {content.home.coreValues.items.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-primary/15 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+
+          <FadeIn>
+            <SectionHeading
+              eyebrow={locale === "ar" ? "التوجه الاستراتيجي" : "Strategic direction"}
+              title={content.home.strategicGoals.title}
+              description={content.home.strategicGoals.description}
+            />
+          </FadeIn>
+          <div className="grid gap-6 md:grid-cols-2">
+            {content.home.strategicGoals.items.map((goal, index) => (
+              <FadeIn key={goal.title} delay={index * 0.08}>
+                <Card className="rounded-[2rem] border-white/85 bg-white/92 shadow-[0_25px_70px_-52px_rgba(15,23,42,0.35)]">
+                  <CardContent className="p-7 sm:p-8">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/75">
+                      0{index + 1}
+                    </p>
+                    <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                      {goal.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-8 text-slate-600">
+                      {goal.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </FadeIn>
+            ))}
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {[
+              content.home.libraryServices,
+              content.home.busFeatures,
+              content.home.targetAudience,
+              content.home.operations,
+              content.home.partnerships,
+            ].map((section, index) => (
+              <FadeIn key={section.title} delay={index * 0.06}>
+                <Card className="rounded-[2rem] border-white/85 bg-white/92 shadow-[0_25px_70px_-52px_rgba(15,23,42,0.35)]">
+                  <CardContent className="p-7 sm:p-8">
+                    <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                      {section.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-8 text-slate-600">
+                      {section.description}
+                    </p>
+                    <div className="mt-6 grid gap-3">
+                      {section.items.map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-[1.3rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn>
+            <Card className="rounded-[2.2rem] border-slate-200/70 bg-slate-950 text-white shadow-[0_34px_90px_-56px_rgba(15,23,42,0.7)]">
+              <CardContent className="p-8 sm:p-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/55">
+                  {content.home.finalMessage.title}
+                </p>
+                <p className="mt-4 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
+                  {content.home.finalMessage.description}
+                </p>
+              </CardContent>
+            </Card>
+          </FadeIn>
         </Container>
       </section>
     </>

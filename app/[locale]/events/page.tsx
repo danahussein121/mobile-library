@@ -6,7 +6,7 @@ import { FadeIn } from "@/components/site/fade-in";
 import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 
 type EventsPageProps = {
@@ -20,7 +20,7 @@ export default async function EventsPage({ params }: EventsPageProps) {
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
 
   return (
     <>

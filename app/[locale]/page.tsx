@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { HomePage } from "@/components/site/home-page";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 
 type LocaleHomePageProps = {
@@ -14,5 +15,7 @@ export default async function LocaleHomePage({ params }: LocaleHomePageProps) {
     notFound();
   }
 
-  return <HomePage locale={locale} />;
+  const content = await getManagedSiteContent(locale);
+
+  return <HomePage locale={locale} content={content} />;
 }

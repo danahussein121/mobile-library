@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/site/container";
@@ -7,7 +6,7 @@ import { FadeIn } from "@/components/site/fade-in";
 import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Card, CardContent } from "@/components/ui/card";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 
 type ProjectsPageProps = {
@@ -21,7 +20,7 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
 
   return (
     <>
@@ -67,10 +66,11 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
                       <p className="mt-4 text-base leading-8 text-slate-600">
                         {project.description}
                       </p>
-                      <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                        {project.cta}
-                        <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                      </div>
+                      <p className="mt-6 text-sm font-semibold text-primary/80">
+                        {locale === "ar"
+                          ? "تفاصيل إضافية متاحة عند التواصل مع فريق المشروع."
+                          : "More implementation details are available on request from the project team."}
+                      </p>
                     </div>
                   </CardContent>
                 </div>

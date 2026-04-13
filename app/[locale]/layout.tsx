@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Footer } from "@/components/site/footer";
 import { Navbar } from "@/components/site/navbar";
-import { getSiteContent } from "@/data/site-content";
+import { getManagedSiteContent } from "@/data/site-content.server";
 import { getDirection, isLocale, locales } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +25,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const content = getSiteContent(locale);
+  const content = await getManagedSiteContent(locale);
   const direction = getDirection(locale);
 
   return (
@@ -39,7 +39,9 @@ export default async function LocaleLayout({
       <Navbar
         locale={locale}
         navItems={content.nav}
-        donateLabel={content.nav[5]?.label ?? "Donate"}
+        donateLabel={
+          content.nav.find((item) => item.href.endsWith("/donate"))?.label ?? "Donate"
+        }
         siteName={content.siteName}
       />
       <main>{children}</main>
@@ -48,6 +50,7 @@ export default async function LocaleLayout({
         siteName={content.siteName}
         navItems={content.nav}
         footer={content.footer}
+        contact={content.contact}
       />
     </div>
   );

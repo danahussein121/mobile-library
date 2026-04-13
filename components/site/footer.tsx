@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/site/container";
 import { buttonVariants } from "@/components/ui/button";
-import type { FooterContent, NavItem } from "@/data/site-content";
+import type { ContactDetails, FooterContent, NavItem } from "@/data/site-content";
 import type { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -11,9 +11,10 @@ type FooterProps = {
   siteName: string;
   navItems: NavItem[];
   footer: FooterContent;
+  contact: ContactDetails;
 };
 
-export function Footer({ locale, siteName, navItems, footer }: FooterProps) {
+export function Footer({ locale, siteName, navItems, footer, contact }: FooterProps) {
   return (
     <footer className="relative overflow-hidden border-t border-slate-200 bg-slate-950 text-slate-200">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
@@ -52,7 +53,7 @@ export function Footer({ locale, siteName, navItems, footer }: FooterProps) {
                 "rounded-full border-white/15 bg-white/10 px-6 text-white hover:bg-white/15 hover:text-white",
               )}
             >
-              {locale === "ar" ? "تواصل معنا" : "Get in touch"}
+              {footer.contactLabel}
             </Link>
           </div>
         </div>
@@ -106,9 +107,9 @@ export function Footer({ locale, siteName, navItems, footer }: FooterProps) {
               {footer.contactLabel}
             </h3>
             <div className="space-y-3 text-sm leading-7 text-slate-300">
-              <p>hello@mobilelibrary.org</p>
-              <p>+962 7 9000 1234</p>
-              <p>Amman, Jordan</p>
+              {contact.details.map((detail) => (
+                <p key={detail.label}>{detail.value}</p>
+              ))}
             </div>
           </div>
 

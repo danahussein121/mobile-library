@@ -34,6 +34,18 @@ export type StepCard = {
   description: string;
 };
 
+export type ListSection = {
+  title: string;
+  description: string;
+  items: string[];
+};
+
+export type GoalSection = {
+  title: string;
+  description: string;
+  items: FeatureCard[];
+};
+
 export type ProgramCard = {
   title: string;
   description: string;
@@ -125,6 +137,7 @@ export type SiteContent = {
     hero: HeroContent;
     about: SimpleSection;
     missionCards: FeatureCard[];
+    coreValues: ListSection;
     howItWorks: {
       title: string;
       description: string;
@@ -135,11 +148,17 @@ export type SiteContent = {
       description: string;
       items: ProgramCard[];
     };
+    libraryServices: ListSection;
     projects: {
       title: string;
       description: string;
       items: ProjectCard[];
     };
+    strategicGoals: GoalSection;
+    busFeatures: ListSection;
+    targetAudience: ListSection;
+    operations: ListSection;
+    partnerships: ListSection;
     impact: {
       title: string;
       description: string;
@@ -155,6 +174,7 @@ export type SiteContent = {
       description: string;
       button: string;
     };
+    finalMessage: SimpleSection;
   };
   pages: {
     about: SimpleSection;
@@ -196,7 +216,7 @@ const sharedImages = {
 
 export const siteContent: Record<Locale, SiteContent> = {
   en: {
-    siteName: "Mobile Library",
+    siteName: "Mobile Library for Culture and Arts",
     localeLabel: "English",
     nav: [
       { label: "Home", href: "/en" },
@@ -209,209 +229,303 @@ export const siteContent: Record<Locale, SiteContent> = {
     ],
     home: {
       hero: {
-        eyebrow: "Community reading initiative",
-        title: "Bringing Books to Every Child",
+        eyebrow: "Mobile cultural initiative",
+        title: "A window of knowledge and creativity that reaches you wherever you are",
         description:
-          "Mobile Library brings story-filled visits, read-aloud moments, and creative learning activities directly into neighborhoods so children can discover books in places that feel familiar, joyful, and safe.",
+          "The Mobile Library for Culture and Arts delivers books, artistic activities, and community learning experiences through a mobile cultural space that reaches residential neighborhoods directly.",
         primaryAction: "Explore Programs",
-        secondaryAction: "Donate Now",
+        secondaryAction: "Support the Project",
         image: sharedImages.hero,
-        imageAlt: "Children enjoying books and reading together",
+        imageAlt: "Children taking part in a mobile cultural and reading activity",
         floatingCard: {
-          title: "A reading space that arrives with care",
+          title: "Culture beyond walls",
           description:
-            "Our team meets children where they already gather, turning ordinary spaces into welcoming moments of story, curiosity, and connection.",
+            "We bring knowledge resources, creative workshops, and artistic encounters into the heart of communities through a welcoming mobile bus.",
         },
       },
       about: {
-        title: "Who We Are",
+        title: "The Project",
         description:
-          "Mobile Library is a community-driven initiative that brings books directly to children in neighborhoods, schools, and public spaces. Through read-aloud sessions, storytelling, and creative educational activities, we create warm encounters with books that help children feel seen, inspired, and excited to learn.",
+          "The Mobile Library for Culture and Arts is a moving cultural center designed to enrich individual lives, strengthen cultural identity, and make knowledge and creativity accessible in places that lack regular libraries or arts spaces.",
       },
       missionCards: [
         {
-          title: "Our Mission",
+          title: "Mission",
           description:
-            "To nurture a reading culture by taking books and learning opportunities directly to children and families.",
+            "To offer a comprehensive cultural and artistic experience that transcends physical boundaries, by providing sources of knowledge and creative activities in the heart of residential communities.",
         },
         {
-          title: "Our Vision",
+          title: "Vision",
           description:
-            "A future where every child grows up surrounded by stories, imagination, and the confidence to keep learning.",
+            "To be the most influential mobile cultural center, enriching the lives of individuals and promoting cultural identity wherever we go.",
         },
         {
-          title: "Our Values",
+          title: "Our Role",
           description:
-            "Access, empathy, creativity, and community partnership shape every visit, session, and interaction.",
+            "We connect books, arts, and community engagement in a mobile model that is human-centered, flexible, and accessible.",
         },
       ],
-      howItWorks: {
-        title: "How It Works",
+      coreValues: {
+        title: "Core Values",
         description:
-          "Our model combines community insight, thoughtful planning, and on-the-ground delivery to create lasting reading experiences.",
+          "The principles that shape how the project is designed, delivered, and sustained.",
+        items: ["Holism", "Innovation", "Sustainability", "Excellence"],
+      },
+      howItWorks: {
+        title: "Operations & Coverage",
+        description:
+          "The project operates through a field-based approach that prioritizes access, continuity, and measurable service delivery.",
         steps: [
           {
-            title: "Ideation",
+            title: "Identify priority areas",
             description:
-              "We listen to communities, identify needs, and design reading experiences that feel relevant and welcoming.",
+              "We study communities and determine the areas most in need of cultural and library services.",
           },
           {
-            title: "Design",
+            title: "Run recurring visits",
             description:
-              "We curate books, activities, and workshop formats that match the age group, place, and learning goals.",
+              "The mobile bus follows weekly and monthly schedules while also taking part in festivals and public events.",
           },
           {
-            title: "Implementation",
+            title: "Track the service digitally",
             description:
-              "Our mobile library visits schools and neighborhoods to deliver sessions, books, and meaningful engagement.",
+              "Digital tools help us follow usage, coverage, and service quality over time.",
           },
         ],
       },
       programs: {
         title: "Programs & Activities",
         description:
-          "Every activity is designed to make reading feel personal, engaging, and easy to return to long after the visit ends.",
+          "The project combines reading, arts, performance, and hands-on creativity in one mobile cultural experience.",
         items: [
           {
-            title: "Reading Sessions",
+            title: "Art Workshops",
             description:
-              "Guided group reading moments that help children explore stories, language, and imagination together.",
-            image: sharedImages.reading,
-            alt: "Children sitting together during a reading session",
-          },
-          {
-            title: "Storytelling",
-            description:
-              "Interactive storytelling activities that turn books into exciting shared experiences full of wonder.",
-            image: sharedImages.storytelling,
-            alt: "A facilitator telling a story to children",
-          },
-          {
-            title: "Workshops",
-            description:
-              "Creative educational workshops that combine literacy, arts, participation, and hands-on exploration.",
+              "Creative workshops in drawing, Arabic calligraphy, and visual arts that encourage self-expression and artistic discovery.",
             image: sharedImages.workshops,
-            alt: "Children participating in an educational workshop",
+            alt: "Children participating in an art workshop",
           },
           {
-            title: "School Visits",
+            title: "Mobile Cinema",
             description:
-              "Visits to schools and community spaces that make quality books and learning activities easier to access.",
+              "Educational and documentary screenings that make learning more engaging and accessible in community settings.",
+            image: sharedImages.storytelling,
+            alt: "Educational mobile cinema screening",
+          },
+          {
+            title: "Small Theatre",
+            description:
+              "Interactive theatre and puppet performances that bring stories, imagination, and participation to life.",
             image: sharedImages.schoolVisits,
-            alt: "Children at school with books and learning materials",
+            alt: "Interactive small theatre activity for children",
+          },
+          {
+            title: "Handicrafts Corner",
+            description:
+              "A practical space for traditional and modern crafts that helps young participants build creative and manual skills.",
+            image: sharedImages.reading,
+            alt: "Children taking part in handicrafts activities",
           },
         ],
       },
       projects: {
-        title: "Featured Projects",
+        title: "Featured Initiatives",
         description:
-          "These projects deepen our reach through recurring visits, neighborhood partnerships, and literacy experiences designed around real community rhythms.",
+          "These initiative tracks translate the project mission into repeatable cultural services with real community reach.",
         items: [
           {
-            title: "Neighborhood Reading Corners",
+            title: "Reading Access Journeys",
             description:
-              "Comfortable pop-up reading spaces that invite children and caregivers to sit, browse, and read together.",
+              "Regular mobile visits that turn reading into an enjoyable daily practice through direct access to books and cultural content.",
             image: sharedImages.projectOne,
-            alt: "Outdoor educational activities with children",
+            alt: "Children discovering books in a mobile cultural stop",
             cta: "Learn More",
           },
           {
-            title: "School Literacy Caravan",
+            title: "Talent Discovery Labs",
             description:
-              "A rotating school visit model that pairs book access with interactive reading activities teachers can build on later.",
+              "Creative tracks that help identify and develop artistic and craft skills among children and youth.",
             image: sharedImages.projectTwo,
-            alt: "Children reading during a school literacy visit",
+            alt: "Young participants in an arts development activity",
             cta: "Learn More",
           },
           {
-            title: "Creative Learning Week",
+            title: "Community Awareness Programs",
             description:
-              "A themed week of books, workshops, and family-friendly moments that celebrate reading as a shared community habit.",
+              "Cultural programs that raise awareness around community issues and local heritage through interactive learning.",
             image: sharedImages.projectThree,
-            alt: "Children smiling during a creative workshop",
+            alt: "Community learning and cultural awareness activity",
             cta: "Learn More",
           },
+        ],
+      },
+      strategicGoals: {
+        title: "Strategic Goals",
+        description:
+          "The project is guided by four strategic goals that connect culture, access, and community impact.",
+        items: [
+          {
+            title: "Spread a culture of reading",
+            description:
+              "Turn reading into an enjoyable daily habit for all ages through direct and attractive access.",
+          },
+          {
+            title: "Support artistic talent",
+            description:
+              "Providing a platform to discover and develop technical and manual skills among youth.",
+          },
+          {
+            title: "Promoting community awareness",
+            description:
+              "Providing awareness and educational programs about community issues and local heritage.",
+          },
+          {
+            title: "Reduce the knowledge gap",
+            description:
+              "Ensuring access to cultural services in areas lacking public libraries and art centers.",
+          },
+        ],
+      },
+      libraryServices: {
+        title: "Library Services",
+        description:
+          "The mobile unit combines physical and digital library access with smart tools that make discovery and borrowing easier.",
+        items: [
+          "Paper library with books in literature, science, and children’s content",
+          "Digital library with tablets offering e-books and magazines",
+          "Smart lending system",
+          "Reference corner for students and researchers",
+        ],
+      },
+      busFeatures: {
+        title: "Mobile Bus Features",
+        description:
+          "The bus is designed as a practical, comfortable, and inclusive mobile cultural environment.",
+        items: [
+          "Smart design with optimal use of space",
+          "Foldable shelves and comfortable seating",
+          "Advanced technology including Wi-Fi, LED lighting, and air conditioning",
+          "Solar energy system",
+          "Accessibility for people with disabilities",
+        ],
+      },
+      targetAudience: {
+        title: "Target Audience",
+        description:
+          "The service is designed to reach diverse groups while prioritizing access for underserved communities.",
+        items: [
+          "Children and youth",
+          "Students and researchers",
+          "Elderly",
+          "Remote communities",
+        ],
+      },
+      operations: {
+        title: "Coverage Model",
+        description:
+          "The project combines recurring visits, public participation, and data-informed service delivery.",
+        items: [
+          "Identifying high-need areas",
+          "Regular visits (weekly/monthly)",
+          "Participation in festivals and events",
+          "Digital tools for tracking location and booking",
+        ],
+      },
+      partnerships: {
+        title: "Partnerships",
+        description:
+          "Long-term impact depends on collaboration across sectors and with community contributors.",
+        items: [
+          "Government sector",
+          "Private sector",
+          "Nonprofit institutions",
+          "Volunteers",
         ],
       },
       impact: {
-        title: "Our Impact",
+        title: "Impact Framework",
         description:
-          "Each visit creates a meaningful moment of access, encouragement, and belonging around learning.",
+          "The project tracks reach and effect through practical indicators that reflect cultural access and social value.",
         stats: [
-          { label: "Children Reached", value: "4,500+" },
-          { label: "Books Delivered", value: "12,000+" },
-          { label: "Communities Visited", value: "38" },
-          { label: "Events Conducted", value: "120+" },
+          { label: "Beneficiaries reached", value: "Growing" },
+          { label: "Number of events and activities", value: "Ongoing" },
+          { label: "Lending statistics", value: "Tracked" },
+          { label: "Social impact on the community", value: "Visible" },
         ],
       },
       events: {
-        title: "Upcoming & Recent Events",
+        title: "Program Moments",
         description:
-          "Our calendar brings books into everyday community life through open gatherings, school visits, and public reading moments.",
+          "Recurring mobile activities make culture visible in everyday life across neighborhoods and community spaces.",
         items: [
           {
-            title: "Spring Reading Caravan",
-            date: "May 14, 2026",
+            title: "Mobile Cinema Evening",
+            date: "Recurring field activation",
             description:
-              "A full-day neighborhood visit with open reading circles, take-home books, and welcoming family activities.",
+              "Educational and documentary screenings hosted in a mobile setup that invites shared community viewing.",
             image: sharedImages.eventOne,
-            alt: "Children attending a reading event",
+            alt: "Mobile cinema community event",
           },
           {
-            title: "Storytelling Under the Trees",
-            date: "June 02, 2026",
+            title: "Interactive Puppet Theatre",
+            date: "Community engagement format",
             description:
-              "An outdoor storytelling afternoon designed to make books feel social, joyful, and easy to love.",
+              "A small theatre experience designed to combine storytelling, participation, and artistic play.",
             image: sharedImages.eventTwo,
-            alt: "Outdoor storytelling gathering",
+            alt: "Interactive puppet theatre event",
           },
           {
-            title: "Community Workshop Day",
-            date: "June 19, 2026",
+            title: "Creative Crafts Day",
+            date: "Hands-on cultural activity",
             description:
-              "A creative literacy day combining hands-on crafts, book discovery, and short educational workshops.",
+              "A practical station for traditional and modern crafts that encourages expression, focus, and skill-building.",
             image: sharedImages.eventThree,
-            alt: "Creative community workshop",
+            alt: "Handicrafts and creative activity day",
           },
         ],
       },
       donateCta: {
-        title: "Help Us Put More Books Into More Small Hands",
+        title: "Help this cultural window reach more communities",
         description:
-          "Your support helps us reach more neighborhoods, expand our mobile collection, and create more moments in which a child feels that learning belongs to them.",
-        button: "Donate Now",
+          "Your support helps the project expand its mobile services, enrich its resources, and sustain cultural access in underserved areas.",
+        button: "Support the Project",
+      },
+      finalMessage: {
+        title: "Final Message",
+        description:
+          "The mobile library is not just a means of transport, but a bridge of knowledge and beauty that reaches everyone.",
       },
     },
     pages: {
       about: {
-        title: "About Mobile Library",
+        title: "About the Mobile Library for Culture and Arts",
         description:
-          "A people-centered initiative designed to make reading visible, accessible, and loved in every community we visit.",
+          "A mobile cultural project that combines reading, arts, awareness, and access in one community-centered experience.",
       },
       programs: {
         title: "Programs & Activities",
         description:
-          "From storytelling to school visits, our programs are built to turn access to books into lasting engagement.",
+          "A blend of cultural, artistic, educational, and hands-on activities designed for diverse age groups.",
       },
       projects: {
-        title: "Projects",
+        title: "Implementation Initiatives",
         description:
-          "Focused initiatives that deepen our impact through local partnerships, themed campaigns, and repeated visits.",
+          "Focused initiative tracks that turn the project vision into measurable cultural and social service delivery.",
       },
       events: {
-        title: "Events",
+        title: "Events & Community Activations",
         description:
-          "Community visits, open reading gatherings, and literacy moments that bring our mission into public spaces.",
+          "Recurring mobile formats that bring cinema, theatre, crafts, and cultural learning into public life.",
       },
       donate: {
-        title: "Support the Mission",
+        title: "Support the Project",
         description:
-          "Every contribution helps us reach more children with books, stories, and educational opportunities.",
+          "Support helps sustain mobile cultural services and extend access to communities that need them most.",
       },
       contact: {
-        title: "Contact Us",
+        title: "Get in Touch",
         description:
-          "We would love to hear from partners, schools, volunteers, and supporters who want to help grow this mission.",
+          "Reach out for partnerships, support, field coordination, or inquiries about the mobile cultural project.",
       },
     },
     donation: {
@@ -428,7 +542,10 @@ export const siteContent: Record<Locale, SiteContent> = {
           "Please replace these sample details with the official project banking information before launch.",
         fields: [
           { label: "Bank Name", value: "Al Noor Community Bank" },
-          { label: "Account Name", value: "Mobile Library Initiative" },
+          {
+            label: "Account Name",
+            value: "Mobile Library for Culture and Arts",
+          },
           { label: "Account Number", value: "00124578963" },
           { label: "IBAN", value: "JO94NBRB001245789630000000001" },
         ],
@@ -438,7 +555,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       form: {
         title: "Notify Us About Your Transfer",
         description:
-          "This form is for interface purposes only and can later connect to your preferred backend or CMS workflow.",
+          "This form is for interface purposes only and can later connect to your preferred backend workflow.",
         name: "Name",
         email: "Email",
         amount: "Amount",
@@ -449,21 +566,21 @@ export const siteContent: Record<Locale, SiteContent> = {
       placeholderCard: {
         title: "Online donations are coming soon",
         description:
-          "A future version can integrate a payment gateway or a CMS-managed donation provider.",
+          "A future version can integrate an online payment gateway when the project is ready.",
       },
       cta: {
-        title: "Want to sponsor a full reading visit?",
-        button: "Contact Our Team",
+        title: "Want to sponsor a full cultural visit?",
+        button: "Contact the Project Team",
       },
     },
     contact: {
-      title: "Let’s Build a Reading Culture Together",
+      title: "Connect with the Project",
       description:
-        "Reach out to host a school visit, support a neighborhood stop, or partner with us as a donor, school, or volunteer team.",
+        "We welcome inquiries from partners, supporters, volunteers, and communities interested in hosting the mobile service.",
       details: [
-        { label: "Email", value: "hello@mobilelibrary.org" },
-        { label: "Phone", value: "+962 7 9000 1234" },
-        { label: "Address", value: "Amman, Jordan" },
+        { label: "Email", value: "Mobile.library1@outlook.com" },
+        { label: "Phone", value: "+970597010189" },
+        { label: "Website", value: "www.mobilelibrary.ps" },
       ],
       form: {
         name: "Full Name",
@@ -475,20 +592,20 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       description:
-        "Mobile Library delivers books, read-aloud sessions, and creative literacy activities directly to children in neighborhoods and schools.",
+        "The Mobile Library for Culture and Arts brings books, artistic activities, and cultural learning directly to communities.",
       contactLabel: "Contact",
-      socialLabel: "Social Media",
-      donateLabel: "Support the mission",
+      socialLabel: "Direct links",
+      donateLabel: "Support the project",
       rights: "All rights reserved.",
       socialLinks: [
-        { label: "Instagram", href: "#" },
-        { label: "Facebook", href: "#" },
-        { label: "LinkedIn", href: "#" },
+        { label: "Website", href: "https://www.mobilelibrary.ps" },
+        { label: "Email", href: "mailto:Mobile.library1@outlook.com" },
+        { label: "Phone", href: "tel:+970597010189" },
       ],
     },
   },
   ar: {
-    siteName: "المكتبة المتنقلة",
+    siteName: "المكتبة المتنقلة للثقافة والفنون",
     localeLabel: "العربية",
     nav: [
       { label: "الرئيسية", href: "/ar" },
@@ -501,209 +618,302 @@ export const siteContent: Record<Locale, SiteContent> = {
     ],
     home: {
       hero: {
-        eyebrow: "مبادرة مجتمعية للقراءة",
-        title: "ننقل الكتب إلى كل طفل",
+        eyebrow: "مبادرة ثقافية متنقلة",
+        title: "نافذة المعرفة والإبداع التي تصل إليك أينما كنت",
         description:
-          "المكتبة المتنقلة تصل إلى الأحياء والمدارس بزيارات محمّلة بالكتب والقصص والأنشطة الإبداعية، حتى يلتقي الأطفال بالقراءة في أماكن يشعرون فيها بالألفة والفرح والأمان.",
+          "المكتبة المتنقلة للثقافة والفنون تقدم تجربة ثقافية وفنية متكاملة تتجاوز حدود الجدران، وتصل إلى التجمعات السكنية بالكتب والأنشطة الإبداعية ومصادر المعرفة.",
         primaryAction: "استكشف البرامج",
-        secondaryAction: "تبرع الآن",
+        secondaryAction: "ادعم المشروع",
         image: sharedImages.hero,
-        imageAlt: "أطفال يقرؤون الكتب معًا",
+        imageAlt: "أطفال يشاركون في نشاط ثقافي متنقل",
         floatingCard: {
-          title: "مساحة قراءة تصل إلى الطفل بحب",
+          title: "الثقافة خارج الجدران",
           description:
-            "نذهب إلى حيث يجتمع الأطفال لنحوّل المكان إلى لحظة دافئة من الحكاية والفضول والتواصل مع الكتاب.",
+            "نوصل مصادر المعرفة وورش الإبداع والأنشطة الفنية إلى قلب المجتمع من خلال حافلة ثقافية مرحبة بالجميع.",
         },
       },
       about: {
-        title: "من نحن",
+        title: "عن المشروع",
         description:
-          "المكتبة المتنقلة مبادرة مجتمعية توصل الكتب مباشرة إلى الأطفال في الأحياء والمدارس والمساحات العامة. من خلال جلسات القراءة والسرد القصصي والأنشطة التعليمية الإبداعية نصنع علاقة دافئة مع الكتاب، ونمنح الأطفال تجربة تعلم يشعرون فيها بالقرب والاهتمام والفرح.",
+          "المكتبة المتنقلة للثقافة والفنون مركز ثقافي متنقل يهدف إلى إثراء حياة الأفراد وتعزيز الهوية الثقافية، عبر إيصال المعرفة والإبداع إلى المناطق التي تفتقر إلى المكتبات والمراكز الفنية.",
       },
       missionCards: [
         {
-          title: "رسالتنا",
+          title: "الرسالة",
           description:
-            "تعزيز حب القراءة عبر إيصال الكتب والفرص التعليمية مباشرة إلى الأطفال والأسر في مجتمعاتهم.",
+            "تقديم تجربة ثقافية وفنية متكاملة تتجاوز حدود الجدران، من خلال توفير مصادر المعرفة والأنشطة الإبداعية في قلب التجمعات السكنية.",
         },
         {
-          title: "رؤيتنا",
+          title: "الرؤية",
           description:
-            "مستقبل ينشأ فيه كل طفل محاطًا بالقصص والخيال والثقة التي تدفعه لمواصلة التعلم.",
+            "أن نكون المركز الثقافي المتنقل الأكثر تأثيراً في إثراء حياة الأفراد وتعزيز الهوية الثقافية في كل مكان نصل إليه.",
         },
         {
-          title: "قيمنا",
+          title: "دور المشروع",
           description:
-            "نؤمن بالإتاحة والتعاطف والإبداع والعمل مع المجتمع في كل زيارة وكل نشاط نقدمه.",
+            "نربط بين القراءة والفنون والوعي المجتمعي في نموذج متنقل مرن وإنساني وقريب من الناس.",
         },
       ],
-      howItWorks: {
-        title: "كيف نعمل",
+      coreValues: {
+        title: "القيم الأساسية",
         description:
-          "يعتمد نموذجنا على فهم احتياجات المجتمع والتخطيط الجيد والتنفيذ الميداني لصناعة تجربة قراءة مستدامة.",
+          "المبادئ التي تشكل طريقة تصميم المشروع وتنفيذه واستدامته.",
+        items: ["الشمولية", "الابتكار", "الاستدامة", "التميز"],
+      },
+      howItWorks: {
+        title: "التشغيل والتغطية",
+        description:
+          "يعتمد المشروع على نموذج ميداني يركز على الوصول والاستمرارية وقياس الأثر.",
         steps: [
           {
-            title: "الفكرة",
+            title: "تحديد المناطق الأكثر احتياجاً",
             description:
-              "نستمع إلى المجتمع ونحدد الاحتياجات ثم نصمم تجارب قراءة مناسبة وجاذبة للأطفال.",
+              "نرصد التجمعات التي تحتاج إلى خدمات ثقافية ومعرفية ونحدد أولويات الوصول إليها.",
           },
           {
-            title: "التصميم",
+            title: "زيارات دورية ومنتظمة",
             description:
-              "نختار الكتب والأنشطة والورش بما يلائم الفئة العمرية والمكان والأهداف التعليمية.",
+              "تتحرك الحافلة وفق زيارات أسبوعية أو شهرية، مع المشاركة في الفعاليات والمهرجانات.",
           },
           {
-            title: "التنفيذ",
+            title: "متابعة رقمية للخدمة",
             description:
-              "تزور المكتبة المتنقلة المدارس والأحياء لتقديم الجلسات والكتب والتفاعل المباشر مع الأطفال.",
+              "نستخدم وسائل رقمية لتتبع الاستخدام والتغطية وتحسين جودة الخدمة بمرور الوقت.",
           },
         ],
       },
       programs: {
         title: "البرامج والأنشطة",
         description:
-          "نصمم كل نشاط ليجعل القراءة تجربة قريبة ومحببة وسهلة العودة إليها بعد انتهاء الزيارة.",
+          "يجمع المشروع بين القراءة والفنون والعروض التفاعلية والتجربة العملية في مساحة ثقافية متنقلة واحدة.",
         items: [
           {
-            title: "جلسات القراءة",
+            title: "ورش العمل الفنية",
             description:
-              "جلسات جماعية موجهة تساعد الأطفال على اكتشاف القصص واللغة والخيال بشكل مشترك.",
-            image: sharedImages.reading,
-            alt: "أطفال يشاركون في جلسة قراءة",
-          },
-          {
-            title: "السرد القصصي",
-            description:
-              "أنشطة تفاعلية تحول القصص إلى تجربة حية وممتعة ومليئة بالدهشة والمشاركة.",
-            image: sharedImages.storytelling,
-            alt: "ميسرة تروي قصة للأطفال",
-          },
-          {
-            title: "الورش التعليمية",
-            description:
-              "ورش إبداعية تجمع بين القراءة والفنون والتجربة العملية لتنمية المهارات والخيال.",
+              "ورش في الرسم والخط العربي والأعمال الفنية تفتح المجال للتعبير واكتشاف المواهب الإبداعية.",
             image: sharedImages.workshops,
-            alt: "أطفال يشاركون في ورشة تعليمية",
+            alt: "أطفال يشاركون في ورشة فنية",
           },
           {
-            title: "الزيارات المدرسية",
+            title: "السينما المتنقلة",
             description:
-              "زيارات إلى المدارس والمساحات المجتمعية لتسهيل الوصول إلى الكتب والأنشطة التعليمية.",
-            image: sharedImages.schoolVisits,
-            alt: "أطفال في مدرسة مع كتب وأنشطة تعليمية",
+              "عروض تعليمية ووثائقية تجعل التعلم أكثر جاذبية وتصل بالمحتوى المعرفي إلى المجتمع مباشرة.",
+            image: sharedImages.storytelling,
+            alt: "عرض سينما متنقلة تعليمية",
           },
+          {
+            title: "المسرح الصغير",
+            description:
+              "مسرح تفاعلي ومسرح عرائس يقدمان الحكاية بشكل حي ويشجعان المشاركة والخيال.",
+            image: sharedImages.schoolVisits,
+            alt: "نشاط مسرح صغير تفاعلي للأطفال",
+          },
+          {
+            title: "ركن الأشغال اليدوية",
+            description:
+              "مساحة عملية للحرف التقليدية والحديثة تساعد الناشئة والشباب على تنمية المهارات اليدوية والإبداعية.",
+            image: sharedImages.reading,
+            alt: "أطفال يشاركون في نشاط أشغال يدوية",
+          },
+        ],
+      },
+      libraryServices: {
+        title: "خدمات المكتبة",
+        description:
+          "تجمع الوحدة المتنقلة بين الوصول إلى المكتبة الورقية والرقمية مع أدوات ذكية تسهل الاكتشاف والاستعارة.",
+        items: [
+          "مكتبة ورقية تضم كتبًا في الأدب والعلوم ومحتوى الأطفال",
+          "مكتبة رقمية عبر أجهزة لوحية تحتوي على كتب إلكترونية ومجلات",
+          "نظام إعارة ذكي",
+          "ركن مرجعي للطلاب والباحثين",
         ],
       },
       projects: {
-        title: "مشاريع مميزة",
+        title: "مبادرات تنفيذية",
         description:
-          "توسع هذه المشاريع أثر المكتبة المتنقلة عبر مبادرات متكررة وشراكات محلية وتجارب قرائية تنسجم مع حياة المجتمع اليومية.",
+          "تمثل هذه المبادرات مسارات عملية تترجم رسالة المشروع إلى خدمات ثقافية قابلة للتكرار والتوسع.",
         items: [
           {
-            title: "زوايا القراءة في الأحياء",
+            title: "محطات الوصول الثقافي",
             description:
-              "مساحات قراءة مؤقتة ومريحة تدعو الأطفال والأسر إلى الجلوس واكتشاف الكتب والقراءة معًا.",
+              "زيارات متنقلة منتظمة تحول القراءة والثقافة إلى ممارسة قريبة وممتعة من خلال الوصول المباشر للمجتمع.",
             image: sharedImages.projectOne,
-            alt: "أنشطة تعليمية خارجية مع الأطفال",
+            alt: "أطفال يكتشفون الكتب في محطة ثقافية متنقلة",
             cta: "اعرف المزيد",
           },
           {
-            title: "قافلة القراءة المدرسية",
+            title: "مسارات اكتشاف المواهب",
             description:
-              "برنامج زيارات مدرسية متنقل يجمع بين توفير الكتب وأنشطة تفاعلية يمكن للمعلمين البناء عليها لاحقًا.",
+              "أنشطة ومسارات إبداعية تساعد على اكتشاف وتنمية المهارات الفنية واليدوية لدى الناشئة والشباب.",
             image: sharedImages.projectTwo,
-            alt: "أطفال يقرؤون خلال زيارة مدرسية",
+            alt: "مشاركون في نشاط لتطوير المواهب الفنية",
             cta: "اعرف المزيد",
           },
           {
-            title: "أسبوع التعلم الإبداعي",
+            title: "برامج الوعي المجتمعي",
             description:
-              "أسبوع مليء بالكتب والورش والأنشطة العائلية التي تحتفي بالقراءة كعادة جميلة ومشتركة.",
+              "برامج تثقيفية وتوعوية تسلط الضوء على قضايا المجتمع والتراث المحلي عبر التعلم التفاعلي.",
             image: sharedImages.projectThree,
-            alt: "أطفال سعداء خلال ورشة إبداعية",
+            alt: "نشاط للتوعية المجتمعية والثقافية",
             cta: "اعرف المزيد",
           },
+        ],
+      },
+      strategicGoals: {
+        title: "الأهداف الاستراتيجية",
+        description:
+          "يقود المشروع أربعة أهداف استراتيجية تربط الثقافة بالوصول والتمكين والأثر المجتمعي.",
+        items: [
+          {
+            title: "نشر ثقافة القراءة",
+            description:
+              "تحويل القراءة إلى ممارسة يومية ممتعة وجذابة لجميع الأعمار من خلال الوصول المباشر.",
+          },
+          {
+            title: "دعم المواهب الفنية",
+            description:
+              "توفير منصة لاكتشاف وتنمية المهارات الفنية واليدوية لدى الناشئة والشباب.",
+          },
+          {
+            title: "تعزيز الوعي المجتمعي",
+            description:
+              "تقديم برامج توعوية وتثقيفية حول قضايا المجتمع والتراث المحلي.",
+          },
+          {
+            title: "تقليص الفجوة المعرفية",
+            description:
+              "ضمان وصول الخدمات الثقافية للمناطق التي تفتقر للمكتبات والمراكز الفنية.",
+          },
+        ],
+      },
+      busFeatures: {
+        title: "مواصفات الحافلة المتنقلة",
+        description:
+          "صممت الحافلة لتكون بيئة ثقافية عملية ومريحة وشاملة وسهلة الوصول.",
+        items: [
+          "تصميم ذكي واستغلال أمثل للمساحة",
+          "أرفف قابلة للطي ومقاعد مريحة",
+          "تكنولوجيا حديثة تشمل الإنترنت وإضاءة LED والتكييف",
+          "نظام طاقة شمسية وسهولة وصول لذوي الإعاقة",
+        ],
+      },
+      targetAudience: {
+        title: "الفئات المستهدفة",
+        description:
+          "تخدم المبادرة شرائح متنوعة مع تركيز خاص على المناطق والمجتمعات الأقل وصولاً للخدمات الثقافية.",
+        items: [
+          "الأطفال والناشئة",
+          "الطلاب والباحثون",
+          "كبار السن",
+          "المناطق النائية",
+        ],
+      },
+      operations: {
+        title: "آلية التشغيل والتغطية",
+        description:
+          "يجمع المشروع بين الزيارات الميدانية والمشاركة المجتمعية والمتابعة الرقمية لضمان فعالية الخدمة.",
+        items: [
+          "تحديد المناطق الأكثر احتياجاً",
+          "زيارات دورية أسبوعية أو شهرية",
+          "المشاركة في الفعاليات والمهرجانات",
+          "استخدام وسائل رقمية لتتبع الخدمة",
+        ],
+      },
+      partnerships: {
+        title: "الشراكات",
+        description:
+          "يعتمد توسيع الأثر واستدامة الخدمة على التعاون مع جهات ومساهمين من قطاعات متعددة.",
+        items: [
+          "القطاع الحكومي",
+          "القطاع الخاص",
+          "المؤسسات غير الربحية",
+          "المتطوعون",
         ],
       },
       impact: {
-        title: "أثرنا",
+        title: "مؤشرات الأثر",
         description:
-          "كل زيارة نصنع من خلالها لحظة حقيقية من الإتاحة والتشجيع والانتماء حول التعلم والقراءة.",
+          "يُقاس أثر المشروع من خلال مؤشرات عملية تعكس الوصول الثقافي والقيمة الاجتماعية المتحققة.",
         stats: [
-          { label: "عدد الأطفال المستفيدين", value: "+4500" },
-          { label: "عدد الكتب الموزعة", value: "+12000" },
-          { label: "المجتمعات التي زرناها", value: "38" },
-          { label: "الفعاليات المنفذة", value: "+120" },
+          { label: "عدد المستفيدين", value: "متزايد" },
+          { label: "عدد الفعاليات", value: "مستمر" },
+          { label: "إحصائيات الإعارة", value: "متابعة" },
+          { label: "الأثر الاجتماعي", value: "ملموس" },
         ],
       },
       events: {
-        title: "فعاليات قادمة وحديثة",
+        title: "محطات وفعاليات المشروع",
         description:
-          "يجعل برنامج فعالياتنا القصص جزءًا حيًا من الحياة اليومية عبر لقاءات مفتوحة وزيارات مدرسية وتجارب قراءة في قلب المجتمع.",
+          "تجعل الأنشطة المتنقلة الثقافة حاضرة في الحياة اليومية عبر محطات متكررة ولقاءات مجتمعية متنوعة.",
         items: [
           {
-            title: "قافلة القراءة الربيعية",
-            date: "14 مايو 2026",
+            title: "أمسية السينما المتنقلة",
+            date: "صيغة ميدانية متكررة",
             description:
-              "زيارة مجتمعية ليوم كامل تتضمن حلقات قراءة مفتوحة وكتبًا للإعارة وأنشطة عائلية مرحبة بالجميع.",
+              "عروض تعليمية ووثائقية في مساحة متنقلة تتيح مشاهدة جماعية هادفة وممتعة للمجتمع.",
             image: sharedImages.eventOne,
-            alt: "أطفال يشاركون في فعالية قراءة",
+            alt: "فعالية سينما متنقلة مجتمعية",
           },
           {
-            title: "حكايات تحت الأشجار",
-            date: "02 يونيو 2026",
+            title: "مسرح العرائس التفاعلي",
+            date: "نشاط تفاعلي مجتمعي",
             description:
-              "لقاء خارجي للسرد القصصي يجعل الكتاب أكثر فرحًا وقربًا وحضورًا في ذاكرة الأطفال.",
+              "تجربة مسرحية صغيرة تجمع بين الحكاية والمشاركة واللعب الفني في قالب قريب من الأطفال.",
             image: sharedImages.eventTwo,
-            alt: "فعالية سرد قصصي في الهواء الطلق",
+            alt: "فعالية مسرح عرائس تفاعلي",
           },
           {
-            title: "يوم الورش المجتمعية",
-            date: "19 يونيو 2026",
+            title: "يوم الإبداع والأشغال اليدوية",
+            date: "نشاط تطبيقي ثقافي",
             description:
-              "فعالية إبداعية تجمع بين الأعمال اليدوية واكتشاف الكتب وورشًا تعليمية قصيرة وممتعة.",
+              "محطة عملية للحرف التقليدية والحديثة تشجع التعبير والتركيز وبناء المهارات.",
             image: sharedImages.eventThree,
-            alt: "ورشة مجتمعية إبداعية",
+            alt: "يوم للأشغال اليدوية والأنشطة الإبداعية",
           },
         ],
       },
       donateCta: {
-        title: "ساعدنا في وضع المزيد من الكتب بين أيدي الأطفال",
+        title: "ساعد هذه النافذة الثقافية على الوصول إلى مجتمعات أكثر",
         description:
-          "دعمك يساعدنا على الوصول إلى أحياء جديدة وتوسيع مكتبتنا المتنقلة وصناعة لحظات يشعر فيها الطفل أن التعلم حق قريب منه.",
-        button: "تبرع الآن",
+          "دعمك يساعد المشروع على توسيع خدماته المتنقلة وإثراء موارده واستدامة وصول الثقافة إلى المناطق الأقل خدمة.",
+        button: "ادعم المشروع",
+      },
+      finalMessage: {
+        title: "الرسالة الختامية",
+        description:
+          "المكتبة المتنقلة ليست مجرد وسيلة نقل، بل هي جسر للمعرفة والجمال يصل إلى الجميع.",
       },
     },
     pages: {
       about: {
-        title: "عن المكتبة المتنقلة",
+        title: "عن المكتبة المتنقلة للثقافة والفنون",
         description:
-          "مبادرة إنسانية تجعل القراءة أقرب للأطفال وأكثر حضورًا في المجتمع الذي يعيشون فيه.",
+          "مشروع ثقافي متنقل يجمع بين القراءة والفنون والتوعية والوصول المجتمعي في تجربة واحدة متكاملة.",
       },
       programs: {
         title: "البرامج والأنشطة",
         description:
-          "من السرد القصصي إلى الزيارات المدرسية، نقدم برامج تحول الوصول إلى الكتب إلى تجربة مستمرة وملهمة.",
+          "مزيج من الأنشطة الثقافية والفنية والتعليمية والعملية المصممة لفئات عمرية متنوعة.",
       },
       projects: {
-        title: "المشاريع",
+        title: "المبادرات التنفيذية",
         description:
-          "مبادرات نوعية تعمق أثرنا عبر الشراكات المحلية والحملات الموضوعية والزيارات المتكررة.",
+          "مسارات تنفيذية نوعية تحول رؤية المشروع إلى خدمات ثقافية واجتماعية قابلة للقياس والتوسع.",
       },
       events: {
-        title: "الفعاليات",
+        title: "الفعاليات والمحطات المجتمعية",
         description:
-          "زيارات مجتمعية ولقاءات قرائية وفعاليات تجعل رسالتنا حاضرة في المساحات العامة.",
+          "صيغ وأنشطة متنقلة تجعل السينما والمسرح والأشغال اليدوية والتعلم الثقافي جزءًا من الحياة العامة.",
       },
       donate: {
-        title: "ادعم الرسالة",
+        title: "ادعم المشروع",
         description:
-          "كل مساهمة تساعدنا على الوصول إلى مزيد من الأطفال بالكتب والقصص والفرص التعليمية.",
+          "يساعد الدعم على استدامة الخدمات الثقافية المتنقلة وتوسيع الوصول إلى المجتمعات الأكثر احتياجاً.",
       },
       contact: {
         title: "تواصل معنا",
         description:
-          "يسعدنا التواصل مع المدارس والشركاء والمتطوعين والداعمين الراغبين في توسيع أثر المبادرة.",
+          "نرحب باستفسارات الشركاء والداعمين والمتطوعين والمجتمعات الراغبة في استضافة الخدمة المتنقلة.",
       },
     },
     donation: {
@@ -720,7 +930,10 @@ export const siteContent: Record<Locale, SiteContent> = {
           "يرجى استبدال هذه البيانات التجريبية بالبيانات البنكية الرسمية للمشروع قبل الإطلاق النهائي.",
         fields: [
           { label: "اسم البنك", value: "بنك النور المجتمعي" },
-          { label: "اسم الحساب", value: "مبادرة المكتبة المتنقلة" },
+          {
+            label: "اسم الحساب",
+            value: "المكتبة المتنقلة للثقافة والفنون",
+          },
           { label: "رقم الحساب", value: "00124578963" },
           { label: "الآيبان", value: "JO94NBRB001245789630000000001" },
         ],
@@ -730,7 +943,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       form: {
         title: "أبلغنا بالتحويل",
         description:
-          "هذا النموذج للواجهة فقط ويمكن ربطه لاحقًا بنظامك الخلفي أو بمنصة إدارة المحتوى.",
+          "هذا النموذج للواجهة فقط ويمكن ربطه لاحقًا بنظامك الخلفي المفضل.",
         name: "الاسم",
         email: "البريد الإلكتروني",
         amount: "قيمة التبرع",
@@ -741,21 +954,21 @@ export const siteContent: Record<Locale, SiteContent> = {
       placeholderCard: {
         title: "التبرع الإلكتروني قريبًا",
         description:
-          "يمكن مستقبلاً ربط الصفحة ببوابة دفع أو مزود تبرعات تتم إدارته عبر نظام محتوى.",
+          "يمكن مستقبلاً ربط الصفحة ببوابة دفع إلكتروني عندما يصبح المشروع جاهزًا لذلك.",
       },
       cta: {
-        title: "هل ترغب في رعاية زيارة قرائية كاملة؟",
-        button: "تواصل مع فريقنا",
+        title: "هل ترغب في رعاية زيارة ثقافية كاملة؟",
+        button: "تواصل مع فريق المشروع",
       },
     },
     contact: {
-      title: "لنصنع ثقافة قراءة معًا",
+      title: "تواصل مع المشروع",
       description:
-        "تواصل معنا لتنظيم زيارة مدرسية أو دعم محطة مجتمعية أو الشراكة معنا كجهة داعمة أو فريق تطوعي.",
+        "يسعدنا استقبال استفسارات الشركاء والداعمين والمتطوعين والمجتمعات المهتمة باستضافة الخدمة المتنقلة.",
       details: [
-        { label: "البريد الإلكتروني", value: "hello@mobilelibrary.org" },
-        { label: "الهاتف", value: "+962 7 9000 1234" },
-        { label: "العنوان", value: "عمّان، الأردن" },
+        { label: "البريد الإلكتروني", value: "Mobile.library1@outlook.com" },
+        { label: "الهاتف", value: "+970597010189" },
+        { label: "الموقع الإلكتروني", value: "www.mobilelibrary.ps" },
       ],
       form: {
         name: "الاسم الكامل",
@@ -767,15 +980,15 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       description:
-        "المكتبة المتنقلة توصل الكتب وجلسات القراءة والأنشطة القرائية الإبداعية مباشرة إلى الأطفال في الأحياء والمدارس.",
+        "المكتبة المتنقلة للثقافة والفنون توصل الكتب والأنشطة الفنية والتعلم الثقافي مباشرة إلى المجتمعات.",
       contactLabel: "تواصل",
-      socialLabel: "وسائل التواصل",
-      donateLabel: "ادعم المبادرة",
+      socialLabel: "روابط مباشرة",
+      donateLabel: "ادعم المشروع",
       rights: "جميع الحقوق محفوظة.",
       socialLinks: [
-        { label: "إنستغرام", href: "#" },
-        { label: "فيسبوك", href: "#" },
-        { label: "لينكدإن", href: "#" },
+        { label: "الموقع الإلكتروني", href: "https://www.mobilelibrary.ps" },
+        { label: "البريد الإلكتروني", href: "mailto:Mobile.library1@outlook.com" },
+        { label: "الهاتف", href: "tel:+970597010189" },
       ],
     },
   },

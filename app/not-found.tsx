@@ -17,7 +17,7 @@ export default function NotFound() {
           The page you are looking for is unavailable or the language path is incorrect.
         </p>
         <Link
-          href="/en"
+          href="/"
           className={cn(buttonVariants({ size: "lg" }), "mt-8 inline-flex rounded-full px-6")}
         >
           Return Home

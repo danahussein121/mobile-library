@@ -1,6 +1,8 @@
-import { saveHomePage } from "@/app/admin/actions";
+import { saveHomePageFormAction } from "@/app/admin/actions";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { FieldGroup, NativeFileInput } from "@/components/admin/form-primitives";
+import { FieldGroup } from "@/components/admin/form-primitives";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
@@ -50,26 +52,18 @@ export default async function HomeSettingsAdminPage() {
         eyebrow="Settings"
         title="Homepage content"
         description="Edit the hero, mission cards, impact stats, and section copy that powers the public homepage."
+        context={{
+          text: "This content appears on the homepage hero and supporting sections.",
+          href: "/en",
+        }}
       />
 
-      <form action={saveHomePage} className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              Homepage editor
-            </h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Keep the layout unchanged while updating all homepage copy from the database.
-            </p>
-          </div>
-          <button
-            type="submit"
-            className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-          >
-            Save
-          </button>
-        </div>
-
+      <AdminActionForm
+        action={saveHomePageFormAction}
+        title="Homepage editor"
+        description="Keep the layout unchanged while updating all homepage copy from the database."
+        pendingLabel="Saving..."
+      >
         <div className="grid gap-5">
           <FieldGroup title="Hero">
             <input type="hidden" name="existingHeroImageUrl" defaultValue={home?.heroImageUrl ?? en.hero.image} />
@@ -115,8 +109,11 @@ export default async function HomeSettingsAdminPage() {
                 <Textarea name="floatingCardDescriptionAr" defaultValue={home?.floatingCardDescriptionAr ?? ar.hero.floatingCard.description} className="min-h-24 rounded-2xl bg-white px-4 py-3" dir="rtl" />
               </div>
               <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700">Hero image</label>
-                <NativeFileInput name="heroImage" />
+                <ImageUploadField
+                  name="heroImage"
+                  label="Hero image"
+                  existingUrl={home?.heroImageUrl ?? en.hero.image}
+                />
               </div>
             </div>
           </FieldGroup>
@@ -506,7 +503,7 @@ export default async function HomeSettingsAdminPage() {
             </div>
           </FieldGroup>
         </div>
-      </form>
+      </AdminActionForm>
     </div>
   );
 }

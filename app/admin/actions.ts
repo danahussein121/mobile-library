@@ -10,6 +10,7 @@ import {
   requireAdminUser,
   setAdminSessionCookie,
 } from "@/lib/admin-auth";
+import type { AdminActionState } from "@/components/admin/action-state";
 import { db } from "@/lib/db";
 import { saveUploadedFile } from "@/lib/uploads";
 
@@ -33,6 +34,34 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
+}
+
+function successState(
+  message = "Saved successfully!",
+  liveMessage = "Changes are now live on the public site.",
+): AdminActionState {
+  return {
+    status: "success",
+    message,
+    liveMessage,
+  };
+}
+
+function errorState(message = "Something went wrong. Please try again."): AdminActionState {
+  return {
+    status: "error",
+    message,
+  };
+}
+
+function isRedirectError(error: unknown) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    typeof (error as { digest?: string }).digest === "string" &&
+    (error as { digest: string }).digest.startsWith("NEXT_REDIRECT")
+  );
 }
 
 function revalidatePublicSite() {
@@ -707,26 +736,26 @@ export async function saveContactSettings(formData: FormData) {
   revalidatePath("/admin/settings/contact");
 }
 
-export async function changeAdminPassword(formData: FormData) {
+async function updateAdminPassword(formData: FormData) {
   const user = await requireAdminUser();
   const currentPassword = getValue(formData, "currentPassword");
   const newPassword = getValue(formData, "newPassword");
   const confirmPassword = getValue(formData, "confirmPassword");
 
   if (!(await compare(currentPassword, user.passwordHash))) {
-    redirect("/admin/settings/security?error=current");
+    throw new Error("Current password is incorrect.");
   }
 
   if (newPassword.length < 8) {
-    redirect("/admin/settings/security?error=length");
+    throw new Error("New password must be at least 8 characters.");
   }
 
   if (newPassword !== confirmPassword) {
-    redirect("/admin/settings/security?error=match");
+    throw new Error("New password and confirmation do not match.");
   }
 
   if (await compare(newPassword, user.passwordHash)) {
-    redirect("/admin/settings/security?error=same");
+    throw new Error("New password must be different from the current password.");
   }
 
   await db.adminUser.update({
@@ -737,5 +766,165 @@ export async function changeAdminPassword(formData: FormData) {
   });
 
   revalidatePath("/admin/settings/security");
+}
+
+export async function changeAdminPassword(formData: FormData) {
+  await updateAdminPassword(formData);
   redirect("/admin/settings/security?success=1");
+}
+
+export async function saveProgramFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveProgram(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function deleteProgramFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await deleteProgram(formData);
+    return successState("Deleted successfully!", "The public site has been updated.");
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function saveProjectFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveProject(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function deleteProjectFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await deleteProject(formData);
+    return successState("Deleted successfully!", "The public site has been updated.");
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function saveEventFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveEvent(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function deleteEventFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await deleteEvent(formData);
+    return successState("Deleted successfully!", "The public site has been updated.");
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function saveSiteSettingsFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveSiteSettings(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function saveHomePageFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveHomePage(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function savePageContentFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await savePageContent(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function saveDonationSettingsFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveDonationSettings(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function saveContactSettingsFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await saveContactSettings(formData);
+    return successState();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
+}
+
+export async function changeAdminPasswordFormAction(
+  _previousState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  try {
+    await updateAdminPassword(formData);
+    return successState("Password updated successfully!", "Your new password is active now.");
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return errorState(error instanceof Error ? error.message : undefined);
+  }
 }

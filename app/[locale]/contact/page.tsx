@@ -82,9 +82,10 @@ export default async function ContactPage({ params }: ContactPageProps) {
                             href="https://wa.me/970597010189"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-3 inline-flex text-sm font-semibold text-primary transition-colors hover:text-[#0097A7]"
+                            className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-[#0097A7]"
                           >
-                            WhatsApp
+                            <MessageCircle className="size-4" />
+                            <span>{isArabic ? "واتساب" : "WhatsApp"}</span>
                           </a>
                         ) : null}
                       </CardContent>

@@ -1,8 +1,15 @@
 import Image from "next/image";
+import Link from "next/link";
 
-import { deleteProgram, saveProgram } from "@/app/admin/actions";
+import {
+  deleteProgramFormAction,
+  saveProgramFormAction,
+} from "@/app/admin/actions";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
+import { DeleteConfirmationForm } from "@/components/admin/delete-confirmation-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { FieldGroup, NativeFileInput } from "@/components/admin/form-primitives";
+import { FieldGroup } from "@/components/admin/form-primitives";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { db } from "@/lib/db";
@@ -13,33 +20,25 @@ function ProgramForm({
   program?: Awaited<ReturnType<typeof db.program.findMany>>[number];
 }) {
   return (
-    <form action={saveProgram} className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
+    <AdminActionForm
+      action={saveProgramFormAction}
+      title={program ? "Edit program" : "Add new program"}
+      description="Update bilingual titles, descriptions, ordering, and image."
+      pendingLabel="Saving..."
+    >
       <input type="hidden" name="id" defaultValue={program?.id} />
       <input type="hidden" name="existingImageUrl" defaultValue={program?.imageUrl || ""} />
 
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-            {program ? "Edit program" : "Add new program"}
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Update bilingual titles, descriptions, ordering, and image.
-          </p>
-        </div>
-        <button
-          type="submit"
-          className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-        >
-          Save
-        </button>
-      </div>
-
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_320px]">
         <FieldGroup title="Identity">
           <div className="grid gap-4">
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">Slug</label>
               <Input name="slug" defaultValue={program?.slug} className="h-11 rounded-2xl bg-white px-4" />
+              <p className="mt-2 text-xs leading-6 text-slate-500">
+                A unique ID for this program, e.g. "art-workshops". Use lowercase
+                letters and hyphens only.
+              </p>
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">Display order</label>
@@ -49,20 +48,16 @@ function ProgramForm({
                 defaultValue={program?.order ?? 0}
                 className="h-11 rounded-2xl bg-white px-4"
               />
+              <p className="mt-2 text-xs leading-6 text-slate-500">
+                Controls the order programs appear on the site. Lower number =
+                appears first.
+              </p>
             </div>
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">Image upload</label>
-              <NativeFileInput name="image" />
-            </div>
-            {program?.imageUrl ? (
-              <Image
-                src={program.imageUrl}
-                alt={program.imageAltEn || program.titleEn}
-                width={320}
-                height={180}
-                className="rounded-2xl border border-slate-200 object-cover"
-              />
-            ) : null}
+            <ImageUploadField
+              name="image"
+              label="Image upload"
+              existingUrl={program?.imageUrl}
+            />
           </div>
         </FieldGroup>
 
@@ -99,8 +94,47 @@ function ProgramForm({
             </div>
           </div>
         </FieldGroup>
+
+        <FieldGroup
+          title="Preview"
+          description="This is a simple mockup of how the card appears on the public site."
+          className="h-fit xl:row-span-3"
+        >
+          <div className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm">
+            <div className="relative aspect-[1.35/1] bg-slate-100">
+              {program?.imageUrl ? (
+                <Image
+                  src={program.imageUrl}
+                  alt={program.imageAltEn || program.titleEn}
+                  fill
+                  className="object-cover"
+                />
+              ) : null}
+            </div>
+            <div className="p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/80">
+                Services card
+              </p>
+              <h3 className="mt-3 text-lg font-semibold text-slate-950">
+                {program?.titleEn || "Program title preview"}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                {program?.descriptionEn ||
+                  "Your English description will appear here in the public-facing card layout."}
+              </p>
+              <Link
+                href="/en/services"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex text-sm font-semibold text-primary transition-colors hover:text-[#0097A7]"
+              >
+                View live page
+              </Link>
+            </div>
+          </div>
+        </FieldGroup>
       </div>
-    </form>
+    </AdminActionForm>
   );
 }
 
@@ -113,8 +147,12 @@ export default async function ProgramsAdminPage() {
     <div className="space-y-6 py-2">
       <AdminPageHeader
         eyebrow="Collections"
-        title="Programs"
-        description="Create and manage the program cards used across the homepage and programs page."
+        title="Programs & Services"
+        description="Create and manage the program cards used across the Services page and supporting homepage sections."
+        context={{
+          text: "This content appears on the Services page.",
+          href: "/en/services",
+        }}
       />
 
       <ProgramForm />
@@ -123,15 +161,13 @@ export default async function ProgramsAdminPage() {
         {programs.map((program) => (
           <div key={program.id} className="space-y-3">
             <ProgramForm program={program} />
-            <form action={deleteProgram} className="flex justify-end">
-              <input type="hidden" name="id" value={program.id} />
-              <button
-                type="submit"
-                className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
-              >
-                Delete
-              </button>
-            </form>
+            <div className="flex justify-end">
+              <DeleteConfirmationForm
+                action={deleteProgramFormAction}
+                id={program.id}
+                itemName={program.titleEn || program.slug}
+              />
+            </div>
           </div>
         ))}
       </div>

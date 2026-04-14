@@ -20,26 +20,43 @@ type ResolvedPublicSiteSettings = {
   contactItems: ContactItem[];
 };
 
+function sanitizeText(value: string | null | undefined) {
+  const trimmed = value?.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  if (/^\?+$/.test(trimmed) || trimmed.includes("???")) {
+    return null;
+  }
+
+  return trimmed;
+}
+
 function localize(
   locale: Locale,
   en: string | null | undefined,
   ar: string | null | undefined,
   fallback: string,
 ) {
+  const safeEn = sanitizeText(en);
+  const safeAr = sanitizeText(ar);
+
   if (locale === "ar") {
-    return ar?.trim() || en?.trim() || fallback;
+    return safeAr || safeEn || fallback;
   }
 
-  return en?.trim() || ar?.trim() || fallback;
+  return safeEn || safeAr || fallback;
 }
 
 function resolveUrl(value: string | null | undefined, fallback: string) {
-  const trimmed = value?.trim();
+  const trimmed = sanitizeText(value);
   return trimmed ? trimmed : fallback;
 }
 
 function resolveLogoUrl(value: string | null | undefined) {
-  const trimmed = value?.trim();
+  const trimmed = sanitizeText(value);
   return trimmed || "/images/logo.png";
 }
 

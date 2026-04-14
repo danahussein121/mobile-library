@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { savePageContent } from "@/app/admin/actions";
+import { savePageContentFormAction } from "@/app/admin/actions";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,6 +33,7 @@ export default async function StaticPageAdminPage({
   const fallbackKey = key === "services" ? "programs" : key;
   const fallbackEn = siteContent.en.pages[fallbackKey as keyof typeof siteContent.en.pages];
   const fallbackAr = siteContent.ar.pages[fallbackKey as keyof typeof siteContent.ar.pages];
+  const publicPath = key === "services" ? "/en/services" : `/en/${key}`;
 
   return (
     <div className="space-y-6 py-2">
@@ -39,27 +41,20 @@ export default async function StaticPageAdminPage({
         eyebrow="Settings"
         title={`${key[0].toUpperCase()}${key.slice(1)} page`}
         description="Edit the bilingual page heading and introductory description for this public page."
+        context={{
+          text: `This content appears at ${key === "services" ? "/services" : `/${key}`} on the public site.`,
+          href: publicPath,
+        }}
       />
 
-      <form action={savePageContent} className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
+      <AdminActionForm
+        action={savePageContentFormAction}
+        title="Page hero content"
+        description="These values feed the existing public page hero component."
+        pendingLabel="Saving..."
+        className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]"
+      >
         <input type="hidden" name="key" value={key} />
-
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              Page hero content
-            </h2>
-            <p className="mt-1 text-sm text-slate-600">
-              These values feed the existing public page hero component.
-            </p>
-          </div>
-          <button
-            type="submit"
-            className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-          >
-            Save
-          </button>
-        </div>
 
         <div className="grid gap-5 md:grid-cols-2">
           <div>
@@ -79,7 +74,7 @@ export default async function StaticPageAdminPage({
             <Textarea name="descriptionAr" defaultValue={page?.descriptionAr ?? fallbackAr.description} className="min-h-32 rounded-2xl bg-white px-4 py-3" dir="rtl" />
           </div>
         </div>
-      </form>
+      </AdminActionForm>
     </div>
   );
 }

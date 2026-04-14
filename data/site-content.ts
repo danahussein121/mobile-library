@@ -195,7 +195,9 @@ const sharedImages = {
   reading: "/images/bus-interior-shelves.jpg",
   storytelling: "/images/bus-exterior-open.png",
   workshops: "/images/bus-interior-art-digital.png",
-  schoolVisits: "/images/bus-exterior-open.png",
+  schoolVisits: "/images/bus-interior-shelves.jpg",
+  handicrafts:
+    "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800",
   projectOne: "/images/bus-exterior-branded.jpg",
   projectTwo: "/images/bus-interior-art-digital.png",
   projectThree: "/images/bus-interior-shelves.jpg",
@@ -314,7 +316,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             title: "Handicrafts Corner",
             description:
               "A practical space for traditional and modern crafts that helps young participants build creative and manual skills.",
-            image: sharedImages.reading,
+            image: sharedImages.handicrafts,
             alt: "Children taking part in handicrafts activities",
           },
         ],
@@ -701,7 +703,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             title: "ركن الأشغال اليدوية",
             description:
               "مساحة عملية للحرف التقليدية والحديثة تساعد الناشئة والشباب على تنمية المهارات اليدوية والإبداعية.",
-            image: sharedImages.reading,
+            image: sharedImages.handicrafts,
             alt: "أطفال يشاركون في نشاط أشغال يدوية",
           },
         ],

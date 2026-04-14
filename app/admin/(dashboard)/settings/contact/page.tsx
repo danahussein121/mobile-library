@@ -1,4 +1,5 @@
-import { saveContactSettings } from "@/app/admin/actions";
+import { saveContactSettingsFormAction } from "@/app/admin/actions";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FieldGroup } from "@/components/admin/form-primitives";
 import { Input } from "@/components/ui/input";
@@ -18,28 +19,20 @@ export default async function ContactSettingsAdminPage() {
     <div className="space-y-6 py-2">
       <AdminPageHeader
         eyebrow="Settings"
-        title="Contact information"
+        title="Contact Details"
         description="Manage the public email, phone, website, and contact form labels."
+        context={{
+          text: "This info appears on the Contact page and footer.",
+          href: "/en/contact",
+        }}
       />
 
-      <form action={saveContactSettings} className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              Contact editor
-            </h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Update contact details and form labels for both languages.
-            </p>
-          </div>
-          <button
-            type="submit"
-            className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-          >
-            Save
-          </button>
-        </div>
-
+      <AdminActionForm
+        action={saveContactSettingsFormAction}
+        title="Contact editor"
+        description="Update contact details and form labels for both languages."
+        pendingLabel="Saving..."
+      >
         <div className="grid gap-5">
           <FieldGroup title="Page intro">
             <div className="grid gap-4 md:grid-cols-2">
@@ -106,7 +99,7 @@ export default async function ContactSettingsAdminPage() {
             </div>
           </FieldGroup>
         </div>
-      </form>
+      </AdminActionForm>
     </div>
   );
 }

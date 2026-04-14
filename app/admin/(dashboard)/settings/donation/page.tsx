@@ -1,4 +1,5 @@
-import { saveDonationSettings } from "@/app/admin/actions";
+import { saveDonationSettingsFormAction } from "@/app/admin/actions";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FieldGroup } from "@/components/admin/form-primitives";
 import { Input } from "@/components/ui/input";
@@ -18,28 +19,20 @@ export default async function DonationSettingsAdminPage() {
     <div className="space-y-6 py-2">
       <AdminPageHeader
         eyebrow="Settings"
-        title="Donation settings"
+        title="Bank & Donation Info"
         description="Manage bank transfer details, form labels, and donation page helper copy."
+        context={{
+          text: "These bank details appear on the Donate page.",
+          href: "/en/donate",
+        }}
       />
 
-      <form action={saveDonationSettings} className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              Donation editor
-            </h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Bank transfer details and donor-facing text come from this form.
-            </p>
-          </div>
-          <button
-            type="submit"
-            className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-          >
-            Save
-          </button>
-        </div>
-
+      <AdminActionForm
+        action={saveDonationSettingsFormAction}
+        title="Donation editor"
+        description="Bank transfer details and donor-facing text come from this form."
+        pendingLabel="Saving..."
+      >
         <div className="grid gap-5">
           <FieldGroup title="Page intro">
             <div className="grid gap-4 md:grid-cols-2">
@@ -163,7 +156,7 @@ export default async function DonationSettingsAdminPage() {
             </div>
           </FieldGroup>
         </div>
-      </form>
+      </AdminActionForm>
     </div>
   );
 }

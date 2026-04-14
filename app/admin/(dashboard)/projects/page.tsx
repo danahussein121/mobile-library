@@ -1,8 +1,12 @@
-import Image from "next/image";
-
-import { deleteProject, saveProject } from "@/app/admin/actions";
+import {
+  deleteProjectFormAction,
+  saveProjectFormAction,
+} from "@/app/admin/actions";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
+import { DeleteConfirmationForm } from "@/components/admin/delete-confirmation-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { FieldGroup, NativeFileInput } from "@/components/admin/form-primitives";
+import { FieldGroup } from "@/components/admin/form-primitives";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { db } from "@/lib/db";
@@ -13,26 +17,14 @@ function ProjectForm({
   project?: Awaited<ReturnType<typeof db.project.findMany>>[number];
 }) {
   return (
-    <form action={saveProject} className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
+    <AdminActionForm
+      action={saveProjectFormAction}
+      title={project ? "Edit project" : "Add new project"}
+      description="Manage featured projects without changing the public layout."
+      pendingLabel="Saving..."
+    >
       <input type="hidden" name="id" defaultValue={project?.id} />
       <input type="hidden" name="existingImageUrl" defaultValue={project?.imageUrl || ""} />
-
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-            {project ? "Edit project" : "Add new project"}
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Manage featured projects without changing the public layout.
-          </p>
-        </div>
-        <button
-          type="submit"
-          className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-        >
-          Save
-        </button>
-      </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
         <FieldGroup title="Identity">
@@ -58,19 +50,7 @@ function ProjectForm({
               <label className="mb-2 block text-sm font-medium text-slate-700">Call to action (AR)</label>
               <Input name="ctaLabelAr" required defaultValue={project?.ctaLabelAr} className="h-11 rounded-2xl bg-white px-4" dir="rtl" />
             </div>
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">Image upload</label>
-              <NativeFileInput name="image" />
-            </div>
-            {project?.imageUrl ? (
-              <Image
-                src={project.imageUrl}
-                alt={project.imageAltEn || project.titleEn}
-                width={320}
-                height={180}
-                className="rounded-2xl border border-slate-200 object-cover"
-              />
-            ) : null}
+            <ImageUploadField name="image" label="Image upload" existingUrl={project?.imageUrl} />
           </div>
         </FieldGroup>
 
@@ -108,7 +88,7 @@ function ProjectForm({
           </div>
         </FieldGroup>
       </div>
-    </form>
+    </AdminActionForm>
   );
 }
 
@@ -131,15 +111,13 @@ export default async function ProjectsAdminPage() {
         {projects.map((project) => (
           <div key={project.id} className="space-y-3">
             <ProjectForm project={project} />
-            <form action={deleteProject} className="flex justify-end">
-              <input type="hidden" name="id" value={project.id} />
-              <button
-                type="submit"
-                className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-100"
-              >
-                Delete
-              </button>
-            </form>
+            <div className="flex justify-end">
+              <DeleteConfirmationForm
+                action={deleteProjectFormAction}
+                id={project.id}
+                itemName={project.titleEn || project.slug}
+              />
+            </div>
           </div>
         ))}
       </div>

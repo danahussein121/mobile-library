@@ -23,6 +23,7 @@ function getSocialBadge(label: string) {
 export function Footer({
   locale,
   logoUrl,
+  logoDisplayWidth,
   navItems,
   donateLabel,
   footerCopy,
@@ -30,6 +31,7 @@ export function Footer({
 }: {
   locale: Locale;
   logoUrl?: string;
+  logoDisplayWidth?: number;
   navItems: PublicNavItem[];
   donateLabel: string;
   footerCopy: PublicSiteCopy["footer"];
@@ -42,7 +44,7 @@ export function Footer({
       <Container className="py-16">
         <div className="grid gap-10 md:grid-cols-[1.35fr_1fr_1fr_1fr]">
           <div className="space-y-5">
-            <SiteLogo locale={locale} logoSrc={logoUrl} />
+            <SiteLogo locale={locale} logoSrc={logoUrl} logoDisplayWidth={logoDisplayWidth} />
             <p className="max-w-md text-sm leading-7 text-white/92">
               {footerCopy.tagline}
             </p>

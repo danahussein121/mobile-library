@@ -18,12 +18,16 @@ type MobileNavDrawerProps = {
   locale: Locale;
   navItems: PublicNavItem[];
   donateLabel: string;
+  logoUrl?: string;
+  logoDisplayWidth?: number;
 };
 
 export function MobileNavDrawer({
   locale,
   navItems,
   donateLabel,
+  logoUrl,
+  logoDisplayWidth,
 }: MobileNavDrawerProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -63,7 +67,7 @@ export function MobileNavDrawer({
           >
             <div className="relative flex h-full min-h-0 flex-col p-5 pt-[max(1.25rem,env(safe-area-inset-top))] sm:p-6 sm:pt-[max(1.5rem,env(safe-area-inset-top))]">
               <div className="flex items-center justify-between gap-4">
-                <SiteLogo locale={locale} />
+                <SiteLogo locale={locale} logoSrc={logoUrl} logoDisplayWidth={logoDisplayWidth} />
                 <button
                   type="button"
                   aria-label="Close menu"

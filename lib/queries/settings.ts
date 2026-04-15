@@ -15,6 +15,7 @@ import { getValidatedSocialLinks } from "@/lib/public-site-config";
 
 type ResolvedPublicSiteSettings = {
   logoUrl: string;
+  logoDisplayWidth: number;
   nav: PublicNavItem[];
   donateLabel: string;
   footer: PublicSiteCopy["footer"];
@@ -59,6 +60,14 @@ function resolveUrl(value: string | null | undefined, fallback: string) {
 function resolveLogoUrl(value: string | null | undefined) {
   const trimmed = sanitizeText(value);
   return trimmed || "/images/logo.png";
+}
+
+function resolveLogoDisplayWidth(value: number | null | undefined) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return 230;
+  }
+
+  return Math.min(360, Math.max(120, Math.round(value)));
 }
 
 function buildSocialLinks(
@@ -125,6 +134,7 @@ async function loadPublicSiteSettings(locale: Locale): Promise<ResolvedPublicSit
   if (!process.env.DATABASE_URL) {
     return {
       logoUrl: "/images/logo.png",
+      logoDisplayWidth: 230,
       nav: fallback.nav,
       donateLabel: fallback.donateLabel,
       footer: fallback.footer,
@@ -200,6 +210,7 @@ async function loadPublicSiteSettings(locale: Locale): Promise<ResolvedPublicSit
 
     return {
       logoUrl: resolveLogoUrl(siteSettings?.logoUrl),
+      logoDisplayWidth: resolveLogoDisplayWidth(siteSettings?.logoDisplayWidth),
       nav,
       donateLabel: siteSettings
         ? localize(locale, siteSettings.navDonateEn, siteSettings.navDonateAr, fallback.donateLabel)
@@ -239,6 +250,7 @@ async function loadPublicSiteSettings(locale: Locale): Promise<ResolvedPublicSit
 
     return {
       logoUrl: "/images/logo.png",
+      logoDisplayWidth: 230,
       nav: fallback.nav,
       donateLabel: fallback.donateLabel,
       footer: fallback.footer,

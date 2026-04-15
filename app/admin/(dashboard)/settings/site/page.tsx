@@ -70,6 +70,26 @@ export default async function SiteSettingsAdminPage({
                   existingUrl={settings?.logoUrl ?? "/images/logo.png"}
                 />
               </div>
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-slate-700">
+                  {adminText(lang, "Logo display width (px)", "عرض الشعار في الموقع (بالبكسل)")}
+                </label>
+                <Input
+                  name="logoDisplayWidth"
+                  type="number"
+                  min={120}
+                  max={360}
+                  defaultValue={settings?.logoDisplayWidth ?? 230}
+                  className="h-11 rounded-2xl bg-white px-4"
+                />
+                <p className="mt-2 text-sm text-slate-500">
+                  {adminText(
+                    lang,
+                    "Controls how large the logo appears in the public header, mobile menu, and footer. Recommended: 180 to 280.",
+                    "يتحكم هذا الحقل في حجم الشعار داخل الهيدر العام والقائمة المحمولة والتذييل. المقاس المقترح بين 180 و280.",
+                  )}
+                </p>
+              </div>
             </div>
           </FieldGroup>
 

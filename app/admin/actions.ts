@@ -59,6 +59,10 @@ function getNonNegativeNumber(formData: FormData, key: string) {
   return Math.max(0, getNumber(formData, key, 0));
 }
 
+function getClampedLogoWidth(formData: FormData, key: string, fallback = 230) {
+  return Math.min(360, Math.max(120, getNumber(formData, key, fallback)));
+}
+
 async function ensureUniqueSlugForModel(
   model: "program" | "project" | "event",
   slug: string,
@@ -329,6 +333,7 @@ export async function saveSiteSettings(formData: FormData) {
     projectNameEn: getValue(formData, "projectNameEn"),
     projectNameAr: getValue(formData, "projectNameAr"),
     logoUrl,
+    logoDisplayWidth: getClampedLogoWidth(formData, "logoDisplayWidth"),
     navHomeEn: getValue(formData, "navHomeEn"),
     navHomeAr: getValue(formData, "navHomeAr"),
     navAboutEn: getValue(formData, "navAboutEn"),

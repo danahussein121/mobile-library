@@ -33,6 +33,7 @@ async function main() {
       id: "site-settings",
       projectNameEn: en.siteName,
       projectNameAr: ar.siteName,
+      logoDisplayWidth: 230,
       navHomeEn: en.nav[0].label,
       navHomeAr: ar.nav[0].label,
       navAboutEn: en.nav[1].label,

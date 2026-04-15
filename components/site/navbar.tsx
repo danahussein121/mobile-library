@@ -17,16 +17,17 @@ type NavbarProps = {
   navItems: PublicNavItem[];
   donateLabel: string;
   logoUrl?: string;
+  logoDisplayWidth?: number;
 };
 
-export function Navbar({ locale, navItems, donateLabel, logoUrl }: NavbarProps) {
+export function Navbar({ locale, navItems, donateLabel, logoUrl, logoDisplayWidth }: NavbarProps) {
   const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur">
       <Container className="flex min-h-[78px] items-center justify-between gap-6">
         <Link href={`/${locale}`} className="shrink-0">
-          <SiteLogo locale={locale} logoSrc={logoUrl} />
+          <SiteLogo locale={locale} logoSrc={logoUrl} logoDisplayWidth={logoDisplayWidth} />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
@@ -65,7 +66,13 @@ export function Navbar({ locale, navItems, donateLabel, logoUrl }: NavbarProps) 
           >
             {donateLabel}
           </Link>
-          <MobileNavDrawer locale={locale} navItems={navItems} donateLabel={donateLabel} />
+          <MobileNavDrawer
+            locale={locale}
+            navItems={navItems}
+            donateLabel={donateLabel}
+            logoUrl={logoUrl}
+            logoDisplayWidth={logoDisplayWidth}
+          />
         </div>
       </Container >
     </header>

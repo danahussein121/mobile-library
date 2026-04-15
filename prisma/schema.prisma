@@ -21,6 +21,7 @@ model SiteSettings {
   projectNameEn     String
   projectNameAr     String
   logoUrl           String?
+  logoDisplayWidth  Int      @default(230)
   navHomeEn         String
   navHomeAr         String
   navAboutEn        String

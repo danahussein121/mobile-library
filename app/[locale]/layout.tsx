@@ -46,11 +46,13 @@ export default async function LocaleLayout({
         navItems={publicSettings.nav}
         donateLabel={publicSettings.donateLabel}
         logoUrl={publicSettings.logoUrl}
+        logoDisplayWidth={publicSettings.logoDisplayWidth}
       />
       <main>{children}</main>
       <Footer
         locale={locale}
         logoUrl={publicSettings.logoUrl}
+        logoDisplayWidth={publicSettings.logoDisplayWidth}
         navItems={publicSettings.nav}
         donateLabel={publicSettings.donateLabel}
         footerCopy={publicSettings.footer}

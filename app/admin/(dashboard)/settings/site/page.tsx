@@ -2,10 +2,11 @@ import { saveSiteSettingsFormAction } from "@/app/admin/actions";
 import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FieldGroup } from "@/components/admin/form-primitives";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
-import { resolveAdminLanguage } from "@/lib/admin-language";
+import { adminText, resolveAdminLanguage } from "@/lib/admin-language";
 import { db } from "@/lib/db";
 
 export default async function SiteSettingsAdminPage({
@@ -51,6 +52,7 @@ export default async function SiteSettingsAdminPage({
       >
         <div className="grid gap-5">
           <FieldGroup title="Project name">
+            <input type="hidden" name="existingLogoUrl" defaultValue={settings?.logoUrl ?? ""} />
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-700">English</label>
@@ -59,6 +61,14 @@ export default async function SiteSettingsAdminPage({
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-700">Arabic</label>
                 <Input name="projectNameAr" defaultValue={settings?.projectNameAr ?? fallbackAr.siteName} className="h-11 rounded-2xl bg-white px-4" dir="rtl" />
+              </div>
+              <div className="md:col-span-2">
+                <ImageUploadField
+                  name="logo"
+                  lang={lang}
+                  label={adminText(lang, "Project logo", "شعار المشروع")}
+                  existingUrl={settings?.logoUrl ?? "/images/logo.png"}
+                />
               </div>
             </div>
           </FieldGroup>

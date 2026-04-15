@@ -19,6 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
 import { getPublicPageIntro } from "@/lib/queries/content";
+import { getPublicSiteSettings } from "@/lib/queries/settings";
 
 const storyImage = "/images/bus-exterior-open.png";
 const busBannerImage = "/images/bus-interior-shelves.jpg";
@@ -37,7 +38,10 @@ export default async function AboutPage({ params }: AboutPageProps) {
     notFound();
   }
 
-  const content = await getManagedSiteContent(locale);
+  const [content, publicSettings] = await Promise.all([
+    getManagedSiteContent(locale),
+    getPublicSiteSettings(locale),
+  ]);
   const isArabic = locale === "ar";
   const aboutIntro = await getPublicPageIntro(
     locale,
@@ -96,8 +100,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
   return (
     <>
       <PageHero
-        eyebrow={isArabic ? "عن المشروع" : "About"}
-        title={isArabic ? "عن المكتبة المتنقلة" : "About the Mobile Library"}
+        eyebrow={publicSettings.nav[1]?.label ?? (isArabic ? "عن المشروع" : "About")}
+        title={aboutIntro.title}
         description={aboutIntro.description}
       />
 
@@ -109,10 +113,10 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 {isArabic ? "قصتنا" : "Our Story"}
               </p>
               <h2 className="text-[32px] font-bold text-[#1A1A2E]">
-                {aboutIntro.title}
+                {content.home.about.title}
               </h2>
               <p className="text-base leading-8 text-[#666666]">
-                {aboutIntro.description}
+                {content.home.about.description}
               </p>
               <p className="text-base leading-8 text-[#666666]">
                 {isArabic

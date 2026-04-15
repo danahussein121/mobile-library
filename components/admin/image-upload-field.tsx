@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ImagePlus, UploadCloud, X } from "lucide-react";
 
+import { adminText, type AdminLanguage } from "@/lib/admin-language";
 import { cn } from "@/lib/utils";
 
 export function ImageUploadField({
@@ -11,29 +12,31 @@ export function ImageUploadField({
   label,
   helperText = "Accepted formats: JPG, PNG (max 2MB)",
   existingUrl,
+  lang = "en",
 }: {
   name: string;
   label: string;
   helperText?: string;
   existingUrl?: string | null;
+  lang?: AdminLanguage;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
-  const [previewUrl, setPreviewUrl] = useState(existingUrl ?? "");
+
+  const previewUrl = useMemo(
+    () => (file ? URL.createObjectURL(file) : existingUrl ?? ""),
+    [existingUrl, file],
+  );
 
   useEffect(() => {
     if (!file) {
-      setPreviewUrl(existingUrl ?? "");
       return;
     }
 
-    const objectUrl = URL.createObjectURL(file);
-    setPreviewUrl(objectUrl);
-
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [existingUrl, file]);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [file, previewUrl]);
 
   function applyFile(nextFile: File | null) {
     if (!nextFile) {
@@ -44,12 +47,14 @@ export function ImageUploadField({
 
     const isValidType = ["image/jpeg", "image/png"].includes(nextFile.type);
     if (!isValidType) {
-      setError("Please upload a JPG or PNG image.");
+      setError(
+        adminText(lang, "Please upload a JPG or PNG image.", "يرجى رفع صورة من نوع JPG أو PNG."),
+      );
       return;
     }
 
     if (nextFile.size > 2 * 1024 * 1024) {
-      setError("Image must be 2MB or smaller.");
+      setError(adminText(lang, "Image must be 2MB or smaller.", "يجب أن يكون حجم الصورة 2MB أو أقل."));
       return;
     }
 
@@ -106,14 +111,20 @@ export function ImageUploadField({
             ) : (
               <div className="text-slate-500">
                 <ImagePlus className="mx-auto size-6" />
-                <p className="mt-2 text-sm">No image selected yet</p>
+                <p className="mt-2 text-sm">
+                  {adminText(lang, "No image selected yet", "لم يتم اختيار صورة بعد")}
+                </p>
               </div>
             )}
           </div>
 
           <div className="flex-1">
             <p className="text-sm font-medium text-slate-900">
-              Drag and drop an image here, or browse your device.
+              {adminText(
+                lang,
+                "Drag and drop an image here, or choose it from your device.",
+                "اسحب الصورة إلى هنا أو اخترها من جهازك.",
+              )}
             </p>
             <p className="mt-1 text-xs leading-6 text-slate-500">{helperText}</p>
             <div className="mt-4 flex flex-wrap gap-3">
@@ -123,7 +134,7 @@ export function ImageUploadField({
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0097A7]"
               >
                 <UploadCloud className="size-4" />
-                Choose image
+                {adminText(lang, "Choose image", "اختيار صورة")}
               </button>
               {file || existingUrl ? (
                 <button
@@ -138,7 +149,7 @@ export function ImageUploadField({
                   className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
                 >
                   <X className="size-4" />
-                  Clear preview
+                  {adminText(lang, "Clear preview", "مسح المعاينة")}
                 </button>
               ) : null}
             </div>

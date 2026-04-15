@@ -5,9 +5,16 @@ import { FieldGroup } from "@/components/admin/form-primitives";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
+import { resolveAdminLanguage } from "@/lib/admin-language";
 import { db } from "@/lib/db";
 
-export default async function DonationSettingsAdminPage() {
+export default async function DonationSettingsAdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const params = await searchParams;
+  const lang = resolveAdminLanguage(params.lang);
   const settings = await db.donationSettings.findUnique({
     where: { id: "donation-settings" },
   });
@@ -18,19 +25,28 @@ export default async function DonationSettingsAdminPage() {
   return (
     <div className="space-y-6 py-2">
       <AdminPageHeader
+        lang={lang}
         eyebrow="Settings"
+        eyebrowAr="الإعدادات"
         title="Bank & Donation Info"
-        description="Manage bank transfer details, form labels, and donation page helper copy."
+        titleAr="معلومات التبرع والتحويل البنكي"
+        description="Manage bank transfer details, form labels, and donation page helper text."
+        descriptionAr="إدارة بيانات التحويل البنكي وعناوين النموذج والنصوص المساعدة في صفحة التبرع."
         context={{
           text: "These bank details appear on the Donate page.",
+          textAr: "تظهر هذه البيانات البنكية في صفحة التبرع.",
           href: "/en/donate",
+          linkLabelAr: "عرض الصفحة",
         }}
       />
 
       <AdminActionForm
         action={saveDonationSettingsFormAction}
+        lang={lang}
         title="Donation editor"
+        titleAr="محرر التبرع"
         description="Bank transfer details and donor-facing text come from this form."
+        descriptionAr="يتم تحديث بيانات التحويل البنكي والنصوص الظاهرة للمتبرع من هذا النموذج."
         pendingLabel="Saving..."
       >
         <div className="grid gap-5">

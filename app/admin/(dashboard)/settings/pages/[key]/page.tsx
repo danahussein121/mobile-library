@@ -6,16 +6,21 @@ import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
+import { resolveAdminLanguage } from "@/lib/admin-language";
 import { db } from "@/lib/db";
 
 const allowedKeys = ["about", "donate", "contact", "services", "programs", "projects", "events"] as const;
 
 export default async function StaticPageAdminPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ key: string }>;
+  searchParams: Promise<{ lang?: string }>;
 }) {
   const { key } = await params;
+  const search = await searchParams;
+  const lang = resolveAdminLanguage(search.lang);
 
   if (!allowedKeys.includes(key as (typeof allowedKeys)[number])) {
     notFound();
@@ -34,23 +39,46 @@ export default async function StaticPageAdminPage({
   const fallbackEn = siteContent.en.pages[fallbackKey as keyof typeof siteContent.en.pages];
   const fallbackAr = siteContent.ar.pages[fallbackKey as keyof typeof siteContent.ar.pages];
   const publicPath = key === "services" ? "/en/services" : `/en/${key}`;
+  const pageTitleAr =
+    key === "about"
+      ? "صفحة من نحن"
+      : key === "donate"
+        ? "صفحة التبرع"
+        : key === "contact"
+          ? "صفحة التواصل"
+          : key === "services"
+            ? "صفحة الخدمات"
+            : key === "programs"
+              ? "صفحة البرامج"
+              : key === "projects"
+                ? "صفحة المشاريع"
+                : "صفحة الفعاليات";
 
   return (
     <div className="space-y-6 py-2">
       <AdminPageHeader
+        lang={lang}
         eyebrow="Settings"
+        eyebrowAr="الإعدادات"
         title={`${key[0].toUpperCase()}${key.slice(1)} page`}
+        titleAr={pageTitleAr}
         description="Edit the bilingual page heading and introductory description for this public page."
+        descriptionAr="عدّل عنوان الصفحة ووصفها الافتتاحي باللغتين لهذه الصفحة العامة."
         context={{
           text: `This content appears at ${key === "services" ? "/services" : `/${key}`} on the public site.`,
+          textAr: `يظهر هذا المحتوى في ${key === "services" ? "/services" : `/${key}`} على الموقع العام.`,
           href: publicPath,
+          linkLabelAr: "عرض الصفحة",
         }}
       />
 
       <AdminActionForm
         action={savePageContentFormAction}
+        lang={lang}
         title="Page hero content"
+        titleAr="محتوى مقدمة الصفحة"
         description="These values feed the existing public page hero component."
+        descriptionAr="تغذي هذه القيم مكوّن مقدمة الصفحة الحالي في الموقع العام."
         pendingLabel="Saving..."
         className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]"
       >

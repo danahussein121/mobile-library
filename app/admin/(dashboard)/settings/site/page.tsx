@@ -5,9 +5,16 @@ import { FieldGroup } from "@/components/admin/form-primitives";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
+import { resolveAdminLanguage } from "@/lib/admin-language";
 import { db } from "@/lib/db";
 
-export default async function SiteSettingsAdminPage() {
+export default async function SiteSettingsAdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const params = await searchParams;
+  const lang = resolveAdminLanguage(params.lang);
   const settings = await db.siteSettings.findUnique({
     where: { id: "site-settings" },
   });
@@ -18,19 +25,28 @@ export default async function SiteSettingsAdminPage() {
   return (
     <div className="space-y-6 py-2">
       <AdminPageHeader
+        lang={lang}
         eyebrow="Settings"
+        eyebrowAr="الإعدادات"
         title="Branding & Logo"
-        description="Manage global labels used by the navbar, footer, and social links."
+        titleAr="الهوية العامة والشعار"
+        description="Manage global labels used by the navigation, footer, and social links."
+        descriptionAr="إدارة النصوص العامة المستخدمة في التنقل والتذييل وروابط التواصل."
         context={{
           text: "These settings appear in the navbar, footer, and shared site branding.",
+          textAr: "تظهر هذه الإعدادات في شريط التنقل والتذييل وهوية الموقع العامة.",
           href: "/en",
+          linkLabelAr: "عرض الصفحة",
         }}
       />
 
       <AdminActionForm
         action={saveSiteSettingsFormAction}
+        lang={lang}
         title="Global content"
+        titleAr="المحتوى العام"
         description="Update site-wide labels without touching the public design."
+        descriptionAr="حدّث النصوص العامة في الموقع دون المساس بالتصميم العام."
         pendingLabel="Saving..."
       >
         <div className="grid gap-5">

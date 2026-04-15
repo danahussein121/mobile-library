@@ -8,6 +8,7 @@ import {
   initialAdminActionState,
   type AdminActionState,
 } from "@/components/admin/action-state";
+import { adminText, type AdminLanguage } from "@/lib/admin-language";
 import { cn } from "@/lib/utils";
 
 type AdminFormAction = (
@@ -16,9 +17,11 @@ type AdminFormAction = (
 ) => Promise<AdminActionState>;
 
 function SubmitButton({
+  lang,
   label,
   pendingLabel,
 }: {
+  lang: AdminLanguage;
   label: string;
   pendingLabel?: string;
 }) {
@@ -31,29 +34,36 @@ function SubmitButton({
       className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
     >
       {pending ? <Loader2 className="size-4 animate-spin" /> : null}
-      {pending ? pendingLabel ?? "Saving..." : label}
+      {pending ? pendingLabel ?? adminText(lang, "Saving...", "جارٍ الحفظ...") : label}
     </button>
   );
 }
 
 export function AdminActionForm({
   action,
+  lang = "en",
   title,
+  titleAr,
   description,
-  submitLabel = "Save",
+  descriptionAr,
+  submitLabel,
   pendingLabel,
   children,
   className,
 }: {
   action: AdminFormAction;
+  lang?: AdminLanguage;
   title: string;
+  titleAr?: string;
   description: string;
+  descriptionAr?: string;
   submitLabel?: string;
   pendingLabel?: string;
   children: React.ReactNode;
   className?: string;
 }) {
   const [state, formAction] = useActionState(action, initialAdminActionState);
+  const resolvedSubmitLabel = submitLabel ?? adminText(lang, "Save changes", "حفظ التعديلات");
 
   return (
     <form
@@ -66,11 +76,13 @@ export function AdminActionForm({
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-            {title}
+            {adminText(lang, title, titleAr ?? title)}
           </h2>
-          <p className="mt-1 text-sm leading-7 text-slate-600">{description}</p>
+          <p className="mt-1 text-sm leading-7 text-slate-600">
+            {adminText(lang, description, descriptionAr ?? description)}
+          </p>
         </div>
-        <SubmitButton label={submitLabel} pendingLabel={pendingLabel} />
+        <SubmitButton lang={lang} label={resolvedSubmitLabel} pendingLabel={pendingLabel} />
       </div>
 
       {state.status !== "idle" ? (
@@ -81,6 +93,7 @@ export function AdminActionForm({
               ? "border-emerald-200 bg-emerald-50 text-emerald-800"
               : "border-red-200 bg-red-50 text-red-700",
           )}
+          role="status"
         >
           <div className="flex items-start gap-3">
             {state.status === "success" ? (
@@ -101,6 +114,16 @@ export function AdminActionForm({
       ) : null}
 
       {children}
+
+      <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+        <p className="text-sm text-slate-600">
+          {adminText(
+            lang,
+            "Save when you are ready. Your existing routes and data structure stay unchanged.",
+            "احفظ عند الانتهاء. ستبقى الروابط وبنية البيانات الحالية كما هي.",
+          )}
+        </p>
+      </div>
     </form>
   );
 }

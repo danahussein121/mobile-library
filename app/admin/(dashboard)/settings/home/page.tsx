@@ -6,6 +6,7 @@ import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
+import { resolveAdminLanguage } from "@/lib/admin-language";
 import { db } from "@/lib/db";
 
 function joinList(items: string[]) {
@@ -16,7 +17,13 @@ function joinGoals(items: Array<{ title: string; description: string }>) {
   return items.map((item) => `${item.title}::${item.description}`).join("\n");
 }
 
-export default async function HomeSettingsAdminPage() {
+export default async function HomeSettingsAdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const params = await searchParams;
+  const lang = resolveAdminLanguage(params.lang);
   const home = await db.homePage.findUnique({
     where: { id: "home-page" },
   });
@@ -49,19 +56,28 @@ export default async function HomeSettingsAdminPage() {
   return (
     <div className="space-y-6 py-2">
       <AdminPageHeader
+        lang={lang}
         eyebrow="Settings"
+        eyebrowAr="الإعدادات"
         title="Homepage content"
-        description="Edit the hero, mission cards, impact stats, and section copy that powers the public homepage."
+        titleAr="محتوى الصفحة الرئيسية"
+        description="Edit the hero, mission cards, impact stats, and section text used on the homepage."
+        descriptionAr="تعديل الهيرو وبطاقات الرسالة وإحصاءات الأثر ونصوص أقسام الصفحة الرئيسية."
         context={{
           text: "This content appears on the homepage hero and supporting sections.",
+          textAr: "يظهر هذا المحتوى في هيرو الصفحة الرئيسية والأقسام التابعة لها.",
           href: "/en",
+          linkLabelAr: "عرض الصفحة",
         }}
       />
 
       <AdminActionForm
         action={saveHomePageFormAction}
+        lang={lang}
         title="Homepage editor"
-        description="Keep the layout unchanged while updating all homepage copy from the database."
+        titleAr="محرر الصفحة الرئيسية"
+        description="Keep the layout unchanged while updating homepage text from the database."
+        descriptionAr="حافظ على التخطيط الحالي مع تحديث نصوص الصفحة الرئيسية من قاعدة البيانات."
         pendingLabel="Saving..."
       >
         <div className="grid gap-5">
@@ -111,7 +127,8 @@ export default async function HomeSettingsAdminPage() {
               <div className="md:col-span-2">
                 <ImageUploadField
                   name="heroImage"
-                  label="Hero image"
+                  lang={lang}
+                  label={lang === "ar" ? "صورة الهيرو" : "Hero image"}
                   existingUrl={home?.heroImageUrl ?? en.hero.image}
                 />
               </div>

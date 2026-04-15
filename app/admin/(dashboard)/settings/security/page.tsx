@@ -2,28 +2,43 @@ import { changeAdminPasswordFormAction } from "@/app/admin/actions";
 import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { Input } from "@/components/ui/input";
+import { adminText, resolveAdminLanguage } from "@/lib/admin-language";
 
-export default async function SecuritySettingsPage() {
+export default async function SecuritySettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const params = await searchParams;
+  const lang = resolveAdminLanguage(params.lang);
+
   return (
     <div className="space-y-6 py-2">
       <AdminPageHeader
+        lang={lang}
         eyebrow="Settings"
+        eyebrowAr="الإعدادات"
         title="Security"
+        titleAr="الأمان"
         description="Change the password for the currently signed-in admin account."
+        descriptionAr="تغيير كلمة المرور الخاصة بحساب الإدارة الحالي."
       />
 
       <AdminActionForm
         action={changeAdminPasswordFormAction}
+        lang={lang}
         title="Change password"
+        titleAr="تغيير كلمة المرور"
         description="Confirm your current password before setting a new one."
-        submitLabel="Update"
+        descriptionAr="أكّد كلمة المرور الحالية قبل تعيين كلمة مرور جديدة."
+        submitLabel={adminText(lang, "Update password", "تحديث كلمة المرور")}
         pendingLabel="Updating..."
         className="max-w-2xl"
       >
         <div className="space-y-4">
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700">
-              Current password
+              {adminText(lang, "Current password", "كلمة المرور الحالية")}
             </label>
             <Input
               type="password"
@@ -34,7 +49,7 @@ export default async function SecuritySettingsPage() {
           </div>
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700">
-              New password
+              {adminText(lang, "New password", "كلمة المرور الجديدة")}
             </label>
             <Input
               type="password"
@@ -46,7 +61,7 @@ export default async function SecuritySettingsPage() {
           </div>
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700">
-              Confirm new password
+              {adminText(lang, "Confirm new password", "تأكيد كلمة المرور الجديدة")}
             </label>
             <Input
               type="password"

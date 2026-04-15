@@ -5,9 +5,16 @@ import { FieldGroup } from "@/components/admin/form-primitives";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { siteContent } from "@/data/site-content";
+import { resolveAdminLanguage } from "@/lib/admin-language";
 import { db } from "@/lib/db";
 
-export default async function ContactSettingsAdminPage() {
+export default async function ContactSettingsAdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const params = await searchParams;
+  const lang = resolveAdminLanguage(params.lang);
   const settings = await db.contactSettings.findUnique({
     where: { id: "contact-settings" },
   });
@@ -18,19 +25,28 @@ export default async function ContactSettingsAdminPage() {
   return (
     <div className="space-y-6 py-2">
       <AdminPageHeader
+        lang={lang}
         eyebrow="Settings"
+        eyebrowAr="الإعدادات"
         title="Contact Details"
+        titleAr="بيانات التواصل"
         description="Manage the public email, phone, website, and contact form labels."
+        descriptionAr="إدارة البريد الإلكتروني العام والهاتف والموقع وعناوين نموذج التواصل."
         context={{
           text: "This info appears on the Contact page and footer.",
+          textAr: "تظهر هذه المعلومات في صفحة التواصل وفي التذييل.",
           href: "/en/contact",
+          linkLabelAr: "عرض الصفحة",
         }}
       />
 
       <AdminActionForm
         action={saveContactSettingsFormAction}
+        lang={lang}
         title="Contact editor"
+        titleAr="محرر التواصل"
         description="Update contact details and form labels for both languages."
+        descriptionAr="حدّث بيانات التواصل وعناوين النموذج باللغتين."
         pendingLabel="Saving..."
       >
         <div className="grid gap-5">

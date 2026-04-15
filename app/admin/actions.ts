@@ -12,6 +12,7 @@ import {
 } from "@/lib/admin-auth";
 import type { AdminActionState } from "@/components/admin/action-state";
 import { db } from "@/lib/db";
+import { resolveAdminLanguage, withAdminLanguage } from "@/lib/admin-language";
 import { saveUploadedFile } from "@/lib/uploads";
 
 function getValue(formData: FormData, key: string) {
@@ -37,8 +38,8 @@ function slugify(value: string) {
 }
 
 function successState(
-  message = "Saved successfully!",
-  liveMessage = "Changes are now live on the public site.",
+  message = "Changes saved successfully.",
+  liveMessage = "The website has been updated.",
 ): AdminActionState {
   return {
     status: "success",
@@ -93,13 +94,14 @@ export async function loginAdmin(formData: FormData) {
   const email = getValue(formData, "email");
   const password = getValue(formData, "password");
   const next = getValue(formData, "next") || "/admin";
+  const language = resolveAdminLanguage(getValue(formData, "lang"));
 
   const user = await db.adminUser.findUnique({
     where: { email },
   });
 
   if (!user || !(await compare(password, user.passwordHash))) {
-    redirect("/admin/login?error=invalid");
+    redirect(withAdminLanguage("/admin/login?error=invalid", language));
   }
 
   const token = await createAdminSession({
@@ -792,7 +794,7 @@ export async function deleteProgramFormAction(
 ): Promise<AdminActionState> {
   try {
     await deleteProgram(formData);
-    return successState("Deleted successfully!", "The public site has been updated.");
+    return successState("Item deleted successfully.", "The website has been updated.");
   } catch (error) {
     if (isRedirectError(error)) throw error;
     return errorState(error instanceof Error ? error.message : undefined);
@@ -818,7 +820,7 @@ export async function deleteProjectFormAction(
 ): Promise<AdminActionState> {
   try {
     await deleteProject(formData);
-    return successState("Deleted successfully!", "The public site has been updated.");
+    return successState("Item deleted successfully.", "The website has been updated.");
   } catch (error) {
     if (isRedirectError(error)) throw error;
     return errorState(error instanceof Error ? error.message : undefined);
@@ -844,7 +846,7 @@ export async function deleteEventFormAction(
 ): Promise<AdminActionState> {
   try {
     await deleteEvent(formData);
-    return successState("Deleted successfully!", "The public site has been updated.");
+    return successState("Item deleted successfully.", "The website has been updated.");
   } catch (error) {
     if (isRedirectError(error)) throw error;
     return errorState(error instanceof Error ? error.message : undefined);
@@ -922,7 +924,7 @@ export async function changeAdminPasswordFormAction(
 ): Promise<AdminActionState> {
   try {
     await updateAdminPassword(formData);
-    return successState("Password updated successfully!", "Your new password is active now.");
+    return successState("Password updated successfully.", "Your new password is now active.");
   } catch (error) {
     if (isRedirectError(error)) throw error;
     return errorState(error instanceof Error ? error.message : undefined);

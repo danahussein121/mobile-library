@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { loginAdmin } from "@/app/admin/actions";
+import { AdminBrand } from "@/components/admin/admin-brand";
 import { AdminLanguageToggle } from "@/components/admin/admin-language-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,16 +40,14 @@ export default async function AdminLoginPage({
   const defaultNext = params.next || withAdminLanguage("/admin", language);
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f7fbfb_0%,#eef7f7_45%,#ffffff_100%)] px-6 py-10">
+    <main className="min-h-screen bg-[linear-gradient(180deg,#f4fbfc_0%,#eef8f8_45%,#ffffff_100%)] px-6 py-10">
       <div className="mx-auto flex max-w-6xl justify-end">
         <AdminLanguageToggle language={language} />
       </div>
 
       <div className="mx-auto mt-8 grid max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-        <section className="rounded-[2.25rem] border border-white/80 bg-white/85 p-8 shadow-[0_35px_90px_-55px_rgba(15,23,42,0.35)] sm:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/75">
-            {adminText(language, "Admin Area", "منطقة الإدارة")}
-          </p>
+        <section className="rounded-[2.25rem] border border-white/80 bg-white/88 p-8 shadow-[0_35px_90px_-55px_rgba(15,23,42,0.35)] sm:p-10">
+          <AdminBrand language={language} />
           <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl">
             {loginTitle}
           </h1>
@@ -83,7 +82,7 @@ export default async function AdminLoginPage({
                 ),
               },
             ].map((item) => (
-              <div key={item.title} className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5">
+              <div key={item.title} className="rounded-[1.5rem] border border-slate-200 bg-[linear-gradient(180deg,rgba(0,180,198,0.06),rgba(248,250,252,0.9))] p-5">
                 <h2 className="text-base font-semibold text-slate-950">{item.title}</h2>
                 <p className="mt-2 text-sm leading-7 text-slate-600">{item.description}</p>
               </div>
@@ -147,7 +146,7 @@ export default async function AdminLoginPage({
                 className="h-12 rounded-2xl bg-white px-4"
               />
             </div>
-            <Button type="submit" className="mt-2 h-12 w-full rounded-full px-6">
+            <Button type="submit" className="mt-2 h-12 w-full rounded-full bg-primary px-6 hover:bg-[#0097A7]">
               {adminText(language, "Open admin panel", "فتح لوحة الإدارة")}
             </Button>
           </form>

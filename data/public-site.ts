@@ -46,12 +46,7 @@ export type PublicSiteCopy = {
   };
 };
 
-const sharedSocialLinks: FooterLink[] = [
-  { label: "Instagram", href: "#" },
-  { label: "Facebook", href: "#" },
-  { label: "Twitter", href: "#" },
-  { label: "LinkedIn", href: "#" },
-];
+const sharedSocialLinks: FooterLink[] = [];
 
 export const publicSiteCopy: Record<Locale, PublicSiteCopy> = {
   en: {
@@ -96,7 +91,7 @@ export const publicSiteCopy: Record<Locale, PublicSiteCopy> = {
     legal: {
       privacyTitle: "Privacy Policy",
       termsTitle: "Terms of Service",
-      description: "This is a placeholder page and will be replaced with the final policy content before launch.",
+      description: "Official legal information will be published here. For current policy questions, please contact the project team directly.",
       action: "Back to Home",
     },
   },
@@ -142,7 +137,7 @@ export const publicSiteCopy: Record<Locale, PublicSiteCopy> = {
     legal: {
       privacyTitle: "سياسة الخصوصية",
       termsTitle: "شروط الخدمة",
-      description: "هذه صفحة مؤقتة وسيتم استبدالها بالمحتوى القانوني النهائي قبل الإطلاق.",
+      description: "سيتم نشر المعلومات القانونية الرسمية هنا. ولأي استفسارات حالية حول السياسات، يرجى التواصل مباشرة مع فريق المشروع.",
       action: "العودة إلى الرئيسية",
     },
   },

@@ -16,6 +16,7 @@ import {
   PanelTop,
 } from "lucide-react";
 
+import { AdminBrand } from "@/components/admin/admin-brand";
 import { AdminLanguageToggle } from "@/components/admin/admin-language-toggle";
 import { adminDirection, type AdminLanguage } from "@/lib/admin-language";
 import { cn } from "@/lib/utils";
@@ -211,20 +212,20 @@ export function AdminShell({
   return (
     <div
       dir={adminDirection(language)}
-      className="min-h-screen bg-[linear-gradient(180deg,#f7fbfb_0%,#eff7f7_52%,#ffffff_100%)]"
+      className="min-h-screen bg-[linear-gradient(180deg,#f4fbfc_0%,#eef8f8_42%,#ffffff_100%)]"
     >
       <div className="mx-auto grid min-h-screen max-w-7xl gap-6 px-4 py-6 xl:grid-cols-[300px_1fr] xl:px-6">
-        <aside className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.35)] xl:sticky xl:top-6 xl:h-[calc(100vh-3rem)] xl:overflow-y-auto">
+        <aside className="rounded-[2rem] border border-white/80 bg-white/92 p-6 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.35)] xl:sticky xl:top-6 xl:h-[calc(100vh-3rem)] xl:overflow-y-auto">
           <div className="mb-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/75">
-              {language === "ar" ? "الإدارة" : "Admin"}
-            </p>
-            <h1 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              Mobile Library
-            </h1>
-            <p className="mt-2 text-sm leading-7 text-slate-600" dir="ltr">
+            <AdminBrand language={language} compact />
+            <div className="mt-5 rounded-[1.4rem] bg-[linear-gradient(180deg,rgba(0,180,198,0.08),rgba(0,180,198,0.03))] px-4 py-4">
+              <p className="text-sm font-semibold text-slate-950">
+                {language === "ar" ? "أنت مسجّل كمدير للمحتوى" : "You are signed in as a content manager"}
+              </p>
+              <p className="mt-1 text-sm leading-7 text-slate-600" dir="ltr">
               {userEmail}
-            </p>
+              </p>
+            </div>
             <AdminLanguageToggle language={language} className="mt-5" />
           </div>
 
@@ -249,7 +250,7 @@ export function AdminShell({
                         className={cn(
                           "block rounded-[1.4rem] border px-4 py-3 transition-all",
                           active
-                            ? "border-primary/20 bg-primary/10 text-slate-950 shadow-sm"
+                            ? "border-primary/20 bg-[linear-gradient(180deg,rgba(0,180,198,0.12),rgba(0,180,198,0.07))] text-slate-950 shadow-sm"
                             : "border-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-950",
                         )}
                       >
@@ -279,21 +280,21 @@ export function AdminShell({
             ))}
           </div>
 
-          <div className="mt-10 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
+          <div className="mt-10 rounded-[1.5rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(0,180,198,0.08),rgba(255,255,255,0.8))] p-4">
             <p className="text-sm font-semibold text-slate-950">
-              {language === "ar" ? "ملاحظة" : "Helpful note"}
+              {language === "ar" ? "قبل النشر" : "Before you publish"}
             </p>
             <p className="mt-2 text-sm leading-7 text-slate-600">
               {language === "ar"
-                ? "يمكنك تعديل النص الإنجليزي والعربي من نفس الصفحة، مع بقاء تصميم الموقع العام كما هو."
-                : "You can manage both English and Arabic content from the same page while keeping the public website design unchanged."}
+                ? "راجِع الإنجليزية والعربية معًا ثم استخدم رابط المعاينة داخل كل صفحة للتأكد من ظهور التحديثات كما تتوقع."
+                : "Review English and Arabic together, then use the preview link on each page to confirm the update looks right on the live website."}
             </p>
           </div>
 
           <form action={logoutAction} className="mt-6">
             <button
               type="submit"
-              className="w-full rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
+              className="w-full rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0097A7]"
             >
               {language === "ar" ? "تسجيل الخروج" : "Log Out"}
             </button>

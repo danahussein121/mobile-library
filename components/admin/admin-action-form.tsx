@@ -31,7 +31,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+      className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0097A7] disabled:cursor-not-allowed disabled:opacity-70"
     >
       {pending ? <Loader2 className="size-4 animate-spin" /> : null}
       {pending ? pendingLabel ?? adminText(lang, "Saving...", "جارٍ الحفظ...") : label}
@@ -69,7 +69,7 @@ export function AdminActionForm({
     <form
       action={formAction}
       className={cn(
-        "rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]",
+        "rounded-[2rem] border border-white/80 bg-white/92 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]",
         className,
       )}
     >
@@ -115,12 +115,12 @@ export function AdminActionForm({
 
       {children}
 
-      <div className="mt-6 rounded-[1.5rem] border border-slate-200 bg-slate-50 px-4 py-4">
+      <div className="mt-6 rounded-[1.5rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(0,180,198,0.08),rgba(248,250,252,0.92))] px-4 py-4">
         <p className="text-sm text-slate-600">
           {adminText(
             lang,
-            "Save when you are ready. Your existing routes and data structure stay unchanged.",
-            "احفظ عند الانتهاء. ستبقى الروابط وبنية البيانات الحالية كما هي.",
+            "Save when you are ready. Your public layout stays unchanged while this content updates safely behind the scenes.",
+            "احفظ عند الانتهاء. سيبقى تصميم الموقع العام كما هو بينما يتم تحديث هذا المحتوى بأمان في الخلفية.",
           )}
         </p>
       </div>

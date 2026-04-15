@@ -7,8 +7,18 @@ import type { ContactItem, PublicSiteCopy, PublicNavItem } from "@/data/public-s
 import type { Locale } from "@/lib/i18n";
 import { isExternalHref } from "@/lib/contact-links";
 
-const socialBadges = ["IG", "FB", "X", "IN"];
 const contactIcons = [Mail, Phone, Globe, MapPin];
+
+function getSocialBadge(label: string) {
+  const normalized = label.toLowerCase();
+
+  if (normalized.includes("instagram")) return "IG";
+  if (normalized.includes("facebook")) return "FB";
+  if (normalized === "x" || normalized.includes("twitter")) return "X";
+  if (normalized.includes("linkedin")) return "IN";
+
+  return label.slice(0, 2).toUpperCase();
+}
 
 export function Footer({
   locale,
@@ -36,22 +46,31 @@ export function Footer({
             <p className="max-w-md text-sm leading-7 text-white/92">
               {footerCopy.tagline}
             </p>
-            <div className="flex flex-wrap gap-3">
-              {footerCopy.socialLinks.map((item, index) => {
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={item.label}
-                    className="inline-flex size-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
-                  >
-                    <span className="text-xs font-bold tracking-[0.12em]">{socialBadges[index]}</span>
-                  </a>
-                );
-              })}
-            </div>
+            {footerCopy.socialLinks.length > 0 ? (
+              <div>
+                <p className="text-sm font-semibold text-white/88">
+                  {footerCopy.socialLabel}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-3">
+                  {footerCopy.socialLinks.map((item) => {
+                    return (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={item.label}
+                        className="inline-flex size-10 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
+                      >
+                        <span className="text-xs font-bold tracking-[0.12em]">
+                          {getSocialBadge(item.label)}
+                        </span>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="space-y-4">

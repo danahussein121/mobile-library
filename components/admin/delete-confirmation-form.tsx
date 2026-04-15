@@ -51,6 +51,7 @@ export function DeleteConfirmationForm({
             dir={lang === "ar" ? "rtl" : "ltr"}
             className="w-full max-w-md rounded-[1.75rem] border border-white/60 bg-white p-6 shadow-[0_30px_80px_-35px_rgba(15,23,42,0.45)]"
           >
+            <div className="mb-5 h-1.5 w-20 rounded-full bg-[linear-gradient(90deg,#ef4444,#fca5a5)]" />
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-start gap-3">
                 <div className="flex size-11 items-center justify-center rounded-full bg-red-100 text-red-700">

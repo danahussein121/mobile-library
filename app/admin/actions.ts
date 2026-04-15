@@ -37,6 +37,56 @@ function slugify(value: string) {
     .slice(0, 80);
 }
 
+function getSafeAdminPath(value: string, language = resolveAdminLanguage(null)) {
+  const trimmed = value.trim();
+
+  if (!trimmed.startsWith("/admin")) {
+    return withAdminLanguage("/admin", language);
+  }
+
+  return trimmed;
+}
+
+function ensureRequired(value: string, label: string) {
+  if (!value.trim()) {
+    throw new Error(`${label} is required.`);
+  }
+
+  return value.trim();
+}
+
+function getNonNegativeNumber(formData: FormData, key: string) {
+  return Math.max(0, getNumber(formData, key, 0));
+}
+
+async function ensureUniqueSlugForModel(
+  model: "program" | "project" | "event",
+  slug: string,
+  id?: string,
+) {
+  const where = id ? { slug, NOT: { id } } : { slug };
+  const existing =
+    model === "program"
+      ? await db.program.findFirst({ where })
+      : model === "project"
+        ? await db.project.findFirst({ where })
+        : await db.event.findFirst({ where });
+
+  if (existing) {
+    throw new Error("This internal link name is already in use. Please choose a different one.");
+  }
+}
+
+function getValidEventDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    throw new Error("Please choose a valid event date.");
+  }
+
+  return date;
+}
+
 function successState(
   message = "Changes saved successfully.",
   liveMessage = "The website has been updated.",
@@ -93,8 +143,8 @@ function revalidatePublicSite() {
 export async function loginAdmin(formData: FormData) {
   const email = getValue(formData, "email");
   const password = getValue(formData, "password");
-  const next = getValue(formData, "next") || "/admin";
   const language = resolveAdminLanguage(getValue(formData, "lang"));
+  const next = getSafeAdminPath(getValue(formData, "next") || "/admin", language);
 
   const user = await db.adminUser.findUnique({
     where: { email },
@@ -125,18 +175,26 @@ export async function saveProgram(formData: FormData) {
   const image = formData.get("image") as File | null;
   const existingImageUrl = getValue(formData, "existingImageUrl") || null;
   const imageUrl = await saveUploadedFile(image, existingImageUrl);
-  const titleEn = getValue(formData, "titleEn");
+  const titleEn = ensureRequired(getValue(formData, "titleEn"), "English title");
+  const titleAr = ensureRequired(getValue(formData, "titleAr"), "Arabic title");
+  const descriptionEn = ensureRequired(getValue(formData, "descriptionEn"), "English description");
+  const descriptionAr = ensureRequired(getValue(formData, "descriptionAr"), "Arabic description");
+  const imageAltEn = ensureRequired(getValue(formData, "imageAltEn"), "English image alt text");
+  const imageAltAr = ensureRequired(getValue(formData, "imageAltAr"), "Arabic image alt text");
+  const slug = slugify(getValue(formData, "slug") || titleEn);
+
+  await ensureUniqueSlugForModel("program", slug, id || undefined);
 
   const payload = {
-    slug: slugify(getValue(formData, "slug") || titleEn),
-    order: getNumber(formData, "order"),
+    slug,
+    order: getNonNegativeNumber(formData, "order"),
     titleEn,
-    titleAr: getValue(formData, "titleAr"),
-    descriptionEn: getValue(formData, "descriptionEn"),
-    descriptionAr: getValue(formData, "descriptionAr"),
+    titleAr,
+    descriptionEn,
+    descriptionAr,
     imageUrl,
-    imageAltEn: getValue(formData, "imageAltEn"),
-    imageAltAr: getValue(formData, "imageAltAr"),
+    imageAltEn,
+    imageAltAr,
   };
 
   if (id) {
@@ -165,20 +223,30 @@ export async function saveProject(formData: FormData) {
   const image = formData.get("image") as File | null;
   const existingImageUrl = getValue(formData, "existingImageUrl") || null;
   const imageUrl = await saveUploadedFile(image, existingImageUrl);
-  const titleEn = getValue(formData, "titleEn");
+  const titleEn = ensureRequired(getValue(formData, "titleEn"), "English title");
+  const titleAr = ensureRequired(getValue(formData, "titleAr"), "Arabic title");
+  const descriptionEn = ensureRequired(getValue(formData, "descriptionEn"), "English description");
+  const descriptionAr = ensureRequired(getValue(formData, "descriptionAr"), "Arabic description");
+  const imageAltEn = ensureRequired(getValue(formData, "imageAltEn"), "English image alt text");
+  const imageAltAr = ensureRequired(getValue(formData, "imageAltAr"), "Arabic image alt text");
+  const ctaLabelEn = ensureRequired(getValue(formData, "ctaLabelEn"), "English button label");
+  const ctaLabelAr = ensureRequired(getValue(formData, "ctaLabelAr"), "Arabic button label");
+  const slug = slugify(getValue(formData, "slug") || titleEn);
+
+  await ensureUniqueSlugForModel("project", slug, id || undefined);
 
   const payload = {
-    slug: slugify(getValue(formData, "slug") || titleEn),
-    order: getNumber(formData, "order"),
+    slug,
+    order: getNonNegativeNumber(formData, "order"),
     titleEn,
-    titleAr: getValue(formData, "titleAr"),
-    descriptionEn: getValue(formData, "descriptionEn"),
-    descriptionAr: getValue(formData, "descriptionAr"),
-    ctaLabelEn: getValue(formData, "ctaLabelEn"),
-    ctaLabelAr: getValue(formData, "ctaLabelAr"),
+    titleAr,
+    descriptionEn,
+    descriptionAr,
+    ctaLabelEn,
+    ctaLabelAr,
     imageUrl,
-    imageAltEn: getValue(formData, "imageAltEn"),
-    imageAltAr: getValue(formData, "imageAltAr"),
+    imageAltEn,
+    imageAltAr,
   };
 
   if (id) {
@@ -207,19 +275,27 @@ export async function saveEvent(formData: FormData) {
   const image = formData.get("image") as File | null;
   const existingImageUrl = getValue(formData, "existingImageUrl") || null;
   const imageUrl = await saveUploadedFile(image, existingImageUrl);
-  const titleEn = getValue(formData, "titleEn");
+  const titleEn = ensureRequired(getValue(formData, "titleEn"), "English title");
+  const titleAr = ensureRequired(getValue(formData, "titleAr"), "Arabic title");
+  const descriptionEn = ensureRequired(getValue(formData, "descriptionEn"), "English description");
+  const descriptionAr = ensureRequired(getValue(formData, "descriptionAr"), "Arabic description");
+  const imageAltEn = ensureRequired(getValue(formData, "imageAltEn"), "English image alt text");
+  const imageAltAr = ensureRequired(getValue(formData, "imageAltAr"), "Arabic image alt text");
+  const slug = slugify(getValue(formData, "slug") || titleEn);
+
+  await ensureUniqueSlugForModel("event", slug, id || undefined);
 
   const payload = {
-    slug: slugify(getValue(formData, "slug") || titleEn),
-    order: getNumber(formData, "order"),
-    eventDate: new Date(getValue(formData, "eventDate")),
+    slug,
+    order: getNonNegativeNumber(formData, "order"),
+    eventDate: getValidEventDate(getValue(formData, "eventDate")),
     titleEn,
-    titleAr: getValue(formData, "titleAr"),
-    descriptionEn: getValue(formData, "descriptionEn"),
-    descriptionAr: getValue(formData, "descriptionAr"),
+    titleAr,
+    descriptionEn,
+    descriptionAr,
     imageUrl,
-    imageAltEn: getValue(formData, "imageAltEn"),
-    imageAltAr: getValue(formData, "imageAltAr"),
+    imageAltEn,
+    imageAltAr,
   };
 
   if (id) {

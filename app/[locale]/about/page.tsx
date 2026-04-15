@@ -14,6 +14,7 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/site/container";
 import { FadeIn } from "@/components/site/fade-in";
+import { PageHero } from "@/components/site/page-hero";
 import { Card, CardContent } from "@/components/ui/card";
 import { getManagedSiteContent } from "@/data/site-content.server";
 import { isLocale } from "@/lib/i18n";
@@ -94,21 +95,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
   return (
     <>
-      <section className="bg-primary py-20 text-white">
-        <Container>
-          <FadeIn>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/80">
-              {isArabic ? "عن المشروع" : "About"}
-            </p>
-            <h1 className="mt-4 text-[42px] font-bold leading-[1.08] text-white sm:text-[48px]">
-              {isArabic ? "عن المكتبة المتنقلة" : "About the Mobile Library"}
-            </h1>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-white/90">
-              {aboutIntro.description}
-            </p>
-          </FadeIn>
-        </Container>
-      </section>
+      <PageHero
+        eyebrow={isArabic ? "عن المشروع" : "About"}
+        title={isArabic ? "عن المكتبة المتنقلة" : "About the Mobile Library"}
+        description={aboutIntro.description}
+      />
 
       <section className="py-20">
         <Container className="space-y-20">

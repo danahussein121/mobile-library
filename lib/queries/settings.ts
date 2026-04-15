@@ -11,6 +11,7 @@ import {
 import { getContactHref } from "@/lib/contact-links";
 import { db } from "@/lib/db";
 import type { Locale } from "@/lib/i18n";
+import { getValidatedSocialLinks } from "@/lib/public-site-config";
 
 type ResolvedPublicSiteSettings = {
   logoUrl: string;
@@ -77,11 +78,13 @@ function buildSocialLinks(
       }
     | null,
 ) {
+  const envOrFallback = getValidatedSocialLinks(fallbackLinks);
+
   if (!siteSettings) {
-    return fallbackLinks;
+    return envOrFallback;
   }
 
-  return [
+  const dbLinks = [
     {
       label: localize(
         locale,
@@ -109,8 +112,11 @@ function buildSocialLinks(
       ),
       href: resolveUrl(siteSettings.socialThreeUrl, fallbackLinks[2]?.href ?? "#"),
     },
-    ...(fallbackLinks[3] ? [fallbackLinks[3]] : []),
   ];
+
+  const validatedDbLinks = getValidatedSocialLinks(dbLinks);
+
+  return validatedDbLinks.length > 0 ? validatedDbLinks : envOrFallback;
 }
 
 async function loadPublicSiteSettings(locale: Locale): Promise<ResolvedPublicSiteSettings> {

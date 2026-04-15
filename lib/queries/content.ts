@@ -17,6 +17,7 @@ export type PublicHomeContent = {
     title: string;
     description: string;
     cta: string;
+    secondaryCta: string;
     image: string;
     imageAlt: string;
   };
@@ -120,6 +121,12 @@ async function loadPublicHomeContent(
           homePage.heroPrimaryActionEn,
           homePage.heroPrimaryActionAr,
           fallback.hero.cta,
+        ),
+        secondaryCta: localize(
+          locale,
+          homePage.heroSecondaryActionEn,
+          homePage.heroSecondaryActionAr,
+          fallback.hero.secondaryCta,
         ),
         image: homePage.heroImageUrl || fallback.hero.image,
         imageAlt: localize(locale, homePage.heroImageAltEn, homePage.heroImageAltAr, fallback.hero.imageAlt),

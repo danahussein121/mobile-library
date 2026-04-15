@@ -66,10 +66,10 @@ function EventsPreviewSkeleton() {
 
 async function HomeEventsPreview({
   locale,
-  learnMoreLabel,
+  scheduleLabel,
 }: {
   locale: Locale;
-  learnMoreLabel: string;
+  scheduleLabel: string;
 }) {
   const events = (await getPublicEvents(locale)).slice(0, 2);
 
@@ -106,7 +106,7 @@ async function HomeEventsPreview({
                 href={`/${locale}/events`}
                 className="mt-5 inline-flex text-sm font-semibold text-primary transition-colors hover:text-[#0097A7]"
               >
-                {learnMoreLabel}
+                {scheduleLabel}
               </Link>
             </CardContent>
           </Card>
@@ -124,14 +124,15 @@ export async function HomePage({ locale }: { locale: Locale }) {
         title: "نوصل فرحة القراءة لكل طفل",
         description: "مكتبة متنقلة تنقل المعرفة والإبداع إلى قلب مجتمعك",
         cta: "ادعم مهمتنا",
+        secondaryCta: "استكشف الخدمات",
         missionEyebrow: "مهمتنا",
         missionTitle: "نؤمن أن كل طفل يستحق الوصول إلى الكتب",
         missionDescription:
           "تجسر مكتبتنا المتنقلة الفجوة أمام المجتمعات الأقل حظًا، من خلال توفير مصادر تعليمية وجلسات حكاية ومساحة آمنة تزدهر فيها المخيلة.",
         eventsTitle: "الفعاليات القادمة",
-        eventsDescription: "انضم إلينا في محطتنا القادمة",
+        eventsDescription: "اطلع على المحطات المعلنة حاليًا وتواصل معنا لتأكيد المشاركة أو الاستضافة.",
         viewAll: "عرض جميع الفعاليات",
-        learnMore: "اعرف المزيد",
+        scheduleLabel: "عرض الجدول",
         donateTitle: "ساعدنا على إبقاء العجلات تدور",
         donateDescription:
           "يدعم تبرعك تشغيل الحافلة وشراء كتب جديدة وتمويل برامج تعليمية للأطفال الأكثر احتياجًا.",
@@ -156,14 +157,15 @@ export async function HomePage({ locale }: { locale: Locale }) {
         title: "Bringing the Joy of Reading to Every Child",
         description: "A mobile library on wheels, spreading the joy of reading across communities",
         cta: "Support Our Mission",
+        secondaryCta: "Explore Programs",
         missionEyebrow: "Our Mission",
         missionTitle: "We believe every child deserves access to books",
         missionDescription:
           "Our mobile library bridges the gap for underserved communities, providing educational resources, storytelling sessions, and a safe space for imagination to flourish.",
         eventsTitle: "Upcoming Events",
-        eventsDescription: "Join us at our next stop!",
+        eventsDescription: "See the currently announced stops and contact us to confirm attendance or hosting details.",
         viewAll: "View all events",
-        learnMore: "Learn more",
+        scheduleLabel: "View schedule",
         donateTitle: "Help Us Keep the Wheels Turning",
         donateDescription:
           "Your donation fuels our bus, buys new books, and supports educational programs for children who need them most.",
@@ -192,6 +194,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
       title: fallbackCopy.title,
       description: fallbackCopy.description,
       cta: fallbackCopy.cta,
+      secondaryCta: fallbackCopy.secondaryCta,
       image: heroImage,
       imageAlt: isArabic
         ? "حافلة المكتبة المتنقلة المخصصة والمفتوحة من الجانب"
@@ -215,6 +218,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
     title: homeContent.hero.title,
     description: homeContent.hero.description,
     cta: homeContent.hero.cta,
+    secondaryCta: homeContent.hero.secondaryCta,
     missionEyebrow: homeContent.mission.eyebrow,
     missionTitle: homeContent.mission.title,
     missionDescription: homeContent.mission.description,
@@ -244,9 +248,20 @@ export async function HomePage({ locale }: { locale: Locale }) {
               <p className="max-w-xl text-base leading-8 text-[#666666]">
                 {copy.description}
               </p>
-              <Link href={`/${locale}/donate`} className={buttonVariants({ size: "lg" })}>
-                {copy.cta}
-              </Link>
+              <div className="flex flex-wrap gap-3">
+                <Link href={`/${locale}/services`} className={buttonVariants({ size: "lg" })}>
+                  {copy.secondaryCta}
+                </Link>
+                <Link
+                  href={`/${locale}/donate`}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "lg" }),
+                    "border-primary/20 bg-white text-primary hover:bg-secondary",
+                  )}
+                >
+                  {copy.cta}
+                </Link>
+              </div>
             </FadeIn>
 
             <FadeIn delay={0.08}>
@@ -325,7 +340,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
           </FadeIn>
 
           <Suspense fallback={<EventsPreviewSkeleton />}>
-            <HomeEventsPreview locale={locale} learnMoreLabel={copy.learnMore} />
+            <HomeEventsPreview locale={locale} scheduleLabel={copy.scheduleLabel} />
           </Suspense>
         </Container>
       </section>

@@ -532,15 +532,12 @@ export const siteContent: Record<Locale, SiteContent> = {
       bankTransfer: {
         title: "Bank Transfer Details",
         helper:
-          "Please replace these sample details with the official project banking information before launch.",
+          "Official donation methods can be configured securely before launch.",
         fields: [
-          { label: "Bank Name", value: "Al Noor Community Bank" },
-          {
-            label: "Account Name",
-            value: "Mobile Library for Culture and Arts",
-          },
-          { label: "Account Number", value: "00124578963" },
-          { label: "IBAN", value: "JO94NBRB001245789630000000001" },
+          { label: "Bank Name", value: "" },
+          { label: "Account Name", value: "" },
+          { label: "Account Number", value: "" },
+          { label: "IBAN", value: "" },
         ],
         referenceNote:
           "Please include 'MobileLibraryDonation' as reference",
@@ -548,7 +545,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       form: {
         title: "Notify Us About Your Transfer",
         description:
-          "This form is for interface purposes only and can later connect to your preferred backend workflow.",
+          "Use this form after completing an official transfer so the project team can confirm receipt and follow up if needed.",
         name: "Name",
         email: "Email",
         amount: "Amount",
@@ -557,9 +554,9 @@ export const siteContent: Record<Locale, SiteContent> = {
         submit: "Submit Donation Note",
       },
       placeholderCard: {
-        title: "Online donations are coming soon",
+        title: "Online donations are not live yet",
         description:
-          "A future version can integrate an online payment gateway when the project is ready.",
+          "When a secure online donation option is officially available, it will be announced here.",
       },
       cta: {
         title: "Want to sponsor a full cultural visit?",
@@ -919,15 +916,12 @@ export const siteContent: Record<Locale, SiteContent> = {
       bankTransfer: {
         title: "بيانات التحويل البنكي",
         helper:
-          "يرجى استبدال هذه البيانات التجريبية بالبيانات البنكية الرسمية للمشروع قبل الإطلاق النهائي.",
+          "يمكن إعداد وسائل التبرع الرسمية بشكل آمن قبل الإطلاق النهائي.",
         fields: [
-          { label: "اسم البنك", value: "بنك النور المجتمعي" },
-          {
-            label: "اسم الحساب",
-            value: "المكتبة المتنقلة للثقافة والفنون",
-          },
-          { label: "رقم الحساب", value: "00124578963" },
-          { label: "الآيبان", value: "JO94NBRB001245789630000000001" },
+          { label: "اسم البنك", value: "" },
+          { label: "اسم الحساب", value: "" },
+          { label: "رقم الحساب", value: "" },
+          { label: "الآيبان", value: "" },
         ],
         referenceNote:
           "يرجى إضافة 'MobileLibraryDonation' كمرجع للتحويل",
@@ -946,7 +940,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       placeholderCard: {
         title: "التبرع الإلكتروني قريبًا",
         description:
-          "يمكن مستقبلاً ربط الصفحة ببوابة دفع إلكتروني عندما يصبح المشروع جاهزًا لذلك.",
+          "عند توفر وسيلة تبرع إلكترونية آمنة بشكل رسمي، سيتم الإعلان عنها هنا.",
       },
       cta: {
         title: "هل ترغب في رعاية زيارة ثقافية كاملة؟",

@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/site/container";
 import { FadeIn } from "@/components/site/fade-in";
+import { PageHero } from "@/components/site/page-hero";
 import { Card, CardContent } from "@/components/ui/card";
 import { isLocale } from "@/lib/i18n";
 import { getPublicEvents } from "@/lib/queries/events";
@@ -122,7 +123,7 @@ async function EventsGrid({ locale }: { locale: "en" | "ar" }) {
                 href={`/${locale}/contact`}
                 className="mt-5 inline-flex text-sm font-semibold text-primary transition-colors hover:text-[#0097A7]"
               >
-                {isArabic ? "اعرف المزيد" : "Learn more"}
+                {isArabic ? "اطلب تفاصيل المشاركة" : "Request attendance details"}
               </Link>
             </CardContent>
           </Card>
@@ -143,26 +144,25 @@ export default async function EventsPage({ params }: EventsPageProps) {
 
   return (
     <>
-      <section className="bg-primary py-20 text-white">
-        <Container>
-          <FadeIn>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/80">
-              {isArabic ? "الفعاليات" : "Events"}
-            </p>
-            <h1 className="mt-4 text-[42px] font-bold leading-[1.08] text-white sm:text-[48px]">
-              {isArabic ? "الفعاليات القادمة" : "Upcoming Events"}
-            </h1>
-          </FadeIn>
-        </Container>
-      </section>
+      <PageHero
+        eyebrow={isArabic ? "الفعاليات" : "Events"}
+        title={isArabic ? "الفعاليات القادمة" : "Upcoming Events"}
+      />
 
       <section className="py-20">
         <Container className="space-y-20">
           <div>
             <FadeIn>
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                {isArabic ? "الفعاليات القادمة" : "Upcoming Events"}
-              </p>
+              <div className="max-w-3xl rounded-[20px] bg-secondary px-6 py-6">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                  {isArabic ? "الجدول الحالي" : "Current schedule"}
+                </p>
+                <p className="mt-3 text-base leading-8 text-[#666666]">
+                  {isArabic
+                    ? "هذه الفعاليات هي المحطات المعلنة حاليًا. تفاصيل الحضور والاستضافة يتم تأكيدها مباشرة مع الفريق قبل كل فعالية."
+                    : "These are the currently announced stops. Attendance and hosting details are confirmed directly with the team before each event."}
+                </p>
+              </div>
             </FadeIn>
             <Suspense fallback={<EventsGridSkeleton />}>
               <EventsGrid locale={locale} />

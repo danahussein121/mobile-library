@@ -4,6 +4,10 @@ import { cache } from "react";
 import { getImpactMetrics, type ImpactMetric } from "@/data/impact";
 import { db } from "@/lib/db";
 import type { Locale } from "@/lib/i18n";
+import {
+  getConfiguredDonationFields,
+  getDonationAvailabilityMessage,
+} from "@/lib/public-site-config";
 
 type DonationPageContent = {
   heading: string;
@@ -15,6 +19,7 @@ type DonationPageContent = {
     title: string;
     fields: Array<{ label: string; value: string }>;
     referenceNote: string;
+    notice: string;
   };
   form: {
     title: string;
@@ -50,31 +55,11 @@ function resolveValue(value: string | null | undefined, fallback: string) {
   return trimmed || fallback;
 }
 
-function getEnvBankFallback(locale: Locale) {
-  return [
-    {
-      label: locale === "ar" ? "اسم البنك" : "Bank Name",
-      value: process.env.NEXT_PUBLIC_BANK_NAME?.trim() || "—",
-    },
-    {
-      label: locale === "ar" ? "اسم الحساب" : "Account Name",
-      value: process.env.NEXT_PUBLIC_BANK_ACCOUNT_NAME?.trim() || "—",
-    },
-    {
-      label: locale === "ar" ? "رقم الحساب" : "Account Number",
-      value: process.env.NEXT_PUBLIC_BANK_ACCOUNT_NUMBER?.trim() || "—",
-    },
-    {
-      label: locale === "ar" ? "الآيبان" : "IBAN",
-      value: process.env.NEXT_PUBLIC_BANK_IBAN?.trim() || "—",
-    },
-  ];
-}
-
 async function loadPublicDonationContent(locale: Locale): Promise<DonationPageContent> {
   const isArabic = locale === "ar";
-  const bankFallback = getEnvBankFallback(locale);
+  const bankFields = getConfiguredDonationFields(locale);
   const impactFallback = getImpactMetrics(locale);
+  const donationNotice = getDonationAvailabilityMessage(locale);
 
   const fallback: DonationPageContent = {
     heading: isArabic ? "ادعم المشروع" : "Support the Project",
@@ -84,10 +69,14 @@ async function loadPublicDonationContent(locale: Locale): Promise<DonationPageCo
     },
     bankTransfer: {
       title: isArabic ? "بيانات التحويل البنكي" : "Bank Transfer Details",
-      fields: bankFallback,
-      referenceNote: isArabic
-        ? "يرجى إضافة MobileLibraryDonation كمرجع للتحويل."
-        : "Please include MobileLibraryDonation as reference.",
+      fields: bankFields,
+      referenceNote:
+        bankFields.length > 0
+          ? isArabic
+            ? "يرجى إضافة MobileLibraryDonation كمرجع للتحويل."
+            : "Please include MobileLibraryDonation as reference."
+          : "",
+      notice: donationNotice,
     },
     form: {
       title: isArabic ? "أبلغنا بالتحويل" : "Notify Us",
@@ -150,47 +139,8 @@ async function loadPublicDonationContent(locale: Locale): Promise<DonationPageCo
               fallback.bankTransfer.title,
             )
           : fallback.bankTransfer.title,
-        fields: donationSettings
-          ? [
-              {
-                label: localize(
-                  locale,
-                  donationSettings.bankNameLabelEn,
-                  donationSettings.bankNameLabelAr,
-                  bankFallback[0].label,
-                ),
-                value: resolveValue(donationSettings.bankNameValue, bankFallback[0].value),
-              },
-              {
-                label: localize(
-                  locale,
-                  donationSettings.accountNameLabelEn,
-                  donationSettings.accountNameLabelAr,
-                  bankFallback[1].label,
-                ),
-                value: resolveValue(donationSettings.accountNameValue, bankFallback[1].value),
-              },
-              {
-                label: localize(
-                  locale,
-                  donationSettings.accountNumberLabelEn,
-                  donationSettings.accountNumberLabelAr,
-                  bankFallback[2].label,
-                ),
-                value: resolveValue(donationSettings.accountNumberValue, bankFallback[2].value),
-              },
-              {
-                label: localize(
-                  locale,
-                  donationSettings.ibanLabelEn,
-                  donationSettings.ibanLabelAr,
-                  bankFallback[3].label,
-                ),
-                value: resolveValue(donationSettings.ibanValue, bankFallback[3].value),
-              },
-            ]
-          : fallback.bankTransfer.fields,
-        referenceNote: donationSettings
+        fields: bankFields,
+        referenceNote: donationSettings && bankFields.length > 0
           ? localize(
               locale,
               donationSettings.referenceNoteEn,
@@ -198,6 +148,7 @@ async function loadPublicDonationContent(locale: Locale): Promise<DonationPageCo
               fallback.bankTransfer.referenceNote,
             )
           : fallback.bankTransfer.referenceNote,
+        notice: donationNotice,
       },
       form: {
         title: donationSettings

@@ -29,7 +29,8 @@ export function AdminPageHeader({
   };
 }) {
   return (
-    <div className="mb-8 rounded-[2rem] border border-white/80 bg-white/85 p-8 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.28)]">
+    <div className="mb-8 overflow-hidden rounded-[2rem] border border-white/80 bg-white/88 p-8 shadow-[0_30px_80px_-55px_rgba(15,23,42,0.28)]">
+      <div className="mb-5 h-1.5 w-24 rounded-full bg-[linear-gradient(90deg,#00B4C6,#7ddbe4)]" />
       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/75">
         {adminText(lang, eyebrow, eyebrowAr ?? eyebrow)}
       </p>

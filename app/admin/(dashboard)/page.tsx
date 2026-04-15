@@ -11,6 +11,7 @@ import {
   SquarePen,
 } from "lucide-react";
 
+import { AdminBrand } from "@/components/admin/admin-brand";
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import {
   adminText,
@@ -135,6 +136,24 @@ export default async function AdminDashboardPage({
         description="Use this simple control panel to update the website content without changing the public design."
         descriptionAr="استخدم لوحة التحكم البسيطة هذه لتحديث محتوى الموقع دون تغيير تصميم الموقع العام."
       />
+
+      <div className="rounded-[2rem] border border-white/80 bg-white/88 p-6 shadow-[0_25px_70px_-55px_rgba(15,23,42,0.3)]">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <AdminBrand language={lang} />
+          <div className="rounded-[1.5rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(0,180,198,0.08),rgba(255,255,255,0.9))] px-5 py-4">
+            <p className="text-sm font-semibold text-slate-950">
+              {adminText(lang, "Public website status", "حالة الموقع العام")}
+            </p>
+            <p className="mt-1 max-w-md text-sm leading-7 text-slate-600">
+              {adminText(
+                lang,
+                "This control panel updates the same Mobile Library website your visitors see, with the same brand and bilingual structure.",
+                "تقوم لوحة التحكم هذه بتحديث نفس موقع المكتبة المتنقلة الذي يراه الزوار، مع الحفاظ على الهوية نفسها والبنية ثنائية اللغة.",
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard

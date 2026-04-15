@@ -3,6 +3,7 @@ import "server-only";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { put } from "@vercel/blob";
 
 const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png"]);
 const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024;
@@ -29,6 +30,16 @@ export async function saveUploadedFile(
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
   const relativeDirectory = path.join("uploads", "admin");
   const relativePath = path.join(relativeDirectory, fileName);
+
+  if (process.env.VERCEL || process.env.BLOB_READ_WRITE_TOKEN) {
+    const blob = await put(relativePath.replaceAll("\\", "/"), file, {
+      access: "public",
+      addRandomSuffix: false,
+    });
+
+    return blob.url;
+  }
+
   const absoluteDirectory = path.join(process.cwd(), "public", relativeDirectory);
   const absolutePath = path.join(process.cwd(), "public", relativePath);
 
